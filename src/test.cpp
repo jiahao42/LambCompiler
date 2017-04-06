@@ -1,3 +1,4 @@
+#include "lex_config.h"
 #include <iostream>
 
 static int main_ret = 0;
