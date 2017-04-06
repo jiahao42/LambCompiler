@@ -2,15 +2,16 @@
 #define LEX_CONFIG_H_
 
 #include <iostream>
-#include <string>
+#include <cstring>
 #include <fstream>
 #include <assert.h>
+#include <cstdio>
 
 #define NDEBUG
 
-std::ifstream text;
-std::string line;
-int line_count;
-
+static std::ifstream text;
+static std::string line;
+static int line_count;
+static int error_code;
 
 #endif

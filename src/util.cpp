@@ -2,7 +2,7 @@
 #include "util.h"
 
 
-static unsigned int ELFHash(std::string str) {
+unsigned int ELFHash(std::string str) {
 	unsigned int hash = 0;
 	unsigned int x = 0;
 	unsigned int i = 0;
