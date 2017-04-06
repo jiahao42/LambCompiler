@@ -1,0 +1,12 @@
+void function(int para) {
+    return 0;
+}
+
+int main() {
+    int i;
+    for (int i = 0; i < 10; i++) {
+        function(a);
+        if (i == 5) break;
+    }
+    return 0;
+}
