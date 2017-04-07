@@ -14,6 +14,10 @@ enum language {language_c};
 
 struct symbol_root
 {
+	symbol_root() {
+		version = "0.0.1";
+		language = language_c;
+	}
 	int format;			/* Data format version */
 	int length;			/* # bytes in this symbol segment */
 	//int ldsymoff;			/* Offset in ld symtab of this file's syms */
@@ -22,7 +26,7 @@ struct symbol_root
 	//int bssrel;			/* Relocation for bss addresses */
 	std::string filename;		/* Name of main source file compiled */
 	std::string filedir;		/* Name of directory it was reached from */
-	//std::vector<block> blockvector; /* Vector of all symbol-naming blocks */
+	std::vector<block> blockvector; /* Vector of all symbol-naming blocks */
 	std::vector<type> type_vector; /* Vector of all data types */
 	enum language language;	/* Code identifying the language used */
 	std::string version;		/* Version info.  Not fully specified */
