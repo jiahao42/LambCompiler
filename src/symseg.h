@@ -134,5 +134,76 @@ struct type
 	} *fields;
 };
 
+#if 0 
+/* Not used yet */
+
+/* All of the name-scope contours of the program
+ * are represented by `struct block' objects.
+ * All of these objects are pointed to by the blockvector.
+ *
+ * Each block represents one name scope.
+ * Each lexical context has its own block.
+ *
+ * The first two blocks in the blockvector are special.
+ * The first one contains all the symbols defined in this compilation
+ * whose scope is the entire program linked together.
+ * The second one contains all the symbols whose scope is the
+ * entire compilation excluding other separate compilations.
+ * In C, these correspond to global symbols and static symbols.
+ *
+ * Each block records a range of core addresses for the code that
+ * is in the scope of the block.  The first two special blocks
+ * give, for the range of code, the entire range of code produced
+ * by the compilation that the symbol segment belongs to.
+ *
+ * The blocks appear in the blockvector
+ * in order of increasing starting-address,
+ * and, within that, in order of decreasing ending-address.
+ *
+ * This implies that within the body of one function
+ * the blocks appear in the order of a depth-first tree walk.  
+ */
+
+struct block
+{
+   /* Addresses in the executable code that are in this block.
+    * Note: in an unrelocated symbol segment in a file,
+    * these are always zero.  They can be filled in from the
+    * N_LBRAC and N_RBRAC symbols in the loader symbol table.  
+	*/
+  int startaddr, endaddr;
+   /* The symbol that names this block,
+    * if the block is the body of a function;
+    * otherwise, zero.
+    * Note: In an unrelocated symbol segment in an object file,
+    * this field may be zero even when the block has a name.
+    * That is because the block is output before the name
+    * (since the name resides in a higher block).
+    * Since the symbol does point to the block (as its value),
+    * it is possible to find the block and set its name properly.  
+	*/
+	struct symbol *function;
+   /* 
+    * The `struct block' for the containing block, or 0 if none.  
+	*/
+   /* 
+    * Note that in an unrelocated symbol segment in an object file
+    * this pointer may be zero when the correct value should be
+    * the second special block (for symbols whose scope is one compilation).
+    * This is because the compiler ouptuts the special blocks at the
+    * very end, after the other blocks.   
+	*/
+	struct block *superblock;
+   /* 
+	* Number of local symbols.  
+	*/
+	int nsyms;
+   /* 
+	* The symbols.  
+	*/
+	struct symbol *sym[1];
+};
+
+#endif /* end of block */
 
 #endif /* end of SYMSEG_H_ */
