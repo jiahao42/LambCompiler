@@ -6,7 +6,7 @@ CXXFLAGS = -g -Wall -O2 -std=c++11
 BIN = bin
 SRC = src
 OBJ = obj
-EXE = $(BIN)/lexer.exe
+EXE = $(BIN)/lexer
 
 LEX_CONFIG_H = $(SRC)/lex_config.h
 LEX_H = $(SRC)/lex.h
