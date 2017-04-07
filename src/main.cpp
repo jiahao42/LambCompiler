@@ -12,6 +12,9 @@ int main(int argc, char** argv) {
 		std::cout << "Invalid parameter!" << std::endl;
 		return 0;
 	}
+	/*
+	 * Help menu
+	 */
 	if (strcmp(argv[1],"-h") == 0) {
 		std::cout << "This is help menu." << std::endl;
 		return 0;

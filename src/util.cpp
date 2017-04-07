@@ -1,7 +1,6 @@
 #include "lex_config.h"
 #include "util.h"
 
-
 unsigned int ELFHash(std::string str) {
 	unsigned int hash = 0;
 	unsigned int x = 0;

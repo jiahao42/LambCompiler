@@ -9,6 +9,9 @@
 #include <cassert>
 #include <cstdio>
 
+/*
+ * Simple test framework
+ */
 #define EXPECT_EQ_BASE(equality, expect, actual, format) \
     do {\
         test_count++;\
