@@ -52,7 +52,6 @@ enum type_code
 	//TYPE_CODE_PASCAL_ARRAY,	/* Array with explicit type of index */
 };
 
-typedef struct type type;
 
 struct type
 {
@@ -135,7 +134,7 @@ struct type
 };
 
 #if 0 
-/* Not used yet */
+/* Not used yet, leave it for syntax analyze */
 
 /* All of the name-scope contours of the program
  * are represented by `struct block' objects.
@@ -205,5 +204,146 @@ struct block
 };
 
 #endif /* end of block */
+
+
+/* Represent one symbol name; a variable, constant, function or typedef.  */
+
+/* Different name spaces for symbols.  Looking up a symbol specifies
+   a namespace and ignores symbol definitions in other name spaces.
+
+   VAR_NAMESPACE is the usual namespace.
+   In C, this contains variables, function names, typedef names
+   and enum type values.
+
+   STRUCT_NAMESPACE is used in C to hold struct, union and enum type names.
+   Thus, if `struct foo' is used in a C program,
+   it produces a symbol named `foo' in the STRUCT_NAMESPACE.
+
+   LABEL_NAMESPACE may be used for names of labels (for gotos);
+   currently it is not used and labels are not recorded at all.  */
+
+/* For a non-global symbol allocated statically,
+   the correct core address cannot be determined by the compiler.
+   The compiler puts an index number into the symbol's value field.
+   This index number can be matched with the "desc" field of
+   an entry in the loader symbol table.  */
+
+enum namespace
+{
+	UNDEF_NAMESPACE, VAR_NAMESPACE, STRUCT_NAMESPACE, LABEL_NAMESPACE,
+};
+
+/* An address-class says where to find the value of the symbol in core.  */
+
+enum address_class
+{
+   /*
+    * Not used; catches errors 
+	*/
+	LOC_UNDEF,	  
+   /* 
+    * Value is constant int 
+    */
+	LOC_CONST,	   	   
+   /* 
+	* Value is at fixed address 
+    */
+	LOC_STATIC,	   	  
+   /* 
+    * Value is in register 
+	*/
+	LOC_REGISTER,  
+   /* 
+    * Value is at spec'd position in arglist 
+	*/
+	LOC_ARG,	   	 
+   /* 
+	* Value is at spec'd pos in stack frame 
+	*/
+	LOC_LOCAL,	   
+   /* 
+    * Value not used; definition in SYMBOL_TYPE
+	* Symbols in the namespace STRUCT_NAMESPACE
+	* all have this class.  
+	*/	
+	LOC_TYPEDEF,   	  
+   /* 
+	* Value is address in the code 
+	*/	
+	LOC_LABEL,	   
+   /* Value is address of a `struct block'.
+	* Function names have this class.  
+	*/	
+	LOC_BLOCK,
+   /* Value is at address not in this compilation.
+	* This is used for .comm symbols
+	* and for extern symbols within functions.
+	* Inside GDB, this is changed to LOC_STATIC once the
+	* real address is obtained from a loader symbol.  
+	*/	
+	LOC_EXTERNAL,  	   
+   /* 
+    * Value is a constant byte-sequence. 
+	*/
+	LOC_CONST_BYTES,   
+};
+
+struct symbol
+{
+   /* 
+    * Symbol name 
+	*/
+  char *name;
+   /* 
+    * Name space code.  
+	*/
+  enum namespace namespace;
+   /*
+	* Address class 
+	*/
+  enum address_class class;
+   /* 
+    * Data type of value 
+	*/
+  struct type *type;
+   /* 
+    * constant value, or address if static, or register number,
+    * or offset in arguments, or offset in stack frame.  
+	*/
+  union
+    {
+      long value;
+      struct block *block;      /* for LOC_BLOCK */
+      char *bytes;		/* for LOC_CONST_BYTES */
+    }
+  value;
+};
+
+/* Source-file information.
+   This describes the relation between source files and line numbers
+   and addresses in the program text.  */
+
+struct sourcevector
+{
+  int length;			/* Number of source files described */
+  struct source *source[1];	/* Descriptions of the files */
+};
+
+/* Line number and address of one line.  */
+ 
+struct line
+{
+  int linenum;
+  int address;
+};
+
+/* All the information on one source file.  */
+
+struct source
+{
+  char *name;			/* Name of file */
+  int nlines;			/* Number of lines that follow */
+  struct line lines[1];	/* Information on each line */
+};
 
 #endif /* end of SYMSEG_H_ */
