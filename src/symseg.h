@@ -9,6 +9,8 @@
  
 struct type;
 struct source;
+struct field;
+//struct block;
  
 enum language {language_c};
 
@@ -18,22 +20,22 @@ struct symbol_root
 		version = "0.0.1";
 		language = language_c;
 	}
-	int format;			/* Data format version */
-	int length;			/* # bytes in this symbol segment */
-	//int ldsymoff;			/* Offset in ld symtab of this file's syms */
-	//int textrel;			/* Relocation for text addresses */
-	//int datarel;			/* Relocation for data addresses */
-	//int bssrel;			/* Relocation for bss addresses */
-	std::string filename;		/* Name of main source file compiled */
-	std::string filedir;		/* Name of directory it was reached from */
-	std::vector<block> blockvector; /* Vector of all symbol-naming blocks */
-	std::vector<type> type_vector; /* Vector of all data types */
-	enum language language;	/* Code identifying the language used */
-	std::string version;		/* Version info.  Not fully specified */
-	//std::string compilation;		/* Compilation info.  Not fully specified */
-	//int databeg;			/* Address within the file of data start */
-	//int bssbeg;			/* Address within the file of bss start */
-	std::vector<source> source_vector; /* Vector of line-number info */
+	int format;							/* Data format version */
+	int length;							/* # bytes in this symbol segment */
+	//int ldsymoff;						/* Offset in ld symtab of this file's syms */
+	//int textrel;						/* Relocation for text addresses */
+	//int datarel;						/* Relocation for data addresses */
+	//int bssrel;						/* Relocation for bss addresses */
+	std::string filename;				/* Name of main source file compiled */
+	std::string filedir;				/* Name of directory it was reached from */
+	//std::vector<block> blockvector; 	/* Vector of all symbol-naming blocks */
+	std::vector<type> type_vector; 		/* Vector of all data types */
+	enum language language;				/* Code identifying the language used */
+	std::string version;				/* Version info.  Not fully specified */
+	//std::string compilation;			/* Compilation info.  Not fully specified */
+	//int databeg;						/* Address within the file of data start */
+	//int bssbeg;						/* Address within the file of bss start */
+	std::vector<source> source_vector; 	/* Vector of line-number info */
 };
 
 /* All data types of symbols in the compiled program
@@ -44,18 +46,18 @@ struct symbol_root
 
 enum type_code
 {
-	TYPE_CODE_UNDEF,		/* Not used; catches errors */
-	TYPE_CODE_PTR,		/* Pointer type */
-	TYPE_CODE_ARRAY,		/* Array type, lower bound zero */
-	TYPE_CODE_STRUCT,		/* C struct or Pascal record */
-	TYPE_CODE_UNION,		/* C union or Pascal variant part */
-	TYPE_CODE_ENUM,		/* Enumeration type */
-	TYPE_CODE_FUNC,		/* Function type */
-	TYPE_CODE_INT,		/* Integer type */
-	TYPE_CODE_FLT,		/* Floating type */
-	TYPE_CODE_VOID,		/* Void type (values zero length) */
-	//TYPE_CODE_SET,		/* Pascal sets */
-	TYPE_CODE_RANGE,		/* Range (integers within spec'd bounds) */
+	TYPE_CODE_UNDEF,			/* Not used; catches errors */
+	TYPE_CODE_PTR,				/* Pointer type */
+	TYPE_CODE_ARRAY,			/* Array type, lower bound zero */
+	TYPE_CODE_STRUCT,			/* C struct or Pascal record */
+	TYPE_CODE_UNION,			/* C union or Pascal variant part */
+	TYPE_CODE_ENUM,				/* Enumeration type */
+	TYPE_CODE_FUNC,				/* Function type */
+	TYPE_CODE_INT,				/* Integer type */
+	TYPE_CODE_FLT,				/* Floating type */
+	TYPE_CODE_VOID,				/* Void type (values zero length) */
+	//TYPE_CODE_SET,			/* Pascal sets */
+	TYPE_CODE_RANGE,			/* Range (integers within spec'd bounds) */
 	//TYPE_CODE_PASCAL_ARRAY,	/* Array with explicit type of index */
 };
 
@@ -97,24 +99,26 @@ struct type
 	*/
 	short flags;
    /* 
-	* Number of fields described for this type 
+	* vector of fields described for this type 
 	*/
-	short nfields;
-   /* 
-	* For structure and union types, a description of each field.
-	* For range types, there are two "fields",
-	* the minimum and maximum values (both inclusive).
-	* For enum types, each possible value is described by one "field".
-	* For range types, there are two "fields", that record constant values
-	* (inclusive) for the minimum and maximum.
-	*
-	* Using a pointer to a separate array of fields
-	* allows all types to have the same size, which is useful
-	* because we can allocate the space for a type before
-	* we know what to put in it.  
-	*/
-	struct field
-	{
+	std::vector<field> field_vector;
+};
+
+/* 
+ * For structure and union types, a description of each field.
+ * For range types, there are two "fields",
+ * the minimum and maximum values (both inclusive).
+ * For enum types, each possible value is described by one "field".
+ * For range types, there are two "fields", that record constant values
+ * (inclusive) for the minimum and maximum.
+ *
+ * Using a pointer to a separate array of fields
+ * allows all types to have the same size, which is useful
+ * because we can allocate the space for a type before
+ * we know what to put in it.  
+ */
+struct field
+{
    /* 
 	* Position of this field, counting in bits from start of
 	* containing structure.  For a function type, this is the
@@ -128,16 +132,17 @@ struct type
 	* says how many bytes the field occupies.  
 	*/
 	int bitsize;
-   /* In a struct or enum type, type of this field.
+   /*
+	* In a struct or enum type, type of this field.
 	* In a function type, type of this argument.
 	* In an array type, the domain-type of the array.  
 	*/
 	struct type *type;
-   /* Name of field, value or argument.
-    * Zero for range bounds and array domains.  
+   /*
+	* Name of field, value or argument.
+	* Zero for range bounds and array domains.  
 	*/
 	std::string name;
-	} *fields;
 };
 
 #if 0 
@@ -351,9 +356,9 @@ typedef struct line
 
 struct source
 {
-	source(std::string _name) : name(_name) {}
+	source() {}
 	source(const char* _name) : name(_name) {}
-	std::string name;			/* Name of file */
+	const char* name;			/* Name of file */
 	std::vector<line> lines; /* Information of each line */
 };
 

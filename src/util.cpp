@@ -22,3 +22,37 @@ unsigned int ELFHash(std::string str) {
 
 	return hash;
 }
+
+/*
+ * Help menu
+ */
+void help_menu() {
+	std::cout << "This is the help menu" << std::endl;
+	std::cout << "LambLexer, Version: " << symbol_table.version << std::endl << std::endl;;
+}
+
+/*
+ * Show version
+ */
+void show_version() {
+	std::cout << "LambLexer, Version: " << symbol_table.version << std::endl << std::endl;;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

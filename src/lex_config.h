@@ -15,6 +15,7 @@
 extern std::ifstream file;
 extern line cur_line;
 extern source source_file;
+extern symbol_root symbol_table;
 extern int line_count;
 extern int error_code;
 

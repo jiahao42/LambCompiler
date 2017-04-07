@@ -10,4 +10,14 @@
  */
 unsigned int ELFHash(std::string str); 
 
+/*
+ * Help menu
+ */
+void help_menu();
+
+/*
+ * Show version
+ */
+void show_version();
+
 #endif /* end of UTIL_H_ */
