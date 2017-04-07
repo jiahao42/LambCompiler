@@ -17,16 +17,16 @@ int main(int argc, char** argv) {
 		return 0;
 	}
 	
-	std::ifstream text;
+	std::ifstream source_file;
 	std::string line;
 	int line_count = 0;
 	int error_code = NO_ERROR;
 	
-	text.open(argv[1]);
+	source_file.open(argv[1]);
 	EXPECT_EQ_STRING("sample", argv[1], 6);
 
-	if (text.is_open()) {
-		while (std::getline(text, line)) {
+	if (source_file.is_open()) {
+		while (std::getline(source_file, line)) {
 			line_count++;
 			lex();
 			if (error_code != NO_ERROR) {

@@ -27,7 +27,7 @@
 #define EXPECT_TRUE(actual) EXPECT_EQ_BASE((actual) != 0, "true", "false", "%s")
 #define EXPECT_FALSE(actual) EXPECT_EQ_BASE((actual) == 0, "false", "true", "%s")
 
-extern std::ifstream text;
+extern std::ifstream source_file;
 extern std::string line;
 extern int line_count;
 extern int error_code;
