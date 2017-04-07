@@ -5,19 +5,20 @@
  * error code of parsing
  */
 enum ERROR_ID {
-	NO_ERROR = -1,
-	INVALID_IDENTIFIER = 0, // 0
-	UNKNOWN_TYPE, // 1
-	TOO_LONG_IDENTIFIER,
+	NO_ERROR = 0,
+	INVALID_IDENTIFIER, // 1
+	UNKNOWN_TYPE, // 2
+	TOO_LONG_IDENTIFIER, // 3
 };
 
 /*
  * error string
  */
 const std::string error_string[] {
-	"invalid identifier ",
-	"unknown type name ",
-	"this identifier is too long ",
+	" parse success ",
+	" invalid identifier ",
+	" unknown type name ",
+	" this identifier is too long ",
 };
 
 
