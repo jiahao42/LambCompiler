@@ -8,6 +8,10 @@
 #include <fstream>
 #include <cassert>
 #include <cstdio>
+#include <vector>
+#include "symseg.h"
+#include "token.h"
+
 
 /*
  * Simple Test Framework
