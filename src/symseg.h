@@ -23,13 +23,13 @@ struct symbol_root
 	std::string filename;		/* Name of main source file compiled */
 	std::string filedir;		/* Name of directory it was reached from */
 	//std::vector<block> blockvector; /* Vector of all symbol-naming blocks */
-	std::vector<type> typevector; /* Vector of all data types */
+	std::vector<type> type_vector; /* Vector of all data types */
 	enum language language;	/* Code identifying the language used */
 	std::string version;		/* Version info.  Not fully specified */
-	std::string compilation;		/* Compilation info.  Not fully specified */
+	//std::string compilation;		/* Compilation info.  Not fully specified */
 	//int databeg;			/* Address within the file of data start */
 	//int bssbeg;			/* Address within the file of bss start */
-	std::vector<source> sourcevector; /* Vector of line-number info */
+	std::vector<source> source_vector; /* Vector of line-number info */
 };
 
 /* All data types of symbols in the compiled program
@@ -132,7 +132,7 @@ struct type
    /* Name of field, value or argument.
     * Zero for range bounds and array domains.  
 	*/
-	char *name;
+	std::string name;
 	} *fields;
 };
 
@@ -197,13 +197,9 @@ struct block
 	*/
 	struct block *superblock;
    /* 
-	* Number of local symbols.  
+	* The local symbols.  
 	*/
-	int nsyms;
-   /* 
-	* The symbols.  
-	*/
-	struct symbol *sym[1];
+	std::vector<symbol> syms;
 };
 
 #endif /* end of block */
@@ -291,7 +287,7 @@ enum address_type
 	* Inside GDB, this is changed to LOC_STATIC once the
 	* real address is obtained from a loader symbol.  
 	*/	
-	LOC_EXTERNAL,  	   
+	//LOC_EXTERNAL,  	   
    /* 
     * Value is a constant byte-sequence. 
 	*/
