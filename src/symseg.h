@@ -303,7 +303,7 @@ struct symbol
    /* 
     * Symbol name 
 	*/
-	char *name;
+	std::string name;
    /* 
     * Name space code.  
 	*/
@@ -335,16 +335,24 @@ struct symbol
 
 /* Line number and address of one line.  */
  
-struct line
+typedef struct line
 {
+	line() : linenum(0), address(0) {}
 	int linenum;
 	int address;
-};
+	//post
+	struct line operator++(int) {
+		linenum++;
+		return *this;
+	}
+}line;
 
 /* All the information on one source file.  */
 
 struct source
 {
+	source(std::string _name) : name(_name) {}
+	source(const char* _name) : name(_name) {}
 	std::string name;			/* Name of file */
 	std::vector<line> lines; /* Information of each line */
 };
