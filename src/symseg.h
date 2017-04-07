@@ -7,6 +7,9 @@
  * The unused data has been all commentted.
  */
  
+struct type;
+struct source;
+ 
 enum language {language_c};
 
 struct symbol_root
@@ -19,7 +22,7 @@ struct symbol_root
 	//int bssrel;			/* Relocation for bss addresses */
 	std::string filename;		/* Name of main source file compiled */
 	std::string filedir;		/* Name of directory it was reached from */
-	std::vector<block> blockvector; /* Vector of all symbol-naming blocks */
+	//std::vector<block> blockvector; /* Vector of all symbol-naming blocks */
 	std::vector<type> typevector; /* Vector of all data types */
 	enum language language;	/* Code identifying the language used */
 	std::string version;		/* Version info.  Not fully specified */
@@ -114,22 +117,22 @@ struct type
 	* position in the argument list of this argument.
 	* For a range bound or enum value, this is the value itself.  
 	*/
-		int bitpos;
+	int bitpos;
    /*
 	* Size of this field, in bits, or zero if not packed.
 	* For an unpacked field, the field's type's length
 	* says how many bytes the field occupies.  
 	*/
-		int bitsize;
+	int bitsize;
    /* In a struct or enum type, type of this field.
 	* In a function type, type of this argument.
 	* In an array type, the domain-type of the array.  
 	*/
-		type *type;
+	struct type *type;
    /* Name of field, value or argument.
     * Zero for range bounds and array domains.  
 	*/
-		char *name;
+	char *name;
 	} *fields;
 };
 
@@ -208,34 +211,38 @@ struct block
 
 /* Represent one symbol name; a variable, constant, function or typedef.  */
 
-/* Different name spaces for symbols.  Looking up a symbol specifies
-   a namespace and ignores symbol definitions in other name spaces.
+/* 
+ * Different name spaces for symbols.  Looking up a symbol specifies
+ * a namespace and ignores symbol definitions in other name spaces.
+ * 
+ * VAR_NAMESPACE is the usual namespace.
+ * In C, this contains variables, function names, typedef names
+ * and enum type values.
+ * 
+ * STRUCT_NAMESPACE is used in C to hold struct, union and enum type names.
+ * Thus, if `struct foo' is used in a C program,
+ * it produces a symbol named `foo' in the STRUCT_NAMESPACE.
+ * 
+ * LABEL_NAMESPACE may be used for names of labels (for gotos);
+ * currently it is not used and labels are not recorded at all.  
+ */
 
-   VAR_NAMESPACE is the usual namespace.
-   In C, this contains variables, function names, typedef names
-   and enum type values.
+/* 
+ * For a non-global symbol allocated statically,
+ * the correct core address cannot be determined by the compiler.
+ * The compiler puts an index number into the symbol's value field.
+ * This index number can be matched with the "desc" field of
+ * an entry in the loader symbol table.  
+ */
 
-   STRUCT_NAMESPACE is used in C to hold struct, union and enum type names.
-   Thus, if `struct foo' is used in a C program,
-   it produces a symbol named `foo' in the STRUCT_NAMESPACE.
-
-   LABEL_NAMESPACE may be used for names of labels (for gotos);
-   currently it is not used and labels are not recorded at all.  */
-
-/* For a non-global symbol allocated statically,
-   the correct core address cannot be determined by the compiler.
-   The compiler puts an index number into the symbol's value field.
-   This index number can be matched with the "desc" field of
-   an entry in the loader symbol table.  */
-
-enum namespace
+enum sym_namespace
 {
 	UNDEF_NAMESPACE, VAR_NAMESPACE, STRUCT_NAMESPACE, LABEL_NAMESPACE,
 };
 
 /* An address-class says where to find the value of the symbol in core.  */
 
-enum address_class
+enum address_type
 {
    /*
     * Not used; catches errors 
@@ -271,11 +278,14 @@ enum address_class
 	* Value is address in the code 
 	*/	
 	LOC_LABEL,	   
-   /* Value is address of a `struct block'.
+   /* 
+    * Value is address of a `struct block'.
 	* Function names have this class.  
 	*/	
 	LOC_BLOCK,
-   /* Value is at address not in this compilation.
+   /* 
+    * Not used yet
+	* Value is at address not in this compilation.
 	* This is used for .comm symbols
 	* and for extern symbols within functions.
 	* Inside GDB, this is changed to LOC_STATIC once the
@@ -293,57 +303,50 @@ struct symbol
    /* 
     * Symbol name 
 	*/
-  char *name;
+	char *name;
    /* 
     * Name space code.  
 	*/
-  enum namespace namespace;
+	enum sym_namespace _sym_namespace;
    /*
-	* Address class 
+	* Address type 
 	*/
-  enum address_class class;
+	enum address_type _address_type;
    /* 
     * Data type of value 
 	*/
-  struct type *type;
+	struct type *type;
    /* 
     * constant value, or address if static, or register number,
     * or offset in arguments, or offset in stack frame.  
 	*/
-  union
-    {
-      long value;
-      struct block *block;      /* for LOC_BLOCK */
-      char *bytes;		/* for LOC_CONST_BYTES */
-    }
-  value;
+	union {
+		long value;
+		struct block *block;      /* for LOC_BLOCK */
+		char *bytes;		/* for LOC_CONST_BYTES */
+    } value;
 };
 
-/* Source-file information.
-   This describes the relation between source files and line numbers
-   and addresses in the program text.  */
-
-struct sourcevector
-{
-  int length;			/* Number of source files described */
-  struct source *source[1];	/* Descriptions of the files */
-};
+/* 
+ * Source-file information.
+ * This describes the relation between source files and line numbers
+ * and addresses in the program text.  
+ */
 
 /* Line number and address of one line.  */
  
 struct line
 {
-  int linenum;
-  int address;
+	int linenum;
+	int address;
 };
 
 /* All the information on one source file.  */
 
 struct source
 {
-  char *name;			/* Name of file */
-  int nlines;			/* Number of lines that follow */
-  struct line lines[1];	/* Information on each line */
+	std::string name;			/* Name of file */
+	std::vector<line> lines; /* Information of each line */
 };
 
 #endif /* end of SYMSEG_H_ */
