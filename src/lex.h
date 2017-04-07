@@ -7,4 +7,4 @@
 void lex();
 
 
-#endif
+#endif /* end of LEX_H_ */

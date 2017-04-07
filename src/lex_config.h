@@ -10,7 +10,7 @@
 #include <cstdio>
 
 /*
- * Simple test framework
+ * Simple Test Framework
  */
 #define EXPECT_EQ_BASE(equality, expect, actual, format) \
     do {\
@@ -37,4 +37,4 @@ extern int error_code;
 
 #define SYMBOL_TABLE_SIZE 100
 
-#endif
+#endif /* end of LEX_CONFIG_H_ */

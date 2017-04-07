@@ -1,6 +1,9 @@
 #include "lex_config.h"
 #include "util.h"
 
+/*
+ * ELFHash, used for access varible in Symbol Table faster
+ */
 unsigned int ELFHash(std::string str) {
 	unsigned int hash = 0;
 	unsigned int x = 0;

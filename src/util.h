@@ -10,4 +10,4 @@
  */
 unsigned int ELFHash(std::string str); 
 
-#endif
+#endif /* end of UTIL_H_ */

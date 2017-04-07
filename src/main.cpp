@@ -3,6 +3,9 @@
 #include "token.h"
 #include "util.h"
 
+/*
+ * Used for Simple Test Framework
+ */
 static int main_ret = 0;
 static int test_count = 0;
 static int test_pass = 0;
