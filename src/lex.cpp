@@ -165,6 +165,51 @@ void lex() {
 						idx++;
 					}
 					break;
+				case '/':
+					if (cur_line[idx + 1] == '=') {				/* /= */
+						tmp.set(idx, C_DIV_EQ, "/=");
+						source_file.push(tmp);
+						idx += 2;
+					} else {									/* / */
+						tmp.set(idx, C_DIV, "/");
+						source_file.push(tmp);
+						idx++;
+					}
+					break;
+				case '%':
+					if (cur_line[idx + 1] == '=') {				/* %= */
+						tmp.set(idx, C_MOD_EQ, "%=");
+						source_file.push(tmp);
+						idx += 2;
+					} else {
+						tmp.set(idx, C_MOD, "%");				/* % */
+						source_file.push(tmp);
+						idx++;
+					}
+					break;
+				case '&':
+					if (cur_line[idx + 1] == '=') {				/* &= */
+						tmp.set(idx, C_AND_EQ, "&=");
+						source_file.push(tmp);
+						idx += 2;
+					} else {
+						tmp.set(idx, C_AND, "&");				/* & */
+						source_file.push(tmp);
+						idx++;
+					}
+					break;
+				case '|':
+					if (cur_line[idx + 1] == '|') {				/* || */
+						tmp.set(idx, C_OR_OR, "||");
+						source_file.push(tmp);
+						idx += 2;
+					} else {
+						tmp.set(idx, C_OR, "|");				/* | */
+						source_file.push(tmp);
+						idx++;
+					}
+					break;
+				
 				default:
 					ERROR(UNKNOWN_TYPE, idx);
 					idx++;
