@@ -10,6 +10,7 @@
 struct type;
 struct source;
 struct field;
+struct c_token;
 //struct block;
  
 enum language {language_c};
@@ -339,7 +340,7 @@ struct symbol
 typedef struct line
 {
 	line() : linenum(0), address(0) {}
-	int linenum;
+	size_t linenum;
 	int address;
 	//post
 	struct line operator++(int) {
@@ -352,9 +353,11 @@ typedef struct line
 
 struct source
 {
-	std::string name;			/* Name of file */
+	std::string filename;			/* Name of file */
 	std::vector<line> lines; /* Information of each line */
-	std::vector<c_token> c_token_vector;
+	std::vector<struct c_token> c_token_vector;
 };
 
 #endif /* end of LAMBLEXER_SYMSEG_H_ */
+
+

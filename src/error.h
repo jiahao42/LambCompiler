@@ -1,6 +1,9 @@
 #ifndef LAMBLEXER_ERROR_H_
 #define LAMBLEXER_ERROR_H_
 
+
+#define ERROR(ERR_ID) std::cout << "line: " << cur_line_info.linenum << " error: " << error_string[ERR_ID] << std::endl
+
 /*
  * error code of parsing
  */

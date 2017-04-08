@@ -1,17 +1,22 @@
 #include "lex_config.h"
+#include "token.h"
+#include "symseg.h"
+#include "error.h"
+#include "test.h"
 #include "lex.h"
+
 
 #define ISDIGIT(ch)         ((ch) >= '0' && (ch) <= '9')
 #define ISDIGIT1TO9(ch)     ((ch) >= '1' && (ch) <= '9')
 #define ISDIGIT0(ch)		((ch) == '0'))
 #define ISWHITESPACE(ch)	((ch) == ' ')
 #define ISLETTER(ch)		(((ch) >= 'a' && (ch) <= 'z') || ((ch >= 'A') && (ch) <= 'Z'))
-#define ERROR(ERR_ID) std::cout << "line: " << cur_line_info.linenum << " error: " << error_string[ERR_ID] << std::endl
 
 extern std::string cur_line;
 extern int error_code;
 extern line cur_line_info;
 extern source source_file;
+
 
 void trim_space(size_t&);
 void parse_num(size_t&);
@@ -22,7 +27,8 @@ void parse_identifier(size_t&);
  */
 void lex() {
 	for (size_t idx = 0; idx < cur_line.size(); idx++) {
-		if (ISWHITESPACE(cur_line[idx]) {
+		c_token tmp;
+		if (ISWHITESPACE(cur_line[idx])) {
 			trim_space(idx);
 		} else if (ISDIGIT0(cur_line[idx]) {
 			if (cur_line[idx + 1] == 'x') { 				/* hexadecimal */
@@ -33,30 +39,30 @@ void lex() {
 			}
 		} else if (ISDIGIT1TO9(cur_line[idx])) { 			/* decimal */
 			parse_num(idx);
-		} else if (ISLETTER(cur_line[idx]) {				/* identifier or keyword */
+		} else if (ISLETTER(cur_line[idx])) {				/* identifier or keyword */
 			parse_identifier(idx);
 		} else { 											/* operator or semicolon */
 			switch(cur_line[idx]) {
 				case '=':
 					if (cur_line[idx + 1] == '=') { 			/* == */
-						c_token tmp(cur_line_info.linenum, idx, C_EQ_EQ, "==");
+						tmp.set(cur_line_info.linenum, idx, C_EQ_EQ, "==");
 						source_file.c_token_vector.push_back(tmp);
 						idx += 2;
 					} else {								/* = */
-						c_token tmp(cur_line_info.linenum, idx, C_EQ, "=");
+						tmp.set(cur_line_info.linenum, idx, C_EQ, "=");
 						source_file.c_token_vector.push_back(tmp);
 						idx++;
 					}
 					break;
 				case ';':
-					c_token(cur_line_info.linenum, idx, C_SEMICOLON, ";");
+					tmp.set(cur_line_info.linenum, idx, C_SEMICOLON, ";");
 					source_file.c_token_vector.push_back(tmp);
 					idx++;
 					break;
 				default:
-					c_token(cur_line_info.linenum, idx, C_OTHER, cur_line[idx]);
-					source_file.c_token_vector.push_back(tmp);
+					ERROR(UNKNOWN_TYPE);
 					idx++;
+					break;
 			}
 		}
 	}
@@ -66,7 +72,7 @@ void lex() {
 
 void trim_space(size_t& idx) {
 	while (cur_line[idx] == ' ' && idx < cur_line.size()) {
-		i++;
+		idx++;
 	}
 }
 void parse_num(size_t& idx) {

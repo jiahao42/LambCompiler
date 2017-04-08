@@ -1,7 +1,6 @@
 #ifndef LAMBLEXER_TOKEN_H_
 #define LAMBLEXER_TOKEN_H_
 
-
 /* 
  * Reserved identifiers.  This is the union of some keywords for C,
  */
@@ -110,7 +109,28 @@ enum c_ttype
 #undef OP
 #undef TK
 
+enum c_ttype;
 
+typedef struct c_token
+{
+	size_t line;			/* Logical line of first char of token.  */
+	size_t col;			/* Column of first char of token.  */
+	c_ttype type;					/* token type */
+	std::string name;				/* identifier */
+	
+	c_token() {}
+	c_token(size_t _line, size_t _col, c_ttype _type, std::string _name) : line(_line), col(_col), type(_type), name(_name) {}
+	std::ostream& operator <<(std::ostream& output) {
+		std::cout << "line: " << line << " col: " << col << " type: " << type << " value: " << name << std::endl;
+		return output;
+	}
+	void set(size_t _line, size_t _col, c_ttype _type, std::string _name) {
+		line = _line;
+		col = _col;
+		type = _type;
+		name = _name;
+	}
+}c_token;
 
 #endif /* end of LAMBLEXER_TOKEN_H_ */
 

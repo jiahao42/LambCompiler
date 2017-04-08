@@ -1,14 +1,37 @@
 #include "lex_config.h"
 #include "lex.h"
+#include "symseg.h"
+#include "token.h"
 #include "util.h"
+#include "error.h"
 #include "test.h"
 
 extern const std::string version;
+/*
+ * Symbol table, see symseg.harderr
+ */
 symbol_root symbol_table;
+/*
+ * Current file
+ */
 std::ifstream file;
+/*
+ * Literally current line
+ */
 std::string cur_line;
+/*
+ * Information of current line, including line number and line address
+ * See symseg.h
+ */
 line cur_line_info;
+/*
+ * Stand for source file, including filename and lines' info
+ * See symseg.h
+ */
 source source_file;
+/*
+ * Correspond with error_string, see token.h
+ */ 
 int error_code = NO_ERROR;
 
 void read_file();
@@ -40,7 +63,9 @@ int main(int argc, char** argv) {
 		init_symbol_table(argv[0], argv[1]);
 		read_file();
 	}
-	
+#ifdef DUMP_TOKEN_STREAM
+	void dump_token_stream();
+#endif
 	return 0;
 }
 
@@ -48,8 +73,8 @@ int main(int argc, char** argv) {
  * Read file and start to lex
  */
 void read_file() {
-	source_file.name = symbol_table.filename;
-	file.open(source_file.name);
+	source_file.filename = symbol_table.filename;
+	file.open(source_file.filename);
 	EXPECT_TRUE(file.is_open());
 	if (file.is_open()) {
 		while (std::getline(file, cur_line)) {
