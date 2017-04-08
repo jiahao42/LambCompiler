@@ -9,6 +9,7 @@ enum ERROR_ID {
 	INVALID_IDENTIFIER,
 	UNKNOWN_TYPE,
 	TOO_LONG_IDENTIFIER,
+	NON_HEX_NUMBER_START_WITH_ZERO,
 };
 
 /*
@@ -19,6 +20,7 @@ const std::string error_string[] {
 	" invalid identifier ",
 	" unknown type name ",
 	" this identifier is too long ",
+	" non-hex number can't start with 0 ",
 };
 
 #endif /* end of LAMBLEXER_ERROR_H_ */
