@@ -354,6 +354,7 @@ struct source
 {
 	std::string name;			/* Name of file */
 	std::vector<line> lines; /* Information of each line */
+	std::vector<c_token> c_token_vector;
 };
 
 #endif /* end of LAMBLEXER_SYMSEG_H_ */
