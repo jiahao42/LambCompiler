@@ -2,31 +2,9 @@
 #define LAMBLEXER_TOKEN_H_
 
 
-/*
- * error code of parsing
- */
-enum ERROR_ID {
-	NO_ERROR = 0,
-	INVALID_IDENTIFIER,
-	UNKNOWN_TYPE,
-	TOO_LONG_IDENTIFIER,
-};
-
-/*
- * error string
- */
-const std::string error_string[] {
-	" no error ",
-	" invalid identifier ",
-	" unknown type name ",
-	" this identifier is too long ",
-};
-
-
 /* 
  * Reserved identifiers.  This is the union of some keywords for C,
  */
-
 enum rid
 {
   /* Modifiers: */
@@ -43,7 +21,7 @@ enum rid
   RID_DEFAULT, RID_BREAK,  RID_CONTINUE, RID_RETURN, RID_GOTO,
   RID_SIZEOF,
 
-  RID_FUNCTION_NAME
+  RID_FUNCTION_NAME,
 };
 
 
@@ -110,16 +88,13 @@ enum rid
   TK(CPP_NUMBER,	SPELL_NUMBER)	/* 34_be+ta  */			\
 \
   TK(CPP_CHAR,		SPELL_STRING)	/* 'char' */			\
-  TK(CPP_WCHAR,		SPELL_STRING)	/* L'char' */			\
   TK(CPP_OTHER,		SPELL_CHAR)	/* stray punctuation */		\
 \
   TK(CPP_STRING,	SPELL_STRING)	/* "string" */			\
-  TK(CPP_WSTRING,	SPELL_STRING)	/* L"string" */			\
   TK(CPP_HEADER_NAME,	SPELL_STRING)	/* <stdio.h> in #include */	\
 \
   TK(CPP_COMMENT,	SPELL_NUMBER)	/* Only if output comments.  */ \
                                         /* SPELL_NUMBER happens to DTRT.  */ \
-  TK(CPP_MACRO_ARG,	SPELL_NONE)	/* Macro argument.  */		\
   TK(CPP_PADDING,	SPELL_NONE)	/* Whitespace for cpp0.  */	\
   TK(CPP_EOF,		SPELL_NONE)	/* End of line or file.  */
 
