@@ -37,7 +37,7 @@ void parse_multi_line_comment(size_t&);
  * main function of lex 
  */
 void lex() {
-	for (size_t idx = 0; idx < cur_line.size(); idx++) {
+	for (size_t idx = 0; idx < cur_line.size();) {
 		c_token tmp(cur_line_info.linenum);
 		if (ISWHITESPACE(cur_line[idx])) {					/* trim space */
 			PRINT("parse whitespace");
@@ -52,6 +52,7 @@ void lex() {
 				idx++;
 			} else { 										/* start with 0 but not hexadecimal */
 				ERROR(NON_HEX_NUMBER_START_WITH_ZERO, idx);
+				idx++;
 			}
 		} else if (ISDIGIT1TO9(cur_line[idx])) { 			/* decimal */
 			PRINT("parse number");
@@ -107,7 +108,7 @@ void lex() {
 							PUSH_TOKEN(C_LSHIFT_EQ, "<<=");
 							idx += 3;
 						} else {								/* << */
-							PUSH_TOKEN(C_LSHIFT_EQ, "<<");
+							PUSH_TOKEN(C_LSHIFT, "<<");
 							idx += 2;
 						}
 					}else if (cur_line[idx + 1] == '=') {		/* <= */
@@ -279,26 +280,26 @@ void trim_space(size_t& idx) {
 	}
 }
 void parse_num_decimal(size_t& idx) {
-	
+	idx++;
 }
 void parse_num_hex(size_t& idx) {
-	
+	idx++;
 }
 void parse_identifier(size_t& idx) {
-	
+	idx++;
 }
 
 void parse_char(size_t& idx) {
-	
+	idx++;
 }
 void parse_string(size_t& idx) {
-	
+	idx++;
 }
 void parse_single_line_comment(size_t& idx) {
-	
+	idx++;
 }
 void parse_multi_line_comment(size_t& idx) {
-	
+	idx++;
 }
 
 
