@@ -35,7 +35,7 @@ int main(int argc, char** argv) {
 				std::cout << "Unknown parameter, please check again" << std::endl << std::endl;
 		}
 	}else {
-		read_file(argv[1]);
+		read_file(argv[0], argv[1]);
 	}
 	
 	return 0;
@@ -44,7 +44,9 @@ int main(int argc, char** argv) {
 /*
  * Read file and start to lex
  */
-void read_file(const char* filename) {
+void read_file(const char* filedir, const char* filename) {
+	symbol_table.filedir = filedir;
+	symbol_table.filename = filename;
 	source_file.name = filename;
 	file.open(filename);
 	EXPECT_TRUE(file.is_open());
