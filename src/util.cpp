@@ -1,6 +1,9 @@
 #include "lex_config.h"
 #include "util.h"
 
+extern symbol_root symbol_table;
+extern const std::string version;
+
 /*
  * ELFHash, used for access varible in Symbol Table faster
  */
@@ -28,14 +31,14 @@ unsigned int ELFHash(std::string str) {
  */
 void help_menu() {
 	std::cout << "This is the help menu" << std::endl;
-	std::cout << "LambLexer, Version: " << symbol_table.version << std::endl << std::endl;;
+	std::cout << "LambLexer, Version: " << version << std::endl << std::endl;;
 }
 
 /*
  * Show version
  */
 void show_version() {
-	std::cout << "LambLexer, Version: " << symbol_table.version << std::endl << std::endl;;
+	std::cout << "LambLexer, Version: " << version << std::endl << std::endl;;
 }
 
 

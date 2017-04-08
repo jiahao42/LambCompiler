@@ -18,7 +18,9 @@ extern std::string cur_line;
 extern source source_file;
 extern symbol_root symbol_table;
 extern int error_code;
-extern const char* version;
+
+const std::string version = "0.0.1";
+
 
 #define SYMBOL_TABLE_SIZE 1000
 

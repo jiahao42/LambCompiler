@@ -16,10 +16,6 @@ enum language {language_c};
 
 struct symbol_root
 {
-	symbol_root() {
-		version = "0.0.1";
-		language = language_c;
-	}
 	int format;							/* Data format version */
 	int length;							/* # bytes in this symbol segment */
 	//int ldsymoff;						/* Offset in ld symtab of this file's syms */
@@ -356,9 +352,7 @@ typedef struct line
 
 struct source
 {
-	source() {}
-	source(const char* _name) : name(_name) {}
-	const char* name;			/* Name of file */
+	std::string name;			/* Name of file */
 	std::vector<line> lines; /* Information of each line */
 };
 
