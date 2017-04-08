@@ -13,10 +13,10 @@
 #include "token.h"
 
 extern std::ifstream file;
-extern line cur_line;
+extern line cur_line_info;
+extern std::string cur_line;
 extern source source_file;
 extern symbol_root symbol_table;
-extern int line_count;
 extern int error_code;
 
 #define SYMBOL_TABLE_SIZE 1000
