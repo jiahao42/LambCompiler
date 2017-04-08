@@ -27,6 +27,8 @@ extern source source_file;
 void trim_space(size_t&);
 void parse_num(size_t&);
 void parse_identifier(size_t&);
+void parse_char(size_t&);
+void parse_string(size_t&);
 
 /* 
  * main function of lex 
@@ -244,7 +246,11 @@ void lex() {
 					PUSH_TOKEN(C_DOT, ".");
 					break;
 				case '\'':
+					idx++;
+					parse_char(idx);
 					break;
+				case '\"':
+					
 				default:
 					ERROR(UNKNOWN_TYPE, idx);
 					idx++;
