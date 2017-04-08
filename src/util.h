@@ -1,5 +1,5 @@
-#ifndef UTIL_H_
-#define UTIL_H_
+#ifndef LAMBLEXER_UTIL_H_
+#define LAMBLEXER_UTIL_H_
 
 #define ISDIGIT(ch)         ((ch) >= '0' && (ch) <= '9')
 #define ISDIGIT1TO9(ch)     ((ch) >= '1' && (ch) <= '9')
@@ -21,4 +21,4 @@ void help_menu();
  */
 void show_version();
 
-#endif /* end of UTIL_H_ */
+#endif /* end of LAMBLEXER_UTIL_H_ */

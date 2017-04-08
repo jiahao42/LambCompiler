@@ -1,5 +1,5 @@
-#ifndef TEST_H_
-#define TEST_H_
+#ifndef LAMBLEXER_TEST_H_
+#define LAMBLEXER_TEST_H_
 
 
 #ifndef NDEBUG
@@ -38,4 +38,4 @@ static int test_pass = 0;
 
 
 
-#endif
+#endif /* end of LAMBLEXER_TEST_H_ */

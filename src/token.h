@@ -1,5 +1,5 @@
-#ifndef TOKEN_H_
-#define TOKEN_H_
+#ifndef LAMBLEXER_TOKEN_H_
+#define LAMBLEXER_TOKEN_H_
 
 
 /*
@@ -88,8 +88,6 @@ enum rid
   OP(CPP_XOR_EQ,	"^=")			\
   OP(CPP_RSHIFT_EQ,	">>=")			\
   OP(CPP_LSHIFT_EQ,	"<<=")			\
-  OP(CPP_MIN_EQ,	"<?=")	/* extension */	\
-  OP(CPP_MAX_EQ,	">?=")			\
   /* Digraphs together, beginning with CPP_FIRST_DIGRAPH.  */	\
   OP(CPP_HASH,		"#")	/* digraphs */	\
   OP(CPP_PASTE,		"##")			\
@@ -107,7 +105,6 @@ enum rid
   OP(CPP_SCOPE,		"::")			\
   OP(CPP_DEREF_STAR,	"->*")			\
   OP(CPP_DOT_STAR,	".*")			\
-  OP(CPP_ATSIGN,	"@")  /* used in Objective C */ \
 \
   TK(CPP_NAME,		SPELL_IDENT)	/* word */			\
   TK(CPP_NUMBER,	SPELL_NUMBER)	/* 34_be+ta  */			\
@@ -138,7 +135,7 @@ enum cpp_ttype
 
 
 
-#endif /* end of TOKEN_H_ */
+#endif /* end of LAMBLEXER_TOKEN_H_ */
 
 
 

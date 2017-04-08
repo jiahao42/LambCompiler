@@ -1,5 +1,5 @@
-#ifndef SYMSEG_H_
-#define SYMSEG_H_
+#ifndef LAMBLEXER_SYMSEG_H_
+#define LAMBLEXER_SYMSEG_H_
 
 /*
  * This is actually the format of GDB symbol table data.
@@ -356,4 +356,4 @@ struct source
 	std::vector<line> lines; /* Information of each line */
 };
 
-#endif /* end of SYMSEG_H_ */
+#endif /* end of LAMBLEXER_SYMSEG_H_ */
