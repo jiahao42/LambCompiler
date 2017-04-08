@@ -12,6 +12,12 @@
 #define ISWHITESPACE(ch)	((ch) == ' ')
 #define ISLETTER(ch)		(((ch) >= 'a' && (ch) <= 'z') || ((ch >= 'A') && (ch) <= 'Z'))
 
+#define PUSH_TOKEN(type, name) \
+	do {\
+		tmp.set(idx, type, name);\
+		source_file.push(tmp);\
+	}while(0)
+
 extern std::string cur_line;
 extern int error_code;
 extern line cur_line_info;
@@ -37,8 +43,7 @@ void lex() {
 				idx++;										/* TODO */
 				parse_num(idx);
 			} else if (!ISDIGIT(cur_line[idx + 1])) {		/* 0 */
-				tmp.set(idx, C_NUMBER, "0");
-				source_file.push(tmp);
+				PUSH_TOKEN(C_NUMBER, "0");
 				idx++;
 			} else { 										/* start with 0 but not hexadecimal */
 				ERROR(NON_HEX_NUMBER_START_WITH_ZERO, idx);
@@ -53,212 +58,173 @@ void lex() {
 			switch(cur_line[idx]) {
 				case '=':
 					if (cur_line[idx + 1] == '=') { 			/* == */
-						tmp.set(idx, C_EQ_EQ, "==");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_EQ_EQ, "==");
 						idx += 2;
 					} else {									/* = */
-						tmp.set(idx, C_EQ, "=");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_EQ, "=");
 						idx++;
 					}
 					break;
 				case ';':
-					tmp.set(idx, C_SEMICOLON, ";");				/* ; */
-					source_file.push(tmp);
+					PUSH_TOKEN(C_SEMICOLON, ";");				/* ; */
 					idx++;
 					break;
 				case '!':
 					if (cur_line[idx + 1] == '=') {				/* != */
-						tmp.set(idx, C_NOT_EQ, "!=");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_NOT_EQ, "!=");
 						idx += 2;
 					} else {									/* ! */
-						tmp.set(idx, C_NOT, "!");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_NOT, "!");
 						idx++;
 					}
 					break;
 				case '>':
 					if (cur_line[idx + 1] == '>') {				/* >> or >>= */
 						if (cur_line[idx + 2] == '=') {			/* >>= */
-							tmp.set(idx, C_RSHIFT_EQ, ">>=");
-							source_file.push(tmp);
+							PUSH_TOKEN(C_RSHIFT_EQ, ">>=");
 							idx += 3;
 						} else {								/* >> */
-							tmp.set(idx, C_RSHIFT, ">>");
-							source_file.push(tmp);
+							PUSH_TOKEN(C_RSHIFT, ">>");
 							idx += 2;
 						}
 					}else if (cur_line[idx + 1] == '=') {		/* >= */
-						tmp.set(idx, C_GREATER_EQ, ">=");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_GREATER_EQ, ">=");
 						idx += 2;
 					}else {										/* > */
-						tmp.set(idx, C_GREATER, ">");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_GREATER, ">");
 						idx++;
 					}
 					break;
 				case '<':
 					if (cur_line[idx + 1] == '<') {				/* << or <<= */
 						if (cur_line[idx + 2] == '=') {			/* <<= */
-							tmp.set(idx, C_LSHIFT_EQ, "<<=");
-							source_file.push(tmp);
+							PUSH_TOKEN(C_LSHIFT_EQ, "<<=");
 							idx += 3;
 						} else {								/* << */
-							tmp.set(idx, C_LSHIFT_EQ, "<<");
-							source_file.push(tmp);
+							PUSH_TOKEN(C_LSHIFT_EQ, "<<");
 							idx += 2;
 						}
 					}else if (cur_line[idx + 1] == '=') {		/* <= */
-						tmp.set(idx, C_LESS_EQ, "<=");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_LESS_EQ, "<=");
 						idx += 2;
 					}else {										/* < */
-						tmp.set(idx, C_LESS, "<");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_LESS, "<");
 						idx++;
 					}
 					break;
 				case '+':
 					if (cur_line[idx + 1] == '+') {				/* ++ */
-						tmp.set(idx, C_PLUS_PLUS, "++");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_PLUS_PLUS, "++");
 						idx += 2;
 					} else if (cur_line[idx + 1] == '=') {		/* += */
-						tmp.set(idx, C_PLUS_EQ, "+=");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_PLUS_EQ, "+=");
 						idx += 2;
 					} else {									/* +  */
-						tmp.set(idx, C_PLUS, "+");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_PLUS, "+");
 						idx++;
 					}
 					break;
 				case '-':
 					if (cur_line[idx + 1] == '-') {				/* -- */
-						tmp.set(idx, C_MINUS_MINUS, "--");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_MINUS_MINUS, "--");
 						idx += 2;
 					} else if (cur_line[idx + 1] == '=') {		/* -= */
-						tmp.set(idx, C_MINUS_EQ, "-=");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_MINUS_EQ, "-=");
 						idx += 2;
 					} else if (cur_line[idx + 1] == '>') {		/* -> */
-						tmp.set(idx, C_DEREF, "->");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_DEREF, "->");
 						idx += 2;
 					} else {									/* -  */
-						tmp.set(idx, C_MINUS, "-");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_MINUS, "-");
 						idx++;
 					}
 					break;
 				case '*':
 					if (cur_line[idx + 1] == '=') {				/* *= */
-						tmp.set(idx, C_MULT_EQ, "*=");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_MULT_EQ, "*=");
 						idx += 2;
 					} else {									/* * */
-						tmp.set(idx, C_MULT, "*");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_MULT, "*");
 						idx++;
 					}
 					break;
 				case '/':
 					if (cur_line[idx + 1] == '=') {				/* /= */
-						tmp.set(idx, C_DIV_EQ, "/=");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_DIV_EQ, "/=");
 						idx += 2;
 					} else {									/* / */
-						tmp.set(idx, C_DIV, "/");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_DIV, "/");
 						idx++;
 					}
 					break;
 				case '%':
 					if (cur_line[idx + 1] == '=') {				/* %= */
-						tmp.set(idx, C_MOD_EQ, "%=");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_MOD_EQ, "%=");
 						idx += 2;
-					} else {
-						tmp.set(idx, C_MOD, "%");				/* % */
-						source_file.push(tmp);
+					} else {									/* % */
+						PUSH_TOKEN(C_MOD, "%");
 						idx++;
 					}
 					break;
 				case '&':
 					if (cur_line[idx + 1] == '=') {				/* &= */
-						tmp.set(idx, C_AND_EQ, "&=");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_AND_EQ, "&=");
 						idx += 2;
 					} else if (cur_line[idx + 1] == '&') {		/* && */
-						tmp.set(idx, C_AND_AND, "&&");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_AND_AND, "&&");
 						idx += 2;
-					} else {
-						tmp.set(idx, C_AND, "&");				/* & */
-						source_file.push(tmp);
+					} else {									/* & */
+						PUSH_TOKEN(C_AND, "&");
 						idx++;
 					}
 					break;
 				case '|':
 					if (cur_line[idx + 1] == '|') {				/* || */
-						tmp.set(idx, C_OR_OR, "||");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_OR_OR, "||");
 						idx += 2;
 					} else if (cur_line[idx + 1] == '=') {		/* |= */
-						tmp.set(idx, C_OR_EQ, "|=");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_OR_EQ, "|=");
 						idx += 2;
-					} else {
-						tmp.set(idx, C_OR, "|");				/* | */
-						source_file.push(tmp);
+					} else {									/* | */
+						PUSH_TOKEN(C_OR, "|");
 						idx++;
 					}
 					break;
 				case '^':
 					if (cur_line[idx + 1] == '=') {				/* ^= */
-						tmp.set(idx, C_XOR_EQ, "^=");
-						source_file.push(tmp);
+						PUSH_TOKEN(C_XOR_EQ, "^=");
 						idx += 2;
-					} else {									
-						tmp.set(idx, C_XOR, "^");				/* ^ */
-						source_file.push(tmp);
+					} else {									/* ^ */	
+						PUSH_TOKEN(C_XOR, "^");
 						idx++;
 					}
 					break;
-				case '~':
-					tmp.set(idx, C_COMPL, "~");					/* ~ */
-					source_file.push(tmp);
+				case '~':										/* ~ */
+					PUSH_TOKEN(C_COMPL, "~");
 					idx++;
 					break;
-				case '?':
-					tmp.set(idx, C_QUERY, "?");					/* ? */
-					source_file.push(tmp);
+				case '?':										/* ? */
+					PUSH_TOKEN(C_QUERY, "?");
 					idx++;
 					break;
-				case ':':
-					tmp.set(idx, C_COLON, ":");					/* : */
-					source_file.push(tmp);
+				case ':':										/* : */
+					PUSH_TOKEN(C_COLON, ":");
 					idx++;
 					break;
-				case ',':
-					tmp.set(idx, C_COMMA, ",");					/* , */
-					source_file.push(tmp);
+				case ',':										/* , */
+					PUSH_TOKEN(C_COMMA, ",");
 					idx++;
 					break;
-				case '(':
-					tmp.set(idx, C_OPEN_PAREN, "(");					/* ( */
-					source_file.push(tmp);
+				case '(':										/* ( */
+					PUSH_TOKEN(C_OPEN_PAREN, "(");
 					idx++;
 					break;
-				case ')':
-					tmp.set(idx, C_CLOSE_PAREN, ")");					/* ) */
-					source_file.push(tmp);
+				case ')':										/* ) */
+					PUSH_TOKEN(C_CLOSE_PAREN, ")");
 					idx++;
 					break;
-				//TODO
+				case '[':
+					break;
 				default:
 					ERROR(UNKNOWN_TYPE, idx);
 					idx++;
