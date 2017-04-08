@@ -72,4 +72,5 @@ void init_symbol_table(const char* filedir, const char* filename) {
 	symbol_table.filename = filename;
 	symbol_table.version = version;
 	symbol_table.language = language_c;
+	symbol_table.source_vector.push_back(source_file);
 }
