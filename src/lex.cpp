@@ -29,6 +29,8 @@ void parse_num(size_t&);
 void parse_identifier(size_t&);
 void parse_char(size_t&);
 void parse_string(size_t&);
+void parse_single_line_comment(size_t&);
+void parse_multi_line_comment(size_t&);
 
 /* 
  * main function of lex 
@@ -52,7 +54,7 @@ void lex() {
 			}
 		} else if (ISDIGIT1TO9(cur_line[idx])) { 			/* decimal */
 			parse_num(idx);
-		} else if (ISLETTER(cur_line[idx])) {				/* identifier or keyword */
+		} else if (ISLETTER(cur_line[idx]) || cur_line[idx] == '_') {				/* identifier or keyword */
 			PRINT("parse letter");
 			parse_identifier(idx);
 		} else { 											/* operator or semicolon */
@@ -154,6 +156,12 @@ void lex() {
 					if (cur_line[idx + 1] == '=') {				/* /= */
 						PUSH_TOKEN(C_DIV_EQ, "/=");
 						idx += 2;
+					} else if (cur_line[idx + 1] == '/') {		/* //comment */
+						idx += 2;
+						parse_single_line_comment(idx);
+					} else if (cur_line[idx + 1] == '*') {		/* multi-line comment */
+						idx += 2;
+						parse_multi_line_comment(idx);
 					} else {									/* / */
 						PUSH_TOKEN(C_DIV, "/");
 						idx++;
@@ -245,12 +253,14 @@ void lex() {
 				case '.':										/* . */
 					PUSH_TOKEN(C_DOT, ".");
 					break;
-				case '\'':
+				case '\'':										/* 'char' */
 					idx++;
 					parse_char(idx);
 					break;
-				case '\"':
-					
+				case '\"':										/* "string" */
+					idx++;
+					parse_string(idx);
+					break;
 				default:
 					ERROR(UNKNOWN_TYPE, idx);
 					idx++;
@@ -273,7 +283,18 @@ void parse_identifier(size_t& idx) {
 	
 }
 
-
+void parse_char(size_t& idx) {
+	
+}
+void parse_string(size_t& idx) {
+	
+}
+void parse_single_line_comment(size_t& idx) {
+	
+}
+void parse_multi_line_comment(size_t& idx) {
+	
+}
 
 
 

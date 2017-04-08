@@ -20,7 +20,7 @@ enum ERROR_ID {
 /*
  * error string
  */
-const std::string ERROR_STRING[] {
+const std::string ERROR_STRING[] = {
 	" no error ",
 	" invalid identifier ",
 	" unknown type name ",
@@ -33,13 +33,13 @@ const std::string ERROR_STRING[] {
  */
 enum WARING_ID {
 	CHAR_TOO_LONG = 0,
-}
+};
 
 /*
  * warning string
  */
-const std::string WARNING_STRING[] {
+const std::string WARNING_STRING[] = {
 	" character constant too long for its type ",
-}
+};
 
 #endif /* end of LAMBLEXER_ERROR_H_ */
