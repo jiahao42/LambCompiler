@@ -192,6 +192,10 @@ void lex() {
 						tmp.set(idx, C_AND_EQ, "&=");
 						source_file.push(tmp);
 						idx += 2;
+					} else if (cur_line[idx + 1] == '&') {		/* && */
+						tmp.set(idx, C_AND_AND, "&&");
+						source_file.push(tmp);
+						idx += 2;
 					} else {
 						tmp.set(idx, C_AND, "&");				/* & */
 						source_file.push(tmp);
@@ -203,13 +207,58 @@ void lex() {
 						tmp.set(idx, C_OR_OR, "||");
 						source_file.push(tmp);
 						idx += 2;
+					} else if (cur_line[idx + 1] == '=') {		/* |= */
+						tmp.set(idx, C_OR_EQ, "|=");
+						source_file.push(tmp);
+						idx += 2;
 					} else {
 						tmp.set(idx, C_OR, "|");				/* | */
 						source_file.push(tmp);
 						idx++;
 					}
 					break;
-				
+				case '^':
+					if (cur_line[idx + 1] == '=') {				/* ^= */
+						tmp.set(idx, C_XOR_EQ, "^=");
+						source_file.push(tmp);
+						idx += 2;
+					} else {									
+						tmp.set(idx, C_XOR, "^");				/* ^ */
+						source_file.push(tmp);
+						idx++;
+					}
+					break;
+				case '~':
+					tmp.set(idx, C_COMPL, "~");					/* ~ */
+					source_file.push(tmp);
+					idx++;
+					break;
+				case '?':
+					tmp.set(idx, C_QUERY, "?");					/* ? */
+					source_file.push(tmp);
+					idx++;
+					break;
+				case ':':
+					tmp.set(idx, C_COLON, ":");					/* : */
+					source_file.push(tmp);
+					idx++;
+					break;
+				case ',':
+					tmp.set(idx, C_COMMA, ",");					/* , */
+					source_file.push(tmp);
+					idx++;
+					break;
+				case '(':
+					tmp.set(idx, C_OPEN_PAREN, "(");					/* ( */
+					source_file.push(tmp);
+					idx++;
+					break;
+				case ')':
+					tmp.set(idx, C_CLOSE_PAREN, ")");					/* ) */
+					source_file.push(tmp);
+					idx++;
+					break;
+				//TODO
 				default:
 					ERROR(UNKNOWN_TYPE, idx);
 					idx++;
