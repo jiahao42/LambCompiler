@@ -25,7 +25,8 @@ extern source source_file;
 
 
 void trim_space(size_t&);
-void parse_num(size_t&);
+void parse_num_decimal(size_t&);
+void parse_num_hex(size_t&);
 void parse_identifier(size_t&);
 void parse_char(size_t&);
 void parse_string(size_t&);
@@ -45,7 +46,7 @@ void lex() {
 			PRINT("parse number");
 			if (cur_line[idx + 1] == 'x') { 				/* hexadecimal */
 				idx++;										/* TODO */
-				parse_num(idx);
+				parse_num_hex(idx);
 			} else if (!ISDIGIT(cur_line[idx + 1])) {		/* 0 */
 				PUSH_TOKEN(C_NUMBER, "0");
 				idx++;
@@ -53,7 +54,8 @@ void lex() {
 				ERROR(NON_HEX_NUMBER_START_WITH_ZERO, idx);
 			}
 		} else if (ISDIGIT1TO9(cur_line[idx])) { 			/* decimal */
-			parse_num(idx);
+			PRINT("parse number");
+			parse_num_decimal(idx);
 		} else if (ISLETTER(cur_line[idx]) || cur_line[idx] == '_') {				/* identifier or keyword */
 			PRINT("parse letter");
 			parse_identifier(idx);
@@ -276,7 +278,10 @@ void trim_space(size_t& idx) {
 		idx++;
 	}
 }
-void parse_num(size_t& idx) {
+void parse_num_decimal(size_t& idx) {
+	
+}
+void parse_num_hex(size_t& idx) {
 	
 }
 void parse_identifier(size_t& idx) {
