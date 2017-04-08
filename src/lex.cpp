@@ -207,9 +207,14 @@ void lex() {
 					PUSH_TOKEN(C_QUERY, "?");
 					idx++;
 					break;
-				case ':':										/* : */
-					PUSH_TOKEN(C_COLON, ":");
-					idx++;
+				case ':':										
+					if (cur_line[idx + 1] == ':') {				/* :: */
+						PUSH_TOKEN(C_SCOPE, "::");
+						idx += 2;
+					} else {									/* : */
+						PUSH_TOKEN(C_COLON, ":");
+						idx++;
+					}
 					break;
 				case ',':										/* , */
 					PUSH_TOKEN(C_COMMA, ",");
@@ -223,7 +228,22 @@ void lex() {
 					PUSH_TOKEN(C_CLOSE_PAREN, ")");
 					idx++;
 					break;
-				case '[':
+				case '[':										/* [ */
+					PUSH_TOKEN(C_OPEN_SQUARE, "[");
+					break;
+				case ']':										/* ] */
+					PUSH_TOKEN(C_CLOSE_SQUARE, "]");
+					break;
+				case '{':										/* { */
+					PUSH_TOKEN(C_OPEN_BRACE, "{");		
+					break;
+				case '}':										/* } */
+					PUSH_TOKEN(C_CLOSE_BRACE, "}");
+					break;
+				case '.':										/* . */
+					PUSH_TOKEN(C_DOT, ".");
+					break;
+				case '\'':
 					break;
 				default:
 					ERROR(UNKNOWN_TYPE, idx);

@@ -74,7 +74,6 @@ enum rid
   OP(C_CLOSE_BRACE,	"}")			\
   /* The remainder of the punctuation.  Order is not significant.  */	\
   OP(C_SEMICOLON,	";")	/* structure */	\
-  OP(C_ELLIPSIS,	"...")			\
   OP(C_PLUS_PLUS,	"++")	/* increment */	\
   OP(C_MINUS_MINUS,	"--")			\
   OP(C_DEREF,		"->")	/* accessors */	\
