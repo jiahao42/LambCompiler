@@ -47,14 +47,12 @@ void show_version() {
 /*
  * Output token stream to console
  */
-#if 0
 void dump_token_stream() {
 	std::cout << source_file.filename << std::endl;
-	for (struct c_token c : source_file.c_token_vector) {
+	for (c_token c : source_file.c_token_vector) {
 		std::cout << c;
 	}
 }
-#endif
 
 
 

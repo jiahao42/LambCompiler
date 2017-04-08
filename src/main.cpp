@@ -1,12 +1,11 @@
 #include "lex_config.h"
 #include "lex.h"
-#include "symseg.h"
 #include "token.h"
+#include "symseg.h"
 #include "util.h"
 #include "error.h"
 #include "test.h"
 
-extern const std::string version;
 /*
  * Symbol table, see symseg.harderr
  */
@@ -63,9 +62,11 @@ int main(int argc, char** argv) {
 		init_symbol_table(argv[0], argv[1]);
 		read_file();
 	}
+	
 #ifdef DUMP_TOKEN_STREAM
 	void dump_token_stream();
 #endif
+	/* printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count); */
 	return 0;
 }
 
@@ -78,11 +79,9 @@ void read_file() {
 	EXPECT_TRUE(file.is_open());
 	if (file.is_open()) {
 		while (std::getline(file, cur_line)) {
+			std::cout << cur_line << std::endl;
 			cur_line_info++;
 			lex();
-			if (error_code) {
-				ERROR(error_code);
-			}
 		}
 	} else {
 		std::cout << "Failed to open file! Please check your input!" << std::endl;

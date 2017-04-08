@@ -41,8 +41,6 @@ enum rid
   OP(C_XOR,		"^")			\
   OP(C_RSHIFT,	">>")			\
   OP(C_LSHIFT,	"<<")			\
-  OP(C_MIN,		"<?")	/* extension */	\
-  OP(C_MAX,		">?")			\
 \
   OP(C_COMPL,		"~")			\
   OP(C_AND_AND,	"&&")	/* logical */	\
@@ -119,13 +117,13 @@ typedef struct c_token
 	std::string name;				/* identifier */
 	
 	c_token() {}
+	c_token(size_t _line) : line(_line) {}
 	c_token(size_t _line, size_t _col, c_ttype _type, std::string _name) : line(_line), col(_col), type(_type), name(_name) {}
-	std::ostream& operator <<(std::ostream& output) {
-		std::cout << "line: " << line << " col: " << col << " type: " << type << " value: " << name << std::endl;
+	friend std::ostream& operator <<(std::ostream& output, const c_token c) {
+		std::cout << "line: " << c.line << " col: " << c.col << " type: " << c.type << " value: " << c.name << std::endl;
 		return output;
 	}
-	void set(size_t _line, size_t _col, c_ttype _type, std::string _name) {
-		line = _line;
+	void set(size_t _col, c_ttype _type, std::string _name) {
 		col = _col;
 		type = _type;
 		name = _name;
