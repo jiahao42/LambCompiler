@@ -55,8 +55,8 @@ void read_file() {
 		while (std::getline(file, cur_line)) {
 			cur_line_info++;
 			lex();
-			if (error_code == NO_ERROR) {
-				ERROR(error_code)
+			if (error_code) {
+				ERROR(error_code);
 			}
 		}
 	} else {
