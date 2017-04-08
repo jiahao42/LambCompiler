@@ -29,10 +29,12 @@ void lex() {
 	for (size_t idx = 0; idx < cur_line.size(); idx++) {
 		c_token tmp(cur_line_info.linenum);
 		if (ISWHITESPACE(cur_line[idx])) {					/* trim space */
+			PRINT("parse whitespace");
 			trim_space(idx);
 		} else if (ISDIGIT0(cur_line[idx]) {				/* start with 0 */
+			PRINT("parse number");
 			if (cur_line[idx + 1] == 'x') { 				/* hexadecimal */
-				idx++;
+				idx++;										/* TODO */
 				parse_num(idx);
 			} else if (!ISDIGIT(cur_line[idx + 1])) {		/* 0 */
 				tmp.set(idx, C_NUMBER, "0");
@@ -44,8 +46,10 @@ void lex() {
 		} else if (ISDIGIT1TO9(cur_line[idx])) { 			/* decimal */
 			parse_num(idx);
 		} else if (ISLETTER(cur_line[idx])) {				/* identifier or keyword */
+			PRINT("parse letter");
 			parse_identifier(idx);
 		} else { 											/* operator or semicolon */
+			PRINT("parse operator");
 			switch(cur_line[idx]) {
 				case '=':
 					if (cur_line[idx + 1] == '=') { 			/* == */
@@ -59,7 +63,7 @@ void lex() {
 					}
 					break;
 				case ';':
-					tmp.set(idx, C_SEMICOLON, ";");
+					tmp.set(idx, C_SEMICOLON, ";");				/* ; */
 					source_file.push(tmp);
 					idx++;
 					break;
@@ -67,7 +71,7 @@ void lex() {
 					if (cur_line[idx + 1] == '=') {				/* != */
 						tmp.set(idx, C_NOT_EQ, "!=");
 						source_file.push(tmp);
-						idx++;
+						idx += 2;
 					} else {									/* ! */
 						tmp.set(idx, C_NOT, "!");
 						source_file.push(tmp);
@@ -76,22 +80,91 @@ void lex() {
 					break;
 				case '>':
 					if (cur_line[idx + 1] == '>') {				/* >> or >>= */
-						idx++;
-						if (cur_line[idx + 1] == '=') {			/* >>= */
+						if (cur_line[idx + 2] == '=') {			/* >>= */
 							tmp.set(idx, C_RSHIFT_EQ, ">>=");
 							source_file.push(tmp);
-							idx++;
+							idx += 3;
 						} else {								/* >> */
 							tmp.set(idx, C_RSHIFT, ">>");
 							source_file.push(tmp);
+							idx += 2;
 						}
 					}else if (cur_line[idx + 1] == '=') {		/* >= */
 						tmp.set(idx, C_GREATER_EQ, ">=");
 						source_file.push(tmp);
-						idx++;
+						idx += 2;
 					}else {										/* > */
-						
+						tmp.set(idx, C_GREATER, ">");
+						source_file.push(tmp);
+						idx++;
 					}
+					break;
+				case '<':
+					if (cur_line[idx + 1] == '<') {				/* << or <<= */
+						if (cur_line[idx + 2] == '=') {			/* <<= */
+							tmp.set(idx, C_LSHIFT_EQ, "<<=");
+							source_file.push(tmp);
+							idx += 3;
+						} else {								/* << */
+							tmp.set(idx, C_LSHIFT_EQ, "<<");
+							source_file.push(tmp);
+							idx += 2;
+						}
+					}else if (cur_line[idx + 1] == '=') {		/* <= */
+						tmp.set(idx, C_LESS_EQ, "<=");
+						source_file.push(tmp);
+						idx += 2;
+					}else {										/* < */
+						tmp.set(idx, C_LESS, "<");
+						source_file.push(tmp);
+						idx++;
+					}
+					break;
+				case '+':
+					if (cur_line[idx + 1] == '+') {				/* ++ */
+						tmp.set(idx, C_PLUS_PLUS, "++");
+						source_file.push(tmp);
+						idx += 2;
+					} else if (cur_line[idx + 1] == '=') {		/* += */
+						tmp.set(idx, C_PLUS_EQ, "+=");
+						source_file.push(tmp);
+						idx += 2;
+					} else {									/* +  */
+						tmp.set(idx, C_PLUS, "+");
+						source_file.push(tmp);
+						idx++;
+					}
+					break;
+				case '-':
+					if (cur_line[idx + 1] == '-') {				/* -- */
+						tmp.set(idx, C_MINUS_MINUS, "--");
+						source_file.push(tmp);
+						idx += 2;
+					} else if (cur_line[idx + 1] == '=') {		/* -= */
+						tmp.set(idx, C_MINUS_EQ, "-=");
+						source_file.push(tmp);
+						idx += 2;
+					} else if (cur_line[idx + 1] == '>') {		/* -> */
+						tmp.set(idx, C_DEREF, "->");
+						source_file.push(tmp);
+						idx += 2;
+					} else {									/* -  */
+						tmp.set(idx, C_MINUS, "-");
+						source_file.push(tmp);
+						idx++;
+					}
+					break;
+				case '*':
+					if (cur_line[idx + 1] == '=') {				/* *= */
+						tmp.set(idx, C_MULT_EQ, "*=");
+						source_file.push(tmp);
+						idx += 2;
+					} else {									/* * */
+						tmp.set(idx, C_MULT, "*");
+						source_file.push(tmp);
+						idx++;
+					}
+					break;
 				default:
 					ERROR(UNKNOWN_TYPE, idx);
 					idx++;

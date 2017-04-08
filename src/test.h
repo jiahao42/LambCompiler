@@ -35,7 +35,10 @@ static int test_pass = 0;
 #define EXPECT_TRUE(actual) EXPECT_EQ_BASE((actual) != 0, "true", "false", "%s")
 #define EXPECT_FALSE(actual) EXPECT_EQ_BASE((actual) == 0, "false", "true", "%s")
 
-
-
+#ifdef PRINT_LOG
+#define PRINT(msg) std::cout << "msg: " << msg << std::endl;
+#else
+#define PRINT(mes) do{}while(0)
+#endif
 
 #endif /* end of LAMBLEXER_TEST_H_ */

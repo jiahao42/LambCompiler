@@ -12,9 +12,14 @@
 #include <unordered_map>
 
 /*
- * Output token stream to console or not
+ * Output token stream to console or not, see util.h
  */
 #define DUMP_TOKEN_STREAM
+
+/*
+ * Print the log, see test.h
+ */
+#define PRINT_LOG
 
 /*
  * The length limit of identifier

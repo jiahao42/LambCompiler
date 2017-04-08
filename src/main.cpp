@@ -79,7 +79,7 @@ void read_file() {
 	EXPECT_TRUE(file.is_open());
 	if (file.is_open()) {
 		while (std::getline(file, cur_line)) {
-			std::cout << cur_line << std::endl;
+			std::cout << std::endl << cur_line << " size: " << cur_line.size() << std::endl;
 			cur_line_info++;
 			lex();
 		}

@@ -80,8 +80,6 @@ enum rid
   OP(C_DEREF,		"->")	/* accessors */	\
   OP(C_DOT,		".")			\
   OP(C_SCOPE,		"::")			\
-  OP(C_DEREF_STAR,	"->*")			\
-  OP(C_DOT_STAR,	".*")			\
 \
   TK(C_NAME,		SPELL_IDENT)	/* word */			\
   TK(C_NUMBER,	SPELL_NUMBER)	/* 34_be+ta  */			\
