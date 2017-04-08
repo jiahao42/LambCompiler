@@ -1,6 +1,7 @@
 #include "lex_config.h"
 #include "token.h"
 #include "symseg.h"
+#include "test.h"
 
 extern symbol_root symbol_table;
 extern const std::string version;
@@ -48,9 +49,8 @@ void show_version() {
  * Output token stream to console
  */
 void dump_token_stream() {
-	std::cout << source_file.filename << std::endl;
 	for (c_token c : source_file.c_token_vector) {
-		std::cout << c;
+		std::cout << source_file.filename << c;
 	}
 }
 

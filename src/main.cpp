@@ -62,9 +62,8 @@ int main(int argc, char** argv) {
 		init_symbol_table(argv[0], argv[1]);
 		read_file();
 	}
-	
 #ifdef DUMP_TOKEN_STREAM
-	void dump_token_stream();
+	dump_token_stream();
 #endif
 	/* printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count); */
 	return 0;
