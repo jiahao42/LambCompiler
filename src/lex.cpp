@@ -50,8 +50,8 @@ void lex() {
 			} else if (!ISDIGIT(cur_line[idx + 1])) {		/* 0 */
 				PUSH_TOKEN(C_NUMBER, "0");
 				idx++;
-			} else { 										/* start with 0 but not hexadecimal */
-				ERROR(NON_HEX_NUMBER_START_WITH_ZERO, idx);
+			} else { 										/* start with 0 but not hexadecimal, just skip it */
+				//ERROR(NON_HEX_NUMBER_START_WITH_ZERO, idx);
 				idx++;
 			}
 		} else if (ISDIGIT1TO9(cur_line[idx])) { 			/* decimal */
