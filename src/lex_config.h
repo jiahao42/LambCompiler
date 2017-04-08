@@ -9,6 +9,7 @@
 #include <cassert>
 #include <cstdio>
 #include <vector>
+#include <unordered_map>
 #include "error.h"
 #include "symseg.h"
 #include "token.h"

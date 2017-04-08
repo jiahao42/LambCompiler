@@ -24,83 +24,85 @@ enum rid
   RID_FUNCTION_NAME,
 };
 
-
+/*
+ * Token Type Table
+ */
 #define TTYPE_TABLE				\
-  OP(CPP_EQ = 0,	"=")			\
-  OP(CPP_NOT,		"!")			\
-  OP(CPP_GREATER,	">")	/* compare */	\
-  OP(CPP_LESS,		"<")			\
-  OP(CPP_PLUS,		"+")	/* math */	\
-  OP(CPP_MINUS,		"-")			\
-  OP(CPP_MULT,		"*")			\
-  OP(CPP_DIV,		"/")			\
-  OP(CPP_MOD,		"%")			\
-  OP(CPP_AND,		"&")	/* bit ops */	\
-  OP(CPP_OR,		"|")			\
-  OP(CPP_XOR,		"^")			\
-  OP(CPP_RSHIFT,	">>")			\
-  OP(CPP_LSHIFT,	"<<")			\
-  OP(CPP_MIN,		"<?")	/* extension */	\
-  OP(CPP_MAX,		">?")			\
+  OP(C_EQ = 0,	"=")			\
+  OP(C_NOT,		"!")			\
+  OP(C_GREATER,	">")	/* compare */	\
+  OP(C_LESS,		"<")			\
+  OP(C_PLUS,		"+")	/* math */	\
+  OP(C_MINUS,		"-")			\
+  OP(C_MULT,		"*")			\
+  OP(C_DIV,		"/")			\
+  OP(C_MOD,		"%")			\
+  OP(C_AND,		"&")	/* bit ops */	\
+  OP(C_OR,		"|")			\
+  OP(C_XOR,		"^")			\
+  OP(C_RSHIFT,	">>")			\
+  OP(C_LSHIFT,	"<<")			\
+  OP(C_MIN,		"<?")	/* extension */	\
+  OP(C_MAX,		">?")			\
 \
-  OP(CPP_COMPL,		"~")			\
-  OP(CPP_AND_AND,	"&&")	/* logical */	\
-  OP(CPP_OR_OR,		"||")			\
-  OP(CPP_QUERY,		"?")			\
-  OP(CPP_COLON,		":")			\
-  OP(CPP_COMMA,		",")	/* grouping */	\
-  OP(CPP_OPEN_PAREN,	"(")			\
-  OP(CPP_CLOSE_PAREN,	")")			\
-  OP(CPP_EQ_EQ,		"==")	/* compare */	\
-  OP(CPP_NOT_EQ,	"!=")			\
-  OP(CPP_GREATER_EQ,	">=")			\
-  OP(CPP_LESS_EQ,	"<=")			\
+  OP(C_COMPL,		"~")			\
+  OP(C_AND_AND,	"&&")	/* logical */	\
+  OP(C_OR_OR,		"||")			\
+  OP(C_QUERY,		"?")			\
+  OP(C_COLON,		":")			\
+  OP(C_COMMA,		",")	/* grouping */	\
+  OP(C_OPEN_PAREN,	"(")			\
+  OP(C_CLOSE_PAREN,	")")			\
+  OP(C_EQ_EQ,		"==")	/* compare */	\
+  OP(C_NOT_EQ,	"!=")			\
+  OP(C_GREATER_EQ,	">=")			\
+  OP(C_LESS_EQ,	"<=")			\
 \
-  OP(CPP_PLUS_EQ,	"+=")	/* math */	\
-  OP(CPP_MINUS_EQ,	"-=")			\
-  OP(CPP_MULT_EQ,	"*=")			\
-  OP(CPP_DIV_EQ,	"/=")			\
-  OP(CPP_MOD_EQ,	"%=")			\
-  OP(CPP_AND_EQ,	"&=")	/* bit ops */	\
-  OP(CPP_OR_EQ,		"|=")			\
-  OP(CPP_XOR_EQ,	"^=")			\
-  OP(CPP_RSHIFT_EQ,	">>=")			\
-  OP(CPP_LSHIFT_EQ,	"<<=")			\
+  OP(C_PLUS_EQ,	"+=")	/* math */	\
+  OP(C_MINUS_EQ,	"-=")			\
+  OP(C_MULT_EQ,	"*=")			\
+  OP(C_DIV_EQ,	"/=")			\
+  OP(C_MOD_EQ,	"%=")			\
+  OP(C_AND_EQ,	"&=")	/* bit ops */	\
+  OP(C_OR_EQ,		"|=")			\
+  OP(C_XOR_EQ,	"^=")			\
+  OP(C_RSHIFT_EQ,	">>=")			\
+  OP(C_LSHIFT_EQ,	"<<=")			\
   /* Digraphs together, beginning with CPP_FIRST_DIGRAPH.  */	\
-  OP(CPP_HASH,		"#")	/* digraphs */	\
-  OP(CPP_PASTE,		"##")			\
-  OP(CPP_OPEN_SQUARE,	"[")			\
-  OP(CPP_CLOSE_SQUARE,	"]")			\
-  OP(CPP_OPEN_BRACE,	"{")			\
-  OP(CPP_CLOSE_BRACE,	"}")			\
+  OP(C_HASH,		"#")	/* digraphs */	\
+  OP(C_PASTE,		"##")			\
+  OP(C_OPEN_SQUARE,	"[")			\
+  OP(C_CLOSE_SQUARE,	"]")			\
+  OP(C_OPEN_BRACE,	"{")			\
+  OP(C_CLOSE_BRACE,	"}")			\
   /* The remainder of the punctuation.  Order is not significant.  */	\
-  OP(CPP_SEMICOLON,	";")	/* structure */	\
-  OP(CPP_ELLIPSIS,	"...")			\
-  OP(CPP_PLUS_PLUS,	"++")	/* increment */	\
-  OP(CPP_MINUS_MINUS,	"--")			\
-  OP(CPP_DEREF,		"->")	/* accessors */	\
-  OP(CPP_DOT,		".")			\
-  OP(CPP_SCOPE,		"::")			\
-  OP(CPP_DEREF_STAR,	"->*")			\
-  OP(CPP_DOT_STAR,	".*")			\
+  OP(C_SEMICOLON,	";")	/* structure */	\
+  OP(C_ELLIPSIS,	"...")			\
+  OP(C_PLUS_PLUS,	"++")	/* increment */	\
+  OP(C_MINUS_MINUS,	"--")			\
+  OP(C_DEREF,		"->")	/* accessors */	\
+  OP(C_DOT,		".")			\
+  OP(C_SCOPE,		"::")			\
+  OP(C_DEREF_STAR,	"->*")			\
+  OP(C_DOT_STAR,	".*")			\
 \
-  TK(CPP_NAME,		SPELL_IDENT)	/* word */			\
-  TK(CPP_NUMBER,	SPELL_NUMBER)	/* 34_be+ta  */			\
+  TK(C_NAME,		SPELL_IDENT)	/* word */			\
+  TK(C_NUMBER,	SPELL_NUMBER)	/* 34_be+ta  */			\
 \
-  TK(CPP_CHAR,		SPELL_STRING)	/* 'char' */			\
-  TK(CPP_OTHER,		SPELL_CHAR)	/* stray punctuation */		\
+  TK(C_CHAR,		SPELL_STRING)	/* 'char' */			\
+  TK(C_OTHER,		SPELL_CHAR)	/* stray punctuation */		\
 \
-  TK(CPP_STRING,	SPELL_STRING)	/* "string" */			\
-  TK(CPP_HEADER_NAME,	SPELL_STRING)	/* <stdio.h> in #include */	\
+  TK(C_STRING,	SPELL_STRING)	/* "string" */			\
+  TK(C_HEADER_NAME,	SPELL_STRING)	/* <stdio.h> in #include */	\
 \
-  TK(CPP_COMMENT,	SPELL_NUMBER)	/* Only if output comments.  */ \
+  TK(C_COMMENT,	SPELL_NUMBER)	/* Only if output comments.  */ \
                                         /* SPELL_NUMBER happens to DTRT.  */ \
-  TK(CPP_PADDING,	SPELL_NONE)	/* Whitespace for cpp0.  */	\
-  TK(CPP_EOF,		SPELL_NONE)	/* End of line or file.  */
+  TK(C_PADDING,	SPELL_NONE)	/* Whitespace for cpp0.  */	\
+  TK(C_EOF,		SPELL_NONE)	/* End of line or file.  */
 
 #define OP(e, s) e,
 #define TK(e, s) e,
-enum cpp_ttype
+enum c_ttype
 {
   TTYPE_TABLE
   N_TTYPES
