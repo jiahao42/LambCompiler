@@ -298,7 +298,7 @@ void trim_space(size_t& idx) {
 }
 void parse_num_decimal(size_t& idx) {
 	size_t start = idx;
-	while (ISDIGIT(cur_line[idx])) {		/* while is digit */
+	while (ISDIGIT(cur_line[idx])) {		/* While is digit */
 		idx++;
 	}
 	PUSH_TOKEN(C_NUMBER, cur_line.substr(start, idx - start));
@@ -320,18 +320,23 @@ void parse_identifier(size_t& idx) {
 	PUSH_TOKEN(C_NAME, cur_line.substr(start, idx - start));
 }
 
-void parse_char(size_t& idx) {
+void parse_char(size_t& idx) {					/* The first ' has been skipped */
 	size_t start = idx;
-	while (!IS1QUOTE(cur_line[idx])) {			/* how far will it meet ' ? */
+	while (!IS1QUOTE(cur_line[idx])) {			/* How far will it meet ' ? */
 		idx++;
 	}
-	idx++;										/* skip the final ' */
-	if (idx - start > 2)						/* only 1 character can exist bewteen '' */
+	if (idx - start > 1)						/* Only 1 character can exist bewteen '' */
 		WARNING(CHAR_TOO_LONG, start);
-	PUSH_TOKEN(C_NAME, cur_line.substr(start, 1));
+	PUSH_TOKEN(C_CHAR, cur_line.substr(start, 1));
+	idx++;										/* Skip the final ' */
 }
-void parse_string(size_t& idx) {
-	idx++;
+void parse_string(size_t& idx) {				/* The first " has been skipped */
+	size_t start = idx;
+	while (!IS2QUOTE(cur_line[idx])) {
+		idx++;
+	}
+	PUSH_TOKEN(C_STRING, cur_line.substr(start, idx - start));
+	idx++;										/* Skip the final " */
 }
 void parse_single_line_comment(size_t& idx) {
 	idx++;
