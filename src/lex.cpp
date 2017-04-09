@@ -243,18 +243,23 @@ void lex() {
 					break;
 				case '[':										/* [ */
 					PUSH_TOKEN(C_OPEN_SQUARE, "[");
+					idx++;
 					break;
 				case ']':										/* ] */
 					PUSH_TOKEN(C_CLOSE_SQUARE, "]");
+					idx++;
 					break;
 				case '{':										/* { */
 					PUSH_TOKEN(C_OPEN_BRACE, "{");		
+					idx++;
 					break;
 				case '}':										/* } */
 					PUSH_TOKEN(C_CLOSE_BRACE, "}");
+					idx++;
 					break;
 				case '.':										/* . */
 					PUSH_TOKEN(C_DOT, ".");
+					idx++;
 					break;
 				case '\'':										/* 'char' */
 					idx++;
