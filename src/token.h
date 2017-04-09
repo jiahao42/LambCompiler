@@ -108,10 +108,10 @@ enum c_ttype;
 
 typedef struct c_token
 {
-	size_t line;			/* Logical line of first char of token.  */
-	size_t col;			/* Column of first char of token.  */
-	c_ttype type;					/* token type */
-	std::string name;				/* identifier */
+	size_t line;					/* Logical line of first char of token.  */
+	size_t col;						/* Column of first char of token.  */
+	c_ttype type;					/* Token type */
+	std::string name;				/* Identifier */
 	
 	c_token() {}
 	c_token(size_t _line) : line(_line) {}
