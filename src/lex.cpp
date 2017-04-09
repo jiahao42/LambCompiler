@@ -11,6 +11,7 @@
 #define ISDIGIT0(ch)		((ch) == '0'))
 #define ISWHITESPACE(ch)	((ch) == ' ')
 #define ISLETTER(ch)		(((ch) >= 'a' && (ch) <= 'z') || ((ch >= 'A') && (ch) <= 'Z'))
+#define ISHEX(ch)			(ISDIGIT((ch)) || ((ch) >= 'a' && (ch) <= 'f') || ((ch) >= 'A' && (ch) <= 'F'))
 
 #define PUSH_TOKEN(type, name) \
 	do {\
@@ -33,17 +34,24 @@ void parse_string(size_t&);
 void parse_single_line_comment(size_t&);
 void parse_multi_line_comment(size_t&);
 
+
+c_token tmp;
+
+void init_token() {
+	tmp.set_line(cur_line_info.linenum);
+}
+
 /* 
  * main function of lex 
  */
 void lex() {
+	init_token();
 	for (size_t idx = 0; idx < cur_line.size();) {
-		c_token tmp(cur_line_info.linenum);
 		if (ISWHITESPACE(cur_line[idx])) {					/* trim space */
 			PRINT("parse whitespace");
 			trim_space(idx);
 		} else if (ISDIGIT0(cur_line[idx]) {				/* start with 0 */
-			if (cur_line[idx + 1] == 'x') { 				/* hexadecimal */
+			if (cur_line[idx + 1] == 'x' || cur_line[idx + 1] == 'X') { 				/* hexadecimal */
 				PRINT("parse hex number");
 				idx++;										/* TODO */
 				parse_num_hex(idx);
@@ -285,10 +293,18 @@ void trim_space(size_t& idx) {
 	}
 }
 void parse_num_decimal(size_t& idx) {
-	idx++;
+	size_t start = idx;
+	while (ISDIGIT(cur_line[idx])) {		// while is digit
+		idx++;
+	}
+	PUSH_TOKEN(C_NUMBER, cur_line.substr(start, idx - start));
 }
 void parse_num_hex(size_t& idx) {
-	idx++;
+	size_t start = idx;
+	while (ISHEX(cur_line[idx])) {
+		idx++;
+	}
+	PUSH_TOKEN(C_NUMBER, cur_line.substr(start, idx - start));
 }
 void parse_identifier(size_t& idx) {
 	idx++;
