@@ -53,7 +53,7 @@ void lex() {
 		} else if (ISDIGIT0(cur_line[idx]) {				/* start with 0 */
 			if (cur_line[idx + 1] == 'x' || cur_line[idx + 1] == 'X') { 				/* hexadecimal */
 				PRINT("parse hex number");
-				idx++;										/* TODO */
+				idx += 2;									/* TODO */
 				parse_num_hex(idx);
 			} else if (!ISDIGIT(cur_line[idx + 1])) {		/* 0 */
 				PUSH_TOKEN(C_NUMBER, "0");
@@ -302,9 +302,11 @@ void parse_num_decimal(size_t& idx) {
 void parse_num_hex(size_t& idx) {
 	size_t start = idx;
 	while (ISHEX(cur_line[idx])) {
+		PRINT("hello");
 		idx++;
 	}
-	PUSH_TOKEN(C_NUMBER, cur_line.substr(start, idx - start));
+	
+	PUSH_TOKEN(C_NUMBER, "0x" + cur_line.substr(start, idx - start));
 }
 void parse_identifier(size_t& idx) {
 	idx++;

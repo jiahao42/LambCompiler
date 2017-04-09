@@ -1,9 +1,9 @@
-# 1 "main.cpp"
+# 1 "lex.cpp"
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "/usr/include/stdc-predef.h" 1 3 4
 # 1 "<command-line>" 2
-# 1 "main.cpp"
+# 1 "lex.cpp"
 # 1 "lex_config.h" 1
 
 
@@ -37236,18 +37236,69 @@ namespace std __attribute__ ((__visibility__ ("default")))
 }
 # 49 "/usr/include/c++/4.9/unordered_map" 2 3
 # 13 "lex_config.h" 2
-# 27 "lex_config.h"
+# 32 "lex_config.h"
 const std::string version = "0.0.1";
-# 2 "main.cpp" 2
-# 1 "lex.h" 1
+# 2 "lex.cpp" 2
+# 1 "token.h" 1
 
 
 
 
 
 
-void lex();
-# 3 "main.cpp" 2
+enum rid
+{
+
+
+  RID_STATIC = 0,
+  RID_UNSIGNED, RID_LONG, RID_CONST, RID_EXTERN,
+  RID_REGISTER, RID_TYPEDEF, RID_SHORT, RID_INLINE,
+  RID_VOLATILE, RID_SIGNED, RID_AUTO, RID_RESTRICT,
+
+
+  RID_INT, RID_CHAR, RID_FLOAT, RID_DOUBLE, RID_VOID,
+  RID_ENUM, RID_STRUCT, RID_UNION, RID_IF, RID_ELSE,
+  RID_WHILE, RID_DO, RID_FOR, RID_SWITCH, RID_CASE,
+  RID_DEFAULT, RID_BREAK, RID_CONTINUE, RID_RETURN, RID_GOTO,
+  RID_SIZEOF,
+
+  RID_FUNCTION_NAME,
+};
+# 99 "token.h"
+enum c_ttype
+{
+  C_EQ = 0, C_NOT, C_GREATER, C_LESS, C_PLUS, C_MINUS, C_MULT, C_DIV, C_MOD, C_AND, C_OR, C_XOR, C_RSHIFT, C_LSHIFT, C_COMPL, C_AND_AND, C_OR_OR, C_QUERY, C_COLON, C_COMMA, C_OPEN_PAREN, C_CLOSE_PAREN, C_EQ_EQ, C_NOT_EQ, C_GREATER_EQ, C_LESS_EQ, C_PLUS_EQ, C_MINUS_EQ, C_MULT_EQ, C_DIV_EQ, C_MOD_EQ, C_AND_EQ, C_OR_EQ, C_XOR_EQ, C_RSHIFT_EQ, C_LSHIFT_EQ, C_HASH, C_PASTE, C_OPEN_SQUARE, C_CLOSE_SQUARE, C_OPEN_BRACE, C_CLOSE_BRACE, C_SEMICOLON, C_PLUS_PLUS, C_MINUS_MINUS, C_DEREF, C_DOT, C_SCOPE, C_NAME, C_NUMBER, C_CHAR, C_OTHER, C_STRING, C_HEADER_NAME, C_COMMENT, C_PADDING, C_EOF,
+  N_TTYPES
+};
+
+
+
+enum c_ttype;
+
+typedef struct c_token
+{
+ size_t line;
+ size_t col;
+ c_ttype type;
+ std::string name;
+
+ c_token() {}
+ c_token(size_t _line) : line(_line) {}
+ c_token(size_t _line, size_t _col, c_ttype _type, std::string _name) : line(_line), col(_col), type(_type), name(_name) {}
+ friend std::ostream& operator <<(std::ostream& output, const c_token c) {
+  std::cout << ":" << c.line << ":" << c.col << " type: " << c.type << " value: " << c.name << std::endl;
+  return output;
+ }
+ void set(size_t _col, c_ttype _type, std::string _name) {
+  col = _col;
+  type = _type;
+  name = _name;
+ }
+ void set_line(size_t _line) {
+  line = _line;
+ }
+}c_token;
+# 3 "lex.cpp" 2
 # 1 "symseg.h" 1
 # 10 "symseg.h"
 struct type;
@@ -37472,91 +37523,13 @@ struct source
  std::string filename;
  std::vector<line> lines;
  std::vector<c_token> c_token_vector;
-};
-# 4 "main.cpp" 2
-# 1 "token.h" 1
-
-
-
-
-
-
-enum rid
-{
-
-
-  RID_STATIC = 0,
-  RID_UNSIGNED, RID_LONG, RID_CONST, RID_EXTERN,
-  RID_REGISTER, RID_TYPEDEF, RID_SHORT, RID_INLINE,
-  RID_VOLATILE, RID_SIGNED, RID_AUTO, RID_RESTRICT,
-
-
-  RID_INT, RID_CHAR, RID_FLOAT, RID_DOUBLE, RID_VOID,
-  RID_ENUM, RID_STRUCT, RID_UNION, RID_IF, RID_ELSE,
-  RID_WHILE, RID_DO, RID_FOR, RID_SWITCH, RID_CASE,
-  RID_DEFAULT, RID_BREAK, RID_CONTINUE, RID_RETURN, RID_GOTO,
-  RID_SIZEOF,
-
-  RID_FUNCTION_NAME,
-};
-# 104 "token.h"
-enum c_ttype
-{
-  C_EQ = 0, C_NOT, C_GREATER, C_LESS, C_PLUS, C_MINUS, C_MULT, C_DIV, C_MOD, C_AND, C_OR, C_XOR, C_RSHIFT, C_LSHIFT, C_MIN, C_MAX, C_COMPL, C_AND_AND, C_OR_OR, C_QUERY, C_COLON, C_COMMA, C_OPEN_PAREN, C_CLOSE_PAREN, C_EQ_EQ, C_NOT_EQ, C_GREATER_EQ, C_LESS_EQ, C_PLUS_EQ, C_MINUS_EQ, C_MULT_EQ, C_DIV_EQ, C_MOD_EQ, C_AND_EQ, C_OR_EQ, C_XOR_EQ, C_RSHIFT_EQ, C_LSHIFT_EQ, C_HASH, C_PASTE, C_OPEN_SQUARE, C_CLOSE_SQUARE, C_OPEN_BRACE, C_CLOSE_BRACE, C_SEMICOLON, C_ELLIPSIS, C_PLUS_PLUS, C_MINUS_MINUS, C_DEREF, C_DOT, C_SCOPE, C_DEREF_STAR, C_DOT_STAR, C_NAME, C_NUMBER, C_CHAR, C_OTHER, C_STRING, C_HEADER_NAME, C_COMMENT, C_PADDING, C_EOF,
-  N_TTYPES
-};
-
-
-
-enum c_ttype;
-
-typedef struct c_token
-{
- size_t line;
- size_t col;
- c_ttype type;
- std::string name;
-
- c_token() {}
- c_token(size_t _line, size_t _col, c_ttype _type, std::string _name) : line(_line), col(_col), type(_type), name(_name) {}
- friend std::ostream& operator <<(std::ostream& output, const c_token c) {
-  std::cout << "line: " << c.line << " col: " << c.col << " type: " << c.type << " value: " << c.name << std::endl;
-  return output;
+ void push(c_token c) {
+  c_token_vector.push_back(c);
  }
- void set(size_t _line, size_t _col, c_ttype _type, std::string _name) {
-  line = _line;
-  col = _col;
-  type = _type;
-  name = _name;
- }
-}c_token;
-# 5 "main.cpp" 2
-# 1 "util.h" 1
-
-
-
-
-
-
-unsigned int ELFHash(std::string str);
-
-
-
-
-void help_menu();
-
-
-
-
-void show_version();
-
-
-
-
-void dump_token_stream();
-# 6 "main.cpp" 2
+};
+# 4 "lex.cpp" 2
 # 1 "error.h" 1
-# 10 "error.h"
+# 12 "error.h"
 enum ERROR_ID {
  NO_ERROR = 0,
  INVALID_IDENTIFIER,
@@ -37568,111 +37541,380 @@ enum ERROR_ID {
 
 
 
-const std::string error_string[] {
+const std::string ERROR_STRING[] = {
  " no error ",
  " invalid identifier ",
  " unknown type name ",
  " this identifier is too long ",
  " non-hex number can't start with 0 ",
 };
-# 7 "main.cpp" 2
+
+
+
+
+enum WARING_ID {
+ CHAR_TOO_LONG = 0,
+};
+
+
+
+
+const std::string WARNING_STRING[] = {
+ " character constant too long for its type ",
+};
+# 5 "lex.cpp" 2
 # 1 "test.h" 1
-# 9 "test.h"
-static int main_ret = 0;
-static int test_count = 0;
-static int test_pass = 0;
-# 8 "main.cpp" 2
+# 6 "lex.cpp" 2
+# 1 "lex.h" 1
 
 
 
 
-symbol_root symbol_table;
 
 
-
-std::ifstream file;
-
-
-
-std::string cur_line;
+void lex();
 
 
 
 
-line cur_line_info;
+void trim_space(size_t&);
 
 
 
 
-source source_file;
+void parse_num_decimal(size_t&);
 
 
 
-int error_code = NO_ERROR;
 
-void read_file();
-void init_symbol_table(const char*, const char*);
-
-int main(int argc, char** argv) {
- if (argc == 1) {
-  std::cout << "Invalid parameter!" << std::endl;
-  return 0;
- }
- if (argv[1][0] == '-') {
-  switch(argv[1][1]) {
-   case 'h':
+void parse_num_hex(size_t&);
 
 
 
-    help_menu();
-    break;
-   case 'v':
+
+void parse_identifier(size_t&);
 
 
 
-    show_version();
-    break;
-   default:
-    std::cout << "Unknown parameter, please check again" << std::endl << std::endl;
-  }
- }else {
-  init_symbol_table(argv[0], argv[1]);
-  read_file();
 
- }
+void parse_char(size_t&);
 
 
- void dump_token_stream();
 
 
- return 0;
+void parse_string(size_t&);
+
+
+
+
+void parse_single_line_comment(size_t&);
+
+
+
+
+void parse_multi_line_comment(size_t&);
+# 7 "lex.cpp" 2
+# 22 "lex.cpp"
+extern std::string cur_line;
+extern int error_code;
+extern line cur_line_info;
+extern source source_file;
+
+
+void trim_space(size_t&);
+void parse_num_decimal(size_t&);
+void parse_num_hex(size_t&);
+void parse_identifier(size_t&);
+void parse_char(size_t&);
+void parse_string(size_t&);
+void parse_single_line_comment(size_t&);
+void parse_multi_line_comment(size_t&);
+
+
+c_token tmp;
+
+void init_token() {
+ tmp.set_line(cur_line_info.linenum);
 }
 
 
 
 
-void read_file() {
- source_file.filename = symbol_table.filename;
- file.open(source_file.filename);
- do { test_count++; if ((file.is_open()) != 0) test_pass++; else { fprintf(stderr, "%s:%d: expect: " "%s" " actual: " "%s" "\n", "main.cpp", 80, "true", "false"); main_ret = 1; } } while(0);
- if (file.is_open()) {
-  while (std::getline(file, cur_line)) {
-   std::cout << cur_line << std::endl;
-   cur_line_info++;
-   lex();
+void lex() {
+ init_token();
+ for (size_t idx = 0; idx < cur_line.size();) {
+  if (((cur_line[idx]) == ' ')) {
+   std::cout << "msg: " << "parse whitespace" << std::endl;;
+   trim_space(idx);
+  } else if (((cur_line[idx]) == '0')) {
+   if (cur_line[idx + 1] == 'x' || cur_line[idx + 1] == 'X') {
+    std::cout << "msg: " << "parse hex number" << std::endl;;
+    idx++;
+    parse_num_hex(idx);
+   } else if (!((cur_line[idx + 1]) >= '0' && (cur_line[idx + 1]) <= '9')) {
+    do { tmp.set(idx, C_NUMBER, "0"); source_file.push(tmp); }while(0);
+    idx++;
+   } else {
+
+    idx++;
+   }
+  } else if (((cur_line[idx]) >= '1' && (cur_line[idx]) <= '9')) {
+   std::cout << "msg: " << "parse decimal number" << std::endl;;
+   parse_num_decimal(idx);
+  } else if ((((cur_line[idx]) >= 'a' && (cur_line[idx]) <= 'z') || ((cur_line[idx] >= 'A') && (cur_line[idx]) <= 'Z')) || cur_line[idx] == '_') {
+   std::cout << "msg: " << "parse letter" << std::endl;;
+   parse_identifier(idx);
+  } else {
+   std::cout << "msg: " << "parse operator" << std::endl;;
+   switch(cur_line[idx]) {
+    case '=':
+     if (cur_line[idx + 1] == '=') {
+      do { tmp.set(idx, C_EQ_EQ, "=="); source_file.push(tmp); }while(0);
+      idx += 2;
+     } else {
+      do { tmp.set(idx, C_EQ, "="); source_file.push(tmp); }while(0);
+      idx++;
+     }
+     break;
+    case ';':
+     do { tmp.set(idx, C_SEMICOLON, ";"); source_file.push(tmp); }while(0);
+     idx++;
+     break;
+    case '!':
+     if (cur_line[idx + 1] == '=') {
+      do { tmp.set(idx, C_NOT_EQ, "!="); source_file.push(tmp); }while(0);
+      idx += 2;
+     } else {
+      do { tmp.set(idx, C_NOT, "!"); source_file.push(tmp); }while(0);
+      idx++;
+     }
+     break;
+    case '>':
+     if (cur_line[idx + 1] == '>') {
+      if (cur_line[idx + 2] == '=') {
+       do { tmp.set(idx, C_RSHIFT_EQ, ">>="); source_file.push(tmp); }while(0);
+       idx += 3;
+      } else {
+       do { tmp.set(idx, C_RSHIFT, ">>"); source_file.push(tmp); }while(0);
+       idx += 2;
+      }
+     }else if (cur_line[idx + 1] == '=') {
+      do { tmp.set(idx, C_GREATER_EQ, ">="); source_file.push(tmp); }while(0);
+      idx += 2;
+     }else {
+      do { tmp.set(idx, C_GREATER, ">"); source_file.push(tmp); }while(0);
+      idx++;
+     }
+     break;
+    case '<':
+     if (cur_line[idx + 1] == '<') {
+      if (cur_line[idx + 2] == '=') {
+       do { tmp.set(idx, C_LSHIFT_EQ, "<<="); source_file.push(tmp); }while(0);
+       idx += 3;
+      } else {
+       do { tmp.set(idx, C_LSHIFT, "<<"); source_file.push(tmp); }while(0);
+       idx += 2;
+      }
+     }else if (cur_line[idx + 1] == '=') {
+      do { tmp.set(idx, C_LESS_EQ, "<="); source_file.push(tmp); }while(0);
+      idx += 2;
+     }else {
+      do { tmp.set(idx, C_LESS, "<"); source_file.push(tmp); }while(0);
+      idx++;
+     }
+     break;
+    case '+':
+     if (cur_line[idx + 1] == '+') {
+      do { tmp.set(idx, C_PLUS_PLUS, "++"); source_file.push(tmp); }while(0);
+      idx += 2;
+     } else if (cur_line[idx + 1] == '=') {
+      do { tmp.set(idx, C_PLUS_EQ, "+="); source_file.push(tmp); }while(0);
+      idx += 2;
+     } else {
+      do { tmp.set(idx, C_PLUS, "+"); source_file.push(tmp); }while(0);
+      idx++;
+     }
+     break;
+    case '-':
+     if (cur_line[idx + 1] == '-') {
+      do { tmp.set(idx, C_MINUS_MINUS, "--"); source_file.push(tmp); }while(0);
+      idx += 2;
+     } else if (cur_line[idx + 1] == '=') {
+      do { tmp.set(idx, C_MINUS_EQ, "-="); source_file.push(tmp); }while(0);
+      idx += 2;
+     } else if (cur_line[idx + 1] == '>') {
+      do { tmp.set(idx, C_DEREF, "->"); source_file.push(tmp); }while(0);
+      idx += 2;
+     } else {
+      do { tmp.set(idx, C_MINUS, "-"); source_file.push(tmp); }while(0);
+      idx++;
+     }
+     break;
+    case '*':
+     if (cur_line[idx + 1] == '=') {
+      do { tmp.set(idx, C_MULT_EQ, "*="); source_file.push(tmp); }while(0);
+      idx += 2;
+     } else {
+      do { tmp.set(idx, C_MULT, "*"); source_file.push(tmp); }while(0);
+      idx++;
+     }
+     break;
+    case '/':
+     if (cur_line[idx + 1] == '=') {
+      do { tmp.set(idx, C_DIV_EQ, "/="); source_file.push(tmp); }while(0);
+      idx += 2;
+     } else if (cur_line[idx + 1] == '/') {
+      idx += 2;
+      parse_single_line_comment(idx);
+     } else if (cur_line[idx + 1] == '*') {
+      idx += 2;
+      parse_multi_line_comment(idx);
+     } else {
+      do { tmp.set(idx, C_DIV, "/"); source_file.push(tmp); }while(0);
+      idx++;
+     }
+     break;
+    case '%':
+     if (cur_line[idx + 1] == '=') {
+      do { tmp.set(idx, C_MOD_EQ, "%="); source_file.push(tmp); }while(0);
+      idx += 2;
+     } else {
+      do { tmp.set(idx, C_MOD, "%"); source_file.push(tmp); }while(0);
+      idx++;
+     }
+     break;
+    case '&':
+     if (cur_line[idx + 1] == '=') {
+      do { tmp.set(idx, C_AND_EQ, "&="); source_file.push(tmp); }while(0);
+      idx += 2;
+     } else if (cur_line[idx + 1] == '&') {
+      do { tmp.set(idx, C_AND_AND, "&&"); source_file.push(tmp); }while(0);
+      idx += 2;
+     } else {
+      do { tmp.set(idx, C_AND, "&"); source_file.push(tmp); }while(0);
+      idx++;
+     }
+     break;
+    case '|':
+     if (cur_line[idx + 1] == '|') {
+      do { tmp.set(idx, C_OR_OR, "||"); source_file.push(tmp); }while(0);
+      idx += 2;
+     } else if (cur_line[idx + 1] == '=') {
+      do { tmp.set(idx, C_OR_EQ, "|="); source_file.push(tmp); }while(0);
+      idx += 2;
+     } else {
+      do { tmp.set(idx, C_OR, "|"); source_file.push(tmp); }while(0);
+      idx++;
+     }
+     break;
+    case '^':
+     if (cur_line[idx + 1] == '=') {
+      do { tmp.set(idx, C_XOR_EQ, "^="); source_file.push(tmp); }while(0);
+      idx += 2;
+     } else {
+      do { tmp.set(idx, C_XOR, "^"); source_file.push(tmp); }while(0);
+      idx++;
+     }
+     break;
+    case '~':
+     do { tmp.set(idx, C_COMPL, "~"); source_file.push(tmp); }while(0);
+     idx++;
+     break;
+    case '?':
+     do { tmp.set(idx, C_QUERY, "?"); source_file.push(tmp); }while(0);
+     idx++;
+     break;
+    case ':':
+     if (cur_line[idx + 1] == ':') {
+      do { tmp.set(idx, C_SCOPE, "::"); source_file.push(tmp); }while(0);
+      idx += 2;
+     } else {
+      do { tmp.set(idx, C_COLON, ":"); source_file.push(tmp); }while(0);
+      idx++;
+     }
+     break;
+    case ',':
+     do { tmp.set(idx, C_COMMA, ","); source_file.push(tmp); }while(0);
+     idx++;
+     break;
+    case '(':
+     do { tmp.set(idx, C_OPEN_PAREN, "("); source_file.push(tmp); }while(0);
+     idx++;
+     break;
+    case ')':
+     do { tmp.set(idx, C_CLOSE_PAREN, ")"); source_file.push(tmp); }while(0);
+     idx++;
+     break;
+    case '[':
+     do { tmp.set(idx, C_OPEN_SQUARE, "["); source_file.push(tmp); }while(0);
+     idx++;
+     break;
+    case ']':
+     do { tmp.set(idx, C_CLOSE_SQUARE, "]"); source_file.push(tmp); }while(0);
+     idx++;
+     break;
+    case '{':
+     do { tmp.set(idx, C_OPEN_BRACE, "{"); source_file.push(tmp); }while(0);
+     idx++;
+     break;
+    case '}':
+     do { tmp.set(idx, C_CLOSE_BRACE, "}"); source_file.push(tmp); }while(0);
+     idx++;
+     break;
+    case '.':
+     do { tmp.set(idx, C_DOT, "."); source_file.push(tmp); }while(0);
+     idx++;
+     break;
+    case '\'':
+     idx++;
+     parse_char(idx);
+     break;
+    case '\"':
+     idx++;
+     parse_string(idx);
+     break;
+    default:
+     std::cout << source_file.filename << ":" << cur_line_info.linenum << ":" << idx << " Error:" << ERROR_STRING[UNKNOWN_TYPE] << std::endl;
+     idx++;
+   }
   }
- } else {
-  std::cout << "Failed to open file! Please check your input!" << std::endl;
  }
 }
 
 
 
+void trim_space(size_t& idx) {
+ while (cur_line[idx] == ' ' && idx < cur_line.size()) {
+  idx++;
+ }
+}
+void parse_num_decimal(size_t& idx) {
+ size_t start = idx;
+ while (((cur_line[idx]) >= '0' && (cur_line[idx]) <= '9')) {
+  idx++;
+ }
+ do { tmp.set(idx, C_NUMBER, cur_line.substr(start, idx - start)); source_file.push(tmp); }while(0);
+}
+void parse_num_hex(size_t& idx) {
+ size_t start = idx;
+ while (((((cur_line[idx])) >= '0' && ((cur_line[idx])) <= '9') || ((cur_line[idx]) >= 'a' && (cur_line[idx]) <= 'f') || ((cur_line[idx]) >= 'A' && (cur_line[idx]) <= 'F'))) {
+  idx++;
+ }
+ do { tmp.set(idx, C_NUMBER, cur_line.substr(start, idx - start)); source_file.push(tmp); }while(0);
+}
+void parse_identifier(size_t& idx) {
+ idx++;
+}
 
-void init_symbol_table(const char* filedir, const char* filename) {
- symbol_table.filedir = filedir;
- symbol_table.filename = filename;
- symbol_table.version = version;
- symbol_table.language = language_c;
- symbol_table.source_vector.push_back(source_file);
+void parse_char(size_t& idx) {
+ idx++;
+}
+void parse_string(size_t& idx) {
+ idx++;
+}
+void parse_single_line_comment(size_t& idx) {
+ idx++;
+}
+void parse_multi_line_comment(size_t& idx) {
+ idx++;
 }
