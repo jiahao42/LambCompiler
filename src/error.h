@@ -64,7 +64,7 @@ typedef struct _warning {
 	size_t linenum;
 	size_t col;
 	friend std::ostream& operator <<(std::ostream& output, const _warning w) {
-		std::cout << source_file.filename << ":" << w.linenum << ":" << w.col << " Error: " << WARNING_STRING[w.id] << std::endl;
+		std::cout << source_file.filename << ":" << w.linenum << ":" << w.col << " Warning: " << WARNING_STRING[w.id] << std::endl;
 		return output;
 	}
 }_warning;
