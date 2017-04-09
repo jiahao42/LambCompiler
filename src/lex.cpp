@@ -43,8 +43,8 @@ void lex() {
 			PRINT("parse whitespace");
 			trim_space(idx);
 		} else if (ISDIGIT0(cur_line[idx]) {				/* start with 0 */
-			PRINT("parse number");
 			if (cur_line[idx + 1] == 'x') { 				/* hexadecimal */
+				PRINT("parse hex number");
 				idx++;										/* TODO */
 				parse_num_hex(idx);
 			} else if (!ISDIGIT(cur_line[idx + 1])) {		/* 0 */
@@ -55,7 +55,7 @@ void lex() {
 				idx++;
 			}
 		} else if (ISDIGIT1TO9(cur_line[idx])) { 			/* decimal */
-			PRINT("parse number");
+			PRINT("parse decimal number");
 			parse_num_decimal(idx);
 		} else if (ISLETTER(cur_line[idx]) || cur_line[idx] == '_') {				/* identifier or keyword */
 			PRINT("parse letter");
