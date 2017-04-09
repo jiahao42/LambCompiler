@@ -7,7 +7,26 @@
 #include "test.h"
 
 /*
- * Symbol table, see symseg.harderr
+ * Output the error and warning to the console
+ */
+#define POP_ERROR() \
+	do {\
+		while(!error_queue.empty()) {\
+			std::cout << error_queue.front();\
+			error_queue.pop();\
+		}\
+	}while(0)
+	
+#define POP_WARNING() \
+	do {\
+		while(!warning_queue.empty()) {\
+			std::cout << warning_queue.front();\
+			warning_queue.pop();\
+		}\
+	}while(0)
+
+/*
+ * Symbol table, see symseg.h
  */
 symbol_root symbol_table;
 /*
@@ -28,6 +47,9 @@ line cur_line_info;
  * See symseg.h
  */
 source source_file;
+
+extern std::queue<_error> error_queue;
+extern std::queue<_warning> warning_queue;
 
 void read_file();
 void init_symbol_table(const char*, const char*);
@@ -61,6 +83,8 @@ int main(int argc, char** argv) {
 #ifdef DUMP_TOKEN_STREAM
 	dump_token_stream();
 #endif
+	POP_WARNING();
+	POP_ERROR();
 	/* printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count); */
 	return 0;
 }

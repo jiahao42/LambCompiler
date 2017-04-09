@@ -17,17 +17,39 @@
 #define IS1QUOTE(ch)			((ch) == '\'')
 #define IS2QUOTE(ch)			((ch) == '\"')
 
+/*
+ * Simple wrap for push token
+ */
 #define PUSH_TOKEN(type, name) \
 	do {\
 		tmp.set(idx, type, name);\
 		source_file.push(tmp);\
 	}while(0)
 		
+/*
+ * Simple wrap for push token
+ */
 #define PUSH_TOKEN_LITERAL(type, name) \
 	do {\
 		tmp.set(start, type, name);\
 		source_file.push(tmp);\
 	}while(0)
+		
+/*
+ * Push the error into the queue
+ */
+#define PUSH_ERROR(linenum, col, ERR_ID) \
+	do {\
+		_error e(ERR_ID, linenum, col);\
+		error_queue.push(e);\
+	}while(0)
+	
+#define PUSH_WARNING(linenum, col, WARNING_ID) \
+	do {\
+		_warning w(WARNING_ID, linenum, col);\
+		warning_queue.push(w);\
+	}while(0)
+
 
 extern std::string cur_line;
 extern line cur_line_info;
@@ -293,7 +315,7 @@ void lex() {
 					parse_string(idx);
 					break;
 				default:
-					//ERROR(UNKNOWN_TYPE, idx);
+					PUSH_ERROR(cur_line_info.linenum, idx, UNKNOWN_TYPE);
 					idx++;
 			}
 		}
@@ -336,7 +358,7 @@ void parse_char(size_t& idx) {					/* The first ' has been skipped */
 		idx++;
 	}
 	if (idx - start > 1)						/* Only 1 character can exist bewteen '' */
-		//WARNING(CHAR_TOO_LONG, start);
+		PUSH_WARNING(cur_line_info.linenum, start, CHAR_TOO_LONG);
 	PUSH_TOKEN_LITERAL(C_CHAR, cur_line.substr(start, 1));
 	idx++;										/* Skip the final ' */
 }
