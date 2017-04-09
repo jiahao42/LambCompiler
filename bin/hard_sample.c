@@ -13,7 +13,7 @@ int main() {
      * is
      * a
      * multi-line
-     * comment
+     * 注释
      */
     size_t size;
     struct test t;
