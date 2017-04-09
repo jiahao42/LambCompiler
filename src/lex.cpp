@@ -22,6 +22,12 @@
 		tmp.set(idx, type, name);\
 		source_file.push(tmp);\
 	}while(0)
+		
+#define PUSH_TOKEN_LITERAL(type, name) \
+	do {\
+		tmp.set(start, type, name);\
+		source_file.push(tmp);\
+	}while(0)
 
 extern std::string cur_line;
 extern int error_code;
@@ -40,6 +46,7 @@ void parse_multi_line_comment(size_t&);
 
 
 c_token tmp;
+bool is_comment = false;
 
 void init_token() {
 	tmp.set_line(cur_line_info.linenum);
@@ -51,28 +58,30 @@ void init_token() {
 void lex() {
 	init_token();
 	for (size_t idx = 0; idx < cur_line.size();) {
-		if (ISWHITESPACE(cur_line[idx])) {					/* trim space */
+		if (is_comment) {									/* If still comment, keep parsing it */
+			parse_multi_line_comment(idx);
+		} else if (ISWHITESPACE(cur_line[idx])) {					/* Trim space */
 			PRINT("parse whitespace");
 			trim_space(idx);
-		} else if (ISDIGIT0(cur_line[idx]) {				/* start with 0 */
-			if (cur_line[idx + 1] == 'x' || cur_line[idx + 1] == 'X') { 				/* hexadecimal */
+		} else if (ISDIGIT0(cur_line[idx]) {				/* Start with 0 */
+			if (cur_line[idx + 1] == 'x' || cur_line[idx + 1] == 'X') { 				/* Hexadecimal */
 				PRINT("parse hex number");
 				idx += 2;									/* TODO */
 				parse_num_hex(idx);
 			} else if (!ISDIGIT(cur_line[idx + 1])) {		/* 0 */
 				PUSH_TOKEN(C_NUMBER, "0");
 				idx++;
-			} else { 										/* start with 0 but not hexadecimal, just skip it */
+			} else { 										/* Start with 0 but not hexadecimal, just skip it */
 				//ERROR(NON_HEX_NUMBER_START_WITH_ZERO, idx);
 				idx++;
 			}
-		} else if (ISDIGIT1TO9(cur_line[idx])) { 			/* decimal */
+		} else if (ISDIGIT1TO9(cur_line[idx])) { 			/* Decimal */
 			PRINT("parse decimal number");
 			parse_num_decimal(idx);
-		} else if (ISLETTER(cur_line[idx]) || ISUNDERSCORE(cur_line[idx])) {				/* identifier or keyword */
+		} else if (ISLETTER(cur_line[idx]) || ISUNDERSCORE(cur_line[idx])) {				/* Identifier or keyword */
 			PRINT("parse letter");
 			parse_identifier(idx);
-		} else { 											/* operator or semicolon */
+		} else { 											/* Operator or semicolon */
 			PRINT("parse operator");
 			switch(cur_line[idx]) {
 				case '=':
@@ -176,6 +185,7 @@ void lex() {
 						idx += 2;
 						parse_single_line_comment(idx);
 					} else if (cur_line[idx + 1] == '*') {		/* multi-line comment */
+						PRINT("parse multi-line comment");
 						idx += 2;
 						parse_multi_line_comment(idx);
 					} else {									/* / */
@@ -302,7 +312,7 @@ void parse_num_decimal(size_t& idx) {
 	while (ISDIGIT(cur_line[idx])) {		/* While is digit */
 		idx++;
 	}
-	PUSH_TOKEN(C_NUMBER, cur_line.substr(start, idx - start));
+	PUSH_TOKEN_LITERAL(C_NUMBER, cur_line.substr(start, idx - start));
 }
 void parse_num_hex(size_t& idx) {
 	size_t start = idx;
@@ -310,14 +320,14 @@ void parse_num_hex(size_t& idx) {
 		idx++;
 	}
 	
-	PUSH_TOKEN(C_NUMBER, "0x" + cur_line.substr(start, idx - start));
+	PUSH_TOKEN_LITERAL(C_NUMBER, "0x" + cur_line.substr(start, idx - start));
 }
 void parse_identifier(size_t& idx) {
 	size_t start = idx;
 	while (ISIDENTIFIER(cur_line[idx])) {
 		idx++;
 	}
-	PUSH_TOKEN(C_NAME, cur_line.substr(start, idx - start));
+	PUSH_TOKEN_LITERAL(C_NAME, cur_line.substr(start, idx - start));
 }
 
 void parse_char(size_t& idx) {					/* The first ' has been skipped */
@@ -327,7 +337,7 @@ void parse_char(size_t& idx) {					/* The first ' has been skipped */
 	}
 	if (idx - start > 1)						/* Only 1 character can exist bewteen '' */
 		WARNING(CHAR_TOO_LONG, start);
-	PUSH_TOKEN(C_CHAR, cur_line.substr(start, 1));
+	PUSH_TOKEN_LITERAL(C_CHAR, cur_line.substr(start, 1));
 	idx++;										/* Skip the final ' */
 }
 void parse_string(size_t& idx) {				/* The first " has been skipped */
@@ -335,7 +345,7 @@ void parse_string(size_t& idx) {				/* The first " has been skipped */
 	while (!IS2QUOTE(cur_line[idx])) {
 		idx++;
 	}
-	PUSH_TOKEN(C_STRING, cur_line.substr(start, idx - start));
+	PUSH_TOKEN_LITERAL(C_STRING, cur_line.substr(start, idx - start));
 	idx++;										/* Skip the final " */
 }
 void parse_single_line_comment(size_t& idx) {	/* the first // has been skipped */
@@ -343,7 +353,20 @@ void parse_single_line_comment(size_t& idx) {	/* the first // has been skipped *
 		idx++;
 }
 void parse_multi_line_comment(size_t& idx) {
-	idx++;
+	if (is_comment) {							/* the status is in multi-line comment */
+		while (1) {
+			if ((idx + 1 < cur_line.size()) && cur_line[idx] == '*' && cur_line[idx + 1] == '/') {
+				is_comment = false;
+				idx += 2;
+				break;
+			} else if (idx >= cur_line.size()) {
+				break;
+			}
+			idx++;
+		}
+	} else {									/* just start the multi-line comment */
+		is_comment = true;
+	}
 }
 
 
