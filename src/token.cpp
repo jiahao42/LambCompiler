@@ -3,6 +3,9 @@
 
 
 #if 0
+/*
+ *	35 keywords here
+ */
 enum rid
 {
   /* Modifiers: */
@@ -23,6 +26,10 @@ enum rid
 };
 #endif
 
+/*
+ * TODO: must implement a custom hashtable for keywords
+ * unordered_map takes up too much memory
+ */
 #define PAIR(string, rid) {"string", rid}
 std::unordered_map<std::string, enum rid> keyword (
 	{
