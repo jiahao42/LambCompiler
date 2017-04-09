@@ -6,12 +6,16 @@
 #include "lex.h"
 
 
-#define ISDIGIT(ch)         ((ch) >= '0' && (ch) <= '9')
-#define ISDIGIT1TO9(ch)     ((ch) >= '1' && (ch) <= '9')
-#define ISDIGIT0(ch)		((ch) == '0'))
-#define ISWHITESPACE(ch)	((ch) == ' ')
-#define ISLETTER(ch)		(((ch) >= 'a' && (ch) <= 'z') || ((ch >= 'A') && (ch) <= 'Z'))
-#define ISHEX(ch)			(ISDIGIT((ch)) || ((ch) >= 'a' && (ch) <= 'f') || ((ch) >= 'A' && (ch) <= 'F'))
+#define ISDIGIT(ch)         	((ch) >= '0' && (ch) <= '9')
+#define ISDIGIT1TO9(ch)     	((ch) >= '1' && (ch) <= '9')
+#define ISDIGIT0(ch)			((ch) == '0'))
+#define ISWHITESPACE(ch)		((ch) == ' ')
+#define ISLETTER(ch)			(((ch) >= 'a' && (ch) <= 'z') || ((ch >= 'A') && (ch) <= 'Z'))
+#define ISHEX(ch)				(ISDIGIT((ch)) || ((ch) >= 'a' && (ch) <= 'f') || ((ch) >= 'A' && (ch) <= 'F'))
+#define ISUNDERSCORE(ch)		((ch) == '_')
+#define ISIDENTIFIER(ch)		(ISDIGIT((ch)) || ISLETTER((ch)) || ISUNDERSCORE((ch)))
+#define IS1QUOTE(ch)			((ch) == '\'')
+#define IS2QUOTE(ch)			((ch) == '\"')
 
 #define PUSH_TOKEN(type, name) \
 	do {\
@@ -65,7 +69,7 @@ void lex() {
 		} else if (ISDIGIT1TO9(cur_line[idx])) { 			/* decimal */
 			PRINT("parse decimal number");
 			parse_num_decimal(idx);
-		} else if (ISLETTER(cur_line[idx]) || cur_line[idx] == '_') {				/* identifier or keyword */
+		} else if (ISLETTER(cur_line[idx]) || ISUNDERSCORE(cur_line[idx])) {				/* identifier or keyword */
 			PRINT("parse letter");
 			parse_identifier(idx);
 		} else { 											/* operator or semicolon */
@@ -294,7 +298,7 @@ void trim_space(size_t& idx) {
 }
 void parse_num_decimal(size_t& idx) {
 	size_t start = idx;
-	while (ISDIGIT(cur_line[idx])) {		// while is digit
+	while (ISDIGIT(cur_line[idx])) {		/* while is digit */
 		idx++;
 	}
 	PUSH_TOKEN(C_NUMBER, cur_line.substr(start, idx - start));
@@ -309,11 +313,22 @@ void parse_num_hex(size_t& idx) {
 	PUSH_TOKEN(C_NUMBER, "0x" + cur_line.substr(start, idx - start));
 }
 void parse_identifier(size_t& idx) {
-	idx++;
+	size_t start = idx;
+	while (ISIDENTIFIER(cur_line[idx])) {
+		idx++;
+	}
+	PUSH_TOKEN(C_NAME, cur_line.substr(start, idx - start));
 }
 
 void parse_char(size_t& idx) {
-	idx++;
+	size_t start = idx;
+	while (!IS1QUOTE(cur_line[idx])) {			/* how far will it meet ' ? */
+		idx++;
+	}
+	idx++;										/* skip the final ' */
+	if (idx - start > 2)						/* only 1 character can exist bewteen '' */
+		WARNING(CHAR_TOO_LONG, start);
+	PUSH_TOKEN(C_NAME, cur_line.substr(start, 1));
 }
 void parse_string(size_t& idx) {
 	idx++;
