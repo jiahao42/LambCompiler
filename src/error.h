@@ -1,6 +1,8 @@
 #ifndef LAMBLEXER_ERROR_H_
 #define LAMBLEXER_ERROR_H_
 
+extern source source_file;
+
 /*
  * error code of parsing
  */
@@ -41,12 +43,12 @@ const std::string WARNING_STRING[] = {
  * For the error queue, see error.cpp
  */
 typedef struct _error {
-	_error(enum ERROR_ID _ERROR_ID, size_t _linenum, size_t _col) : ERROR_ID(_ERROR_ID), linenum(_linenum), col(_col) {}
-	enum ERROR_ID;
+	_error(ERROR_ID _ERROR_ID, size_t _linenum, size_t _col) : id(_ERROR_ID), linenum(_linenum), col(_col) {}
+	ERROR_ID id;
 	size_t linenum;
 	size_t col;
 	friend std::ostream& operator <<(std::ostream& output, const _error e) {
-		std::cout << ":" << e.linenum << ":" << e.col << " type: " << c.type << " value: " << c.name << std::endl;
+		std::cout << source_file.filename << ":" << e.linenum << ":" << e.col << " Error: " << ERROR_STRING[e.id] << std::endl;
 		return output;
 	}
 }_error;
@@ -55,11 +57,19 @@ typedef struct _error {
  * For the warning queue, see error.cpp
  */
 typedef struct _warning {
-	_warning(enum WARING_ID _WARING_ID, size_t _linenum, size_t _col) : WARING_ID(_WARING_ID), linenum(_linenum), col(_col) {}
-	enum WARING_ID;
+	_warning(WARING_ID _WARING_ID, size_t _linenum, size_t _col) : id(_WARING_ID), linenum(_linenum), col(_col) {}
+	
+	WARING_ID id;
 	size_t linenum;
 	size_t col;
+	friend std::ostream& operator <<(std::ostream& output, const _warning w) {
+		std::cout << source_file.filename << ":" << w.linenum << ":" << w.col << " Error: " << WARNING_STRING[w.id] << std::endl;
+		return output;
+	}
 }_warning;
+
+
+
 
 
 

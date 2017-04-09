@@ -1,9 +1,9 @@
 #include "lex_config.h"
 #include "token.h"
 #include "symseg.h"
-#include "error.h"
 #include "test.h"
 #include "lex.h"
+#include "error.h"
 
 
 #define ISDIGIT(ch)         	((ch) >= '0' && (ch) <= '9')
@@ -32,8 +32,8 @@
 extern std::string cur_line;
 extern line cur_line_info;
 extern source source_file;
-extern error_queue;
-extern warning_queue;
+extern std::queue<_error> error_queue;
+extern std::queue<_warning> warning_queue;
 
 
 void trim_space(size_t&);
@@ -293,7 +293,7 @@ void lex() {
 					parse_string(idx);
 					break;
 				default:
-					ERROR(UNKNOWN_TYPE, idx);
+					//ERROR(UNKNOWN_TYPE, idx);
 					idx++;
 			}
 		}
@@ -336,7 +336,7 @@ void parse_char(size_t& idx) {					/* The first ' has been skipped */
 		idx++;
 	}
 	if (idx - start > 1)						/* Only 1 character can exist bewteen '' */
-		WARNING(CHAR_TOO_LONG, start);
+		//WARNING(CHAR_TOO_LONG, start);
 	PUSH_TOKEN_LITERAL(C_CHAR, cur_line.substr(start, 1));
 	idx++;										/* Skip the final ' */
 }

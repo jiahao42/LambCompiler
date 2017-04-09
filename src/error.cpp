@@ -1,14 +1,6 @@
 #include "lex_config.h"
 #include "error.h"
 
-/*
- * Output the error to the console
- */
-#define ERROR(ERR_ID, idx) std::cout << source_file.filename << ":" << cur_line_info.linenum << ":" << idx << " Error:" << ERROR_STRING[ERR_ID] << std::endl
-
-#define WARNING(WARNING_ID, idx) std::cout << source_file.filename << ":" << cur_line_info.linenum << ":" << idx << " Warning:" << WARNING_STRING[WARNING_ID] << std::endl
-
-extern source source_file;
 std::queue<_error> error_queue;
 std::queue<_warning> warning_queue;
 
@@ -33,10 +25,17 @@ std::queue<_warning> warning_queue;
  */
 #define POP_ERROR() \
 	do {\
-		
-	}
+		while(!error_queue.empty()) {\
+			cout << error_queue.top();\
+		}\
+	}while(0)
 	
-	
+#define POP_WARNING() \
+	do {\
+		while(!warning_queue.empty()) {\
+			cout << warning_queue.top();\
+		}\
+	}while(0)
 	
 	
 	

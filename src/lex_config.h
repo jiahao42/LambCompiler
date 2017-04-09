@@ -9,6 +9,7 @@
 #include <cassert>
 #include <cstdio>
 #include <vector>
+#include <queue>
 #include <unordered_map>
 
 /*
