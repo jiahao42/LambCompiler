@@ -1,5 +1,10 @@
-0xffee00 0123
+0xffee00 0123//this is a comment
 ><><><>>++123123<>+
+/*
+multi
+line
+comment
+*/
 'a'  'abcde'"hello_world""string"
 he110_w0r1d
 

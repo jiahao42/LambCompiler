@@ -172,6 +172,7 @@ void lex() {
 						PUSH_TOKEN(C_DIV_EQ, "/=");
 						idx += 2;
 					} else if (cur_line[idx + 1] == '/') {		/* //comment */
+						PRINT("parse single line comment");
 						idx += 2;
 						parse_single_line_comment(idx);
 					} else if (cur_line[idx + 1] == '*') {		/* multi-line comment */
@@ -306,7 +307,6 @@ void parse_num_decimal(size_t& idx) {
 void parse_num_hex(size_t& idx) {
 	size_t start = idx;
 	while (ISHEX(cur_line[idx])) {
-		PRINT("hello");
 		idx++;
 	}
 	
@@ -338,8 +338,9 @@ void parse_string(size_t& idx) {				/* The first " has been skipped */
 	PUSH_TOKEN(C_STRING, cur_line.substr(start, idx - start));
 	idx++;										/* Skip the final " */
 }
-void parse_single_line_comment(size_t& idx) {
-	idx++;
+void parse_single_line_comment(size_t& idx) {	/* the first // has been skipped */
+	while (idx < cur_line.size())				/* just skip to the end of the line */
+		idx++;
 }
 void parse_multi_line_comment(size_t& idx) {
 	idx++;
