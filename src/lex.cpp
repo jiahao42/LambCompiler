@@ -14,16 +14,17 @@
 #define ISHEX(ch)				(ISDIGIT((ch)) || ((ch) >= 'a' && (ch) <= 'f') || ((ch) >= 'A' && (ch) <= 'F'))
 #define ISUNDERSCORE(ch)		((ch) == '_')
 #define ISIDENTIFIER(ch)		(ISDIGIT((ch)) || ISLETTER((ch)) || ISUNDERSCORE((ch)))
-#define IS1QUOTE(ch)			((ch) == '\'')
-#define IS2QUOTE(ch)			((ch) == '\"')
+/* must consider the escape ' and " */
+#define ISREAL1QUOTE(ch1, ch2)	((ch1) != '\\' && (ch2) == '\'')
+#define ISREAL2QUOTE(ch1, ch2)	((ch1) != '\\' && (ch2) == '\"')
 
 /*
  * Simple wrap for push token
  */
 #define PUSH_TOKEN(type, name) \
 	do {\
-		tmp.set(idx, type, name);\
-		source_file.push(tmp);\
+		token.set(idx, type, name);\
+		source_file.push(token);\
 	}while(0)
 		
 /*
@@ -31,8 +32,8 @@
  */
 #define PUSH_TOKEN_LITERAL(type, name) \
 	do {\
-		tmp.set(start, type, name);\
-		source_file.push(tmp);\
+		token.set(start, type, name);\
+		source_file.push(token);\
 	}while(0)
 		
 /*
@@ -68,11 +69,11 @@ void parse_single_line_comment(size_t&);
 void parse_multi_line_comment(size_t&);
 
 
-c_token tmp;
+c_token token;
 bool is_comment = false;
 
 void init_token() {
-	tmp.set_line(cur_line_info.linenum);
+	token.set_line(cur_line_info.linenum);
 }
 
 /* 
@@ -114,6 +115,9 @@ void lex() {
 						PUSH_TOKEN(C_EQ, "=");
 						idx++;
 					}
+					break;
+				case '\t':
+					idx++;
 					break;
 				case ';':
 					PUSH_TOKEN(C_SEMICOLON, ";");				/* ; */
@@ -354,7 +358,7 @@ void parse_identifier(size_t& idx) {
 
 void parse_char(size_t& idx) {					/* The first ' has been skipped */
 	size_t start = idx;
-	while (!IS1QUOTE(cur_line[idx])) {			/* How far will it meet ' ? */
+	while (!ISREAL1QUOTE(cur_line[idx - 1], cur_line[idx])) {			/* How far will it meet ' ? */
 		idx++;
 	}
 	if (idx - start > 1)						/* Only 1 character can exist bewteen '' */
@@ -364,7 +368,7 @@ void parse_char(size_t& idx) {					/* The first ' has been skipped */
 }
 void parse_string(size_t& idx) {				/* The first " has been skipped */
 	size_t start = idx;
-	while (!IS2QUOTE(cur_line[idx])) {
+	while (!ISREAL2QUOTE(cur_line[idx - 1], cur_line[idx])) {
 		idx++;
 	}
 	PUSH_TOKEN_LITERAL(C_STRING, cur_line.substr(start, idx - start));

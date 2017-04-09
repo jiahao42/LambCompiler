@@ -66,8 +66,6 @@ enum rid
   OP(C_RSHIFT_EQ,	">>=")			\
   OP(C_LSHIFT_EQ,	"<<=")			\
   /* Digraphs together, beginning with CPP_FIRST_DIGRAPH.  */	\
-  OP(C_HASH,		"#")	/* digraphs */	\
-  OP(C_PASTE,		"##")			\
   OP(C_OPEN_SQUARE,	"[")			\
   OP(C_CLOSE_SQUARE,	"]")			\
   OP(C_OPEN_BRACE,	"{")			\
