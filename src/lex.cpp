@@ -30,9 +30,10 @@
 	}while(0)
 
 extern std::string cur_line;
-extern int error_code;
 extern line cur_line_info;
 extern source source_file;
+extern error_queue;
+extern warning_queue;
 
 
 void trim_space(size_t&);
@@ -72,7 +73,6 @@ void lex() {
 				PUSH_TOKEN(C_NUMBER, "0");
 				idx++;
 			} else { 										/* Start with 0 but not hexadecimal, just skip it */
-				//ERROR(NON_HEX_NUMBER_START_WITH_ZERO, idx);
 				idx++;
 			}
 		} else if (ISDIGIT1TO9(cur_line[idx])) { 			/* Decimal */

@@ -28,10 +28,6 @@ line cur_line_info;
  * See symseg.h
  */
 source source_file;
-/*
- * Correspond with error_string, see token.h
- */ 
-int error_code = NO_ERROR;
 
 void read_file();
 void init_symbol_table(const char*, const char*);

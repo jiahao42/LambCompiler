@@ -1,11 +1,6 @@
 #ifndef LAMBLEXER_ERROR_H_
 #define LAMBLEXER_ERROR_H_
 
-
-#define ERROR(ERR_ID, idx) std::cout << source_file.filename << ":" << cur_line_info.linenum << ":" << idx << " Error:" << ERROR_STRING[ERR_ID] << std::endl
-
-#define WARNING(WARNING_ID, idx) std::cout << source_file.filename << ":" << cur_line_info.linenum << ":" << idx << " Warning:" << WARNING_STRING[WARNING_ID] << std::endl
-
 /*
  * error code of parsing
  */
@@ -41,5 +36,31 @@ enum WARING_ID {
 const std::string WARNING_STRING[] = {
 	" character constant too long for its type ",
 };
+
+/*
+ * For the error queue, see error.cpp
+ */
+typedef struct _error {
+	_error(enum ERROR_ID _ERROR_ID, size_t _linenum, size_t _col) : ERROR_ID(_ERROR_ID), linenum(_linenum), col(_col) {}
+	enum ERROR_ID;
+	size_t linenum;
+	size_t col;
+	friend std::ostream& operator <<(std::ostream& output, const _error e) {
+		std::cout << ":" << e.linenum << ":" << e.col << " type: " << c.type << " value: " << c.name << std::endl;
+		return output;
+	}
+}_error;
+
+/*
+ * For the warning queue, see error.cpp
+ */
+typedef struct _warning {
+	_warning(enum WARING_ID _WARING_ID, size_t _linenum, size_t _col) : WARING_ID(_WARING_ID), linenum(_linenum), col(_col) {}
+	enum WARING_ID;
+	size_t linenum;
+	size_t col;
+}_warning;
+
+
 
 #endif /* end of LAMBLEXER_ERROR_H_ */
