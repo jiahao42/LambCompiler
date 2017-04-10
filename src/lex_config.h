@@ -23,6 +23,11 @@
 #define PRINT_LOG
 
 /*
+ * If show keyword judgement when dumping token stream to console
+ */
+#define SHOW_KEYWORD_FILTER
+
+/*
  * The length limit of identifier
  */
 #define LONGEST_IDENTIFIER_LENGTH 32

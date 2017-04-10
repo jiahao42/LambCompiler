@@ -14,10 +14,11 @@
 #define ISHEX(ch)				(ISDIGIT((ch)) || ((ch) >= 'a' && (ch) <= 'f') || ((ch) >= 'A' && (ch) <= 'F'))
 #define ISUNDERSCORE(ch)		((ch) == '_')
 #define ISIDENTIFIER(ch)		(ISDIGIT((ch)) || ISLETTER((ch)) || ISUNDERSCORE((ch)))
+#define ISNOTEOF(ch)				((ch) != EOF)
 /* must consider the escape ' and " */
 #define ISREAL1QUOTE(ch1, ch2)	((ch1) != '\\' && (ch2) == '\'')
 #define ISREAL2QUOTE(ch1, ch2)	((ch1) != '\\' && (ch2) == '\"')
-#define ISNOTEOF(ch)				((ch) != EOF)
+
 
 /*
  * Simple wrap for push token

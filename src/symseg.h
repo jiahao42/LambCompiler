@@ -342,8 +342,8 @@ typedef struct line
 	line() : linenum(0), address(0) {}
 	size_t linenum;
 	int address;
-	//post
-	struct line operator++(int) {
+	//post increment
+	struct line& operator++(int) {
 		linenum++;
 		return *this;
 	}
@@ -356,6 +356,9 @@ struct source
 	std::string filename;			/* Name of file */
 	std::vector<line> lines; /* Information of each line */
 	std::vector<c_token> c_token_vector;
+	/*
+	 * Simple wrap of push_back
+	 */
 	void push(c_token c) {
 		c_token_vector.push_back(c);
 	}

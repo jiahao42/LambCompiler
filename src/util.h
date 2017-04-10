@@ -21,4 +21,9 @@ void show_version();
  */
 void dump_token_stream();
 
+/*
+ * Show keyword filter
+ */ 
+void keyword_fileter();
+
 #endif /* end of LAMBLEXER_UTIL_H_ */

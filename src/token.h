@@ -65,7 +65,6 @@ enum rid
   OP(C_XOR_EQ,	"^=")			\
   OP(C_RSHIFT_EQ,	">>=")			\
   OP(C_LSHIFT_EQ,	"<<=")			\
-  /* Digraphs together, beginning with CPP_FIRST_DIGRAPH.  */	\
   OP(C_OPEN_SQUARE,	"[")			\
   OP(C_CLOSE_SQUARE,	"]")			\
   OP(C_OPEN_BRACE,	"{")			\
@@ -115,7 +114,7 @@ typedef struct c_token
 	c_token(size_t _line) : line(_line) {}
 	c_token(size_t _line, size_t _col, c_ttype _type, std::string _name) : line(_line), col(_col), type(_type), name(_name) {}
 	friend std::ostream& operator <<(std::ostream& output, const c_token c) {
-		std::cout << ":" << c.line << ":" << c.col << " type: " << c.type << " value: " << c.name << std::endl;
+		std::cout << ":" << c.line << ":" << c.col << " type: " << c.type << " value: " << c.name;
 		return output;
 	}
 	void set(size_t _col, c_ttype _type, std::string _name) {
