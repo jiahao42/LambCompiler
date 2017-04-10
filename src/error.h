@@ -12,7 +12,6 @@ enum ERROR_ID {
 	INVALID_IDENTIFIER,
 	UNKNOWN_TYPE,
 	TOO_LONG_IDENTIFIER,
-	NON_HEX_NUMBER_START_WITH_ZERO,
 };
 
 /*
@@ -22,8 +21,7 @@ const std::string ERROR_STRING[] = {
 	" no error ",
 	" invalid identifier ",
 	" unknown type name ",
-	" this identifier is too long ",
-	" non-hex number can't start with 0 ",
+	" the length of identifier is too long ",
 };
 
 /*

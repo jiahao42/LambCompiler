@@ -353,6 +353,8 @@ void parse_identifier(size_t& idx) {
 	while (ISIDENTIFIER(cur_line[idx])) {
 		idx++;
 	}
+	if (idx - start > LONGEST_IDENTIFIER_LENGTH)
+		PUSH_ERROR(cur_line_info.linenum, start, TOO_LONG_IDENTIFIER);
 	PUSH_TOKEN_LITERAL(C_NAME, cur_line.substr(start, idx - start));
 }
 
