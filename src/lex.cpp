@@ -17,6 +17,7 @@
 /* must consider the escape ' and " */
 #define ISREAL1QUOTE(ch1, ch2)	((ch1) != '\\' && (ch2) == '\'')
 #define ISREAL2QUOTE(ch1, ch2)	((ch1) != '\\' && (ch2) == '\"')
+#define ISNOTEOF(ch)				((ch) != EOF)
 
 /*
  * Simple wrap for push token
@@ -37,14 +38,17 @@
 	}while(0)
 		
 /*
- * Push the error into the queue
+ * Push error into the queue
  */
 #define PUSH_ERROR(linenum, col, ERR_ID) \
 	do {\
 		_error e(ERR_ID, linenum, col);\
 		error_queue.push(e);\
 	}while(0)
-	
+
+/*
+ * Push warning into the queue
+ */
 #define PUSH_WARNING(linenum, col, WARNING_ID) \
 	do {\
 		_warning w(WARNING_ID, linenum, col);\
@@ -329,7 +333,7 @@ void lex() {
 
 
 void trim_space(size_t& idx) {
-	while (cur_line[idx] == ' ' && idx < cur_line.size()) {
+	while (cur_line[idx] == ' ' && ISNOTEOF(cur_line[idx])) {
 		idx++;
 	}
 }

@@ -7,7 +7,7 @@
 #include "test.h"
 
 /*
- * Output the error and warning to the console
+ * Pop the error from error queue and output the error to the console
  */
 #define POP_ERROR() \
 	do {\
@@ -16,7 +16,10 @@
 			error_queue.pop();\
 		}\
 	}while(0)
-	
+
+/*
+ * Pop the warning from error queue and output the warning to the console
+ */
 #define POP_WARNING() \
 	do {\
 		while(!warning_queue.empty()) {\
