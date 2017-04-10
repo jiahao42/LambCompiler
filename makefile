@@ -22,7 +22,7 @@ TOKEN_CPP = $(SRC)/token.cpp
 MAIN_CPP = $(SRC)/main.cpp
 ERROR_CPP = $(SRC)/error.cpp
 
-OBJS = util.o token.o lex.o main.o error.o
+OBJS = lex.o token.o error.o util.o main.o 
 
 all: $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $(EXE) $(OBJ)/lex.o $(OBJ)/token.o $(OBJ)/util.o  $(OBJ)/error.o $(OBJ)/main.o
