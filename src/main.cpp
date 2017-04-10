@@ -53,7 +53,6 @@ source source_file;
 
 extern std::queue<_error> error_queue;
 extern std::queue<_warning> warning_queue;
-extern std::vector<std::string> keyword;
 
 void read_file();
 void init_symbol_table(const char*, const char*);

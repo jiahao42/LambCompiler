@@ -27,12 +27,12 @@ void parse_num_hex(size_t&);
 void parse_identifier(size_t&);
 
 /*
- * Parse character, start with ', also end with '
+ * Parse character, start with ', also end with ', be careful with escape '
  */
 void parse_char(size_t&);
 
 /*
- * Parse string, start with ", also end with "
+ * Parse string, start with ", also end with ", be careful with escape "
  */
 void parse_string(size_t&);
 

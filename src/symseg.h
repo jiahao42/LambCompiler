@@ -12,7 +12,7 @@ struct source;
 struct field;
 struct c_token;
 //struct block;
- 
+
 enum language {language_c};
 
 struct symbol_root

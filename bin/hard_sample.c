@@ -14,7 +14,7 @@ int main() {
      * a
      * multi-line
      * 注释
-     */
+     */abc
     size_t size;
     struct test t;
     const char* s = "he110\" w0r1d";

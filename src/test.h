@@ -1,7 +1,6 @@
 #ifndef LAMBLEXER_TEST_H_
 #define LAMBLEXER_TEST_H_
 
-
 #ifndef NDEBUG
 
 /*
@@ -25,6 +24,9 @@
 #define EXPECT_TRUE(actual) EXPECT_EQ_BASE((actual) != 0, "true", "false", "%s")
 #define EXPECT_FALSE(actual) EXPECT_EQ_BASE((actual) == 0, "false", "true", "%s")
 
+/* 
+ * This macro is for DEBUG message, see lex_config.h
+ */
 #ifdef PRINT_LOG
 #define PRINT(msg) std::cout << "msg: " << msg << std::endl;
 #else

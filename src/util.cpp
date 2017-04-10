@@ -26,7 +26,6 @@ unsigned int ELFHash(std::string str) {
 		}
 		hash &= ~x;
 	}
-
 	return hash;
 }
 
@@ -52,7 +51,7 @@ void show_version() {
 void dump_token_stream() {
 #ifndef SHOW_KEYWORD_FILTER
 	for (c_token c : source_file.c_token_vector) {
-		std::cout << source_file.filename << c;
+		std::cout << source_file.filename << c << std::endl;
 	}
 #else
 	for (c_token c : source_file.c_token_vector) {
