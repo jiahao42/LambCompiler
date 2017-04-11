@@ -59,7 +59,7 @@ void dump_token_stream() {
 		if (keyword.end() == it)
 			std::cout << source_file.filename << c << std::endl;
 		else
-			std::cout << source_file.filename << c << " keyword" << std::endl;
+			std::cout << source_file.filename << c << " [keyword]" << std::endl;
 	}
 #endif
 }
