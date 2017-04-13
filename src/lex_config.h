@@ -21,6 +21,7 @@
  * Print the log, see test.h
  */
 #define PRINT_LOG
+#undef PRINT_LOG
 
 /*
  * If show keyword judgement when dumping token stream to console
