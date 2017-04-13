@@ -12,6 +12,7 @@ enum ERROR_ID {
 	INVALID_IDENTIFIER,
 	UNKNOWN_TYPE,
 	TOO_LONG_IDENTIFIER,
+	TOO_MANY_DECIMAL_POINTS,
 };
 
 /*
@@ -22,6 +23,7 @@ const std::string ERROR_STRING[] = {
 	" invalid identifier ",
 	" unknown type name ",
 	" the length of identifier is too long ",
+	" too many decimal points in number ",
 };
 
 /*

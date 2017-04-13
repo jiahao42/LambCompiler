@@ -3,7 +3,7 @@ void function(int para) {
 }
 
 struct test {
-    int tmp;
+    int tmp = 123.456.789;
 };
 
 int main() {

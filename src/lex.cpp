@@ -345,7 +345,7 @@ void parse_num_decimal(size_t& idx) {
 	while (ISDIGIT(cur_line[idx]) || ISDOT(cur_line[idx])) {		/* While is digit */
 		if (ISDOT(cur_line[idx])) {									/* If meet a dot */
 			if (dot_flag) {											/* Already has a dot before */
-				
+				PUSH_ERROR(cur_line_info.linenum, start, TOO_MANY_DECIMAL_POINTS);
 				break;
 			} else {
 				dot_flag = true;									/* Meet a dot in the first time */
