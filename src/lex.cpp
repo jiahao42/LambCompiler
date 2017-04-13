@@ -100,6 +100,8 @@ void lex() {
 				PRINT("parse hex number");
 				idx += 2;									/* TODO */
 				parse_num_hex(idx);
+			} else if (ISDOT(cur_line[idx + 1])) {			/* decimal point */
+				parse_num_decimal(idx);
 			} else if (!ISDIGIT(cur_line[idx + 1])) {		/* 0 */
 				PUSH_TOKEN(C_NUMBER, "0");
 				idx++;
@@ -362,7 +364,6 @@ void parse_num_hex(size_t& idx) {
 	while (ISHEX(cur_line[idx])) {
 		idx++;
 	}
-	
 	PUSH_TOKEN_LITERAL(C_NUMBER, "0x" + cur_line.substr(start, idx - start));
 }
 

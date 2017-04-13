@@ -1,5 +1,5 @@
 void function(int para) {
-    return 0;
+    return 0.01;
 }
 
 struct test {
