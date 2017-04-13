@@ -8,7 +8,8 @@
 
 #define ISDIGIT(ch)         	((ch) >= '0' && (ch) <= '9')
 #define ISDIGIT1TO9(ch)     	((ch) >= '1' && (ch) <= '9')
-#define ISDIGIT0(ch)			((ch) == '0'))
+#define ISDIGIT0(ch)			((ch) == '0')
+#define ISDOT(ch)				((ch) == '.')
 #define ISHEX(ch)				(ISDIGIT((ch)) || ((ch) >= 'a' && (ch) <= 'f') || ((ch) >= 'A' && (ch) <= 'F'))
 #define ISWHITESPACE(ch)		((ch) == ' ')
 #define ISLETTER(ch)			(((ch) >= 'a' && (ch) <= 'z') || ((ch >= 'A') && (ch) <= 'Z'))
@@ -92,7 +93,7 @@ void lex() {
 		} else if (ISWHITESPACE(cur_line[idx])) {					/* Trim space */
 			PRINT("parse whitespace");
 			trim_space(idx);
-		} else if (ISDIGIT0(cur_line[idx]) {				/* Start with 0 */
+		} else if (ISDIGIT0(cur_line[idx])) {				/* Start with 0 */
 			if (cur_line[idx + 1] == 'x' || cur_line[idx + 1] == 'X') { 				/* Hexadecimal */
 				PRINT("parse hex number");
 				idx += 2;									/* TODO */
@@ -340,7 +341,16 @@ void trim_space(size_t& idx) {
 }
 void parse_num_decimal(size_t& idx) {
 	size_t start = idx;
-	while (ISDIGIT(cur_line[idx])) {		/* While is digit */
+	bool dot_flag = false;
+	while (ISDIGIT(cur_line[idx]) || ISDOT(cur_line[idx])) {		/* While is digit */
+		if (ISDOT(cur_line[idx])) {									/* If meet a dot */
+			if (dot_flag) {											/* Already has a dot before */
+				
+				break;
+			} else {
+				dot_flag = true;									/* Meet a dot in the first time */
+			}
+		}
 		idx++;
 	}
 	PUSH_TOKEN_LITERAL(C_NUMBER, cur_line.substr(start, idx - start));

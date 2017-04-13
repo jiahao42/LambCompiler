@@ -37,7 +37,5 @@ token.o:
 error.o:
 	$(CXX) $(CXXFLAGS) -o $(OBJ)/error.o -c $(ERROR_CPP)
 
-
-
 clean:
 	rm $(OBJ)/*.o

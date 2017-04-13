@@ -7,15 +7,12 @@ struct test {
 };
 
 int main() {
-    int i, _j;//This is a comment
+    int i, _j;//This is a single line comment
     /*
-     * This
-     * is
-     * a
-     * multi-line
-     * 注释
+     * This is a
+     * multi-line 注释
      */abc
-    size_t size;
+    size_t size = 123.456;
     struct test t;
     const char* s = "he110\" w0r1d";
     char c = 'hello';//中文
