@@ -1,3 +1,6 @@
+//LambLexer
+//by James 2017/04/06
+
 #ifndef LAMBLEXER_UTIL_H_
 #define LAMBLEXER_UTIL_H_
 

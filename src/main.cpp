@@ -1,3 +1,6 @@
+//LambLexer
+//by James 2017/04/06
+
 #include "lex_config.h"
 #include "lex.h"
 #include "token.h"
