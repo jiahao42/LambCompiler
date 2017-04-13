@@ -7,7 +7,7 @@ struct test {
 };
 
 int main() {
-    int i, _j;//This is a single line comment
+    int i = 01234, _j = 056983;//This is a single line comment
     /*
      * This is a
      * multi-line 注释

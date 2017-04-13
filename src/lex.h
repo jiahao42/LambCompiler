@@ -22,6 +22,11 @@ void parse_num_decimal(size_t&);
 void parse_num_hex(size_t&);
 
 /*
+ * Parse octal number
+ */
+void parse_num_oct(size_t&);
+
+/*
  * Parse identifier, start with letter or underscore
  */
 void parse_identifier(size_t&);

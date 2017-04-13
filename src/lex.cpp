@@ -11,6 +11,7 @@
 #define ISDIGIT0(ch)			((ch) == '0')
 #define ISDOT(ch)				((ch) == '.')
 #define ISHEX(ch)				(ISDIGIT((ch)) || ((ch) >= 'a' && (ch) <= 'f') || ((ch) >= 'A' && (ch) <= 'F'))
+#define ISOCT(ch)				((ch) >= '0' && (ch) <= '7')
 #define ISWHITESPACE(ch)		((ch) == ' ')
 #define ISLETTER(ch)			(((ch) >= 'a' && (ch) <= 'z') || ((ch >= 'A') && (ch) <= 'Z'))
 #define ISUNDERSCORE(ch)		((ch) == '_')
@@ -68,6 +69,7 @@ extern std::queue<_warning> warning_queue;
 void trim_space(size_t&);
 void parse_num_decimal(size_t&);
 void parse_num_hex(size_t&);
+void parse_num_oct(size_t&);
 void parse_identifier(size_t&);
 void parse_char(size_t&);
 void parse_string(size_t&);
@@ -101,8 +103,8 @@ void lex() {
 			} else if (!ISDIGIT(cur_line[idx + 1])) {		/* 0 */
 				PUSH_TOKEN(C_NUMBER, "0");
 				idx++;
-			} else { 										/* Start with 0 but not hexadecimal, just skip it */
-				idx++;
+			} else { 										/* Start with 0, octal number */
+				parse_num_oct(idx);
 			}
 		} else if (ISDIGIT1TO9(cur_line[idx])) { 			/* Decimal */
 			PRINT("parse decimal number");
@@ -363,6 +365,20 @@ void parse_num_hex(size_t& idx) {
 	
 	PUSH_TOKEN_LITERAL(C_NUMBER, "0x" + cur_line.substr(start, idx - start));
 }
+
+void parse_num_oct(size_t& idx) {
+	size_t start = idx;
+	bool not_pushed_flag = true; 										/* if it has not been pushed */
+	while (ISDIGIT(cur_line[idx])) {
+		if (not_pushed_flag && !ISOCT(cur_line[idx])) {					/* number 8 and 9 is invalid for octal */
+			PUSH_ERROR(cur_line_info.linenum, start, INVALID_OCTAL_NUMBER);
+			not_pushed_flag = false;
+		}
+		idx++;
+	}
+	PUSH_TOKEN_LITERAL(C_NUMBER, cur_line.substr(start, idx - start));
+}
+
 void parse_identifier(size_t& idx) {
 	size_t start = idx;
 	while (ISIDENTIFIER(cur_line[idx])) {
