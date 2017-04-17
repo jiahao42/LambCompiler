@@ -26,7 +26,7 @@
 
 
 /*
- * Simple wrap for push token
+ * Simple wrap for push token, used for token which length = 1
  */
 #define PUSH_TOKEN(type, name) \
 	do {\
@@ -35,7 +35,7 @@
 	}while(0)
 		
 /*
- * Simple wrap for push token
+ * Simple wrap for push token, used for token which length > 1
  */
 #define PUSH_TOKEN_LITERAL(type, name) \
 	do {\
@@ -68,18 +68,9 @@ extern source source_file;
 extern std::queue<_error> error_queue;
 extern std::queue<_warning> warning_queue;
 
-
-void trim_space(size_t&);
-void parse_num_decimal(size_t&);
-void parse_num_hex(size_t&);
-void parse_num_oct(size_t&);
-void parse_identifier(size_t&);
-void parse_char(size_t&);
-void parse_string(size_t&);
-void parse_single_line_comment(size_t&);
-void parse_multi_line_comment(size_t&);
-
-
+/*
+ * Represent the current token
+ */
 c_token token;
 /*
  * If current line is one of multi-line comment?
