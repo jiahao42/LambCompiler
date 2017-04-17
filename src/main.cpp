@@ -82,9 +82,9 @@ int main(int argc, char** argv) {
 	}
 #ifdef DUMP_TOKEN_STREAM
 	dump_token_stream();
-#endif
 	POP_WARNING();
 	POP_ERROR();
+#endif
 	/* printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count); */
 	return 0;
 }

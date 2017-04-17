@@ -8,21 +8,19 @@ extern source source_file;
 
 
 /*
- * error code of parsing
+ * Error ID of parsing
  */
 enum ERROR_ID {
-	NO_ERROR = 0,
-	INVALID_IDENTIFIER,
+	INVALID_IDENTIFIER = 0,
 	UNKNOWN_TYPE,
 	TOO_MANY_DECIMAL_POINTS,
 	INVALID_OCTAL_NUMBER,
 };
 
 /*
- * error string
+ * Error string
  */
 const std::string ERROR_STRING[] = {
-	" no error ",
 	" invalid identifier ",
 	" unknown type name ",
 	" too many decimal points in number ",
@@ -30,7 +28,7 @@ const std::string ERROR_STRING[] = {
 };
 
 /*
- * warning code of parsing
+ * Warning ID of parsing
  */
 enum WARING_ID {
 	CHAR_TOO_LONG = 0,
@@ -38,7 +36,7 @@ enum WARING_ID {
 };
 
 /*
- * warning string
+ * Warning string
  */
 const std::string WARNING_STRING[] = {
 	" character constant too long for its type ",
