@@ -81,8 +81,14 @@ void parse_multi_line_comment(size_t&);
 
 
 c_token token;
+/*
+ * If current line is one of multi-line comment?
+ */
 bool is_comment = false;
 
+/*
+ * Set the line number of token
+ */
 void init_token() {
 	token.set_line(cur_line_info.linenum);
 }

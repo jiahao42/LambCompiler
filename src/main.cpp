@@ -68,15 +68,9 @@ int main(int argc, char** argv) {
 	if (argv[1][0] == '-') {
 		switch(argv[1][1]) {
 			case 'h':
-			   /*
-				* Help menu
-				*/
 				help_menu();
 				break;
 			case 'v':
-			   /*
-				* Show version
-				*/
 				show_version();
 				break;
 			default:
