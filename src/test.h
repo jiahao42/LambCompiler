@@ -33,7 +33,7 @@
 #ifdef PRINT_LOG
 #define PRINT(msg) std::cout << "msg: " << msg << std::endl;
 #else
-#define PRINT(mes) do{}while(0)
+#define PRINT(msg) do{}while(0)
 #endif
 
 #endif /* end of LAMBLEXER_TEST_H_ */
