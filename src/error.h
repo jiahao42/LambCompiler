@@ -14,7 +14,6 @@ enum ERROR_ID {
 	NO_ERROR = 0,
 	INVALID_IDENTIFIER,
 	UNKNOWN_TYPE,
-	TOO_LONG_IDENTIFIER,
 	TOO_MANY_DECIMAL_POINTS,
 	INVALID_OCTAL_NUMBER,
 };
@@ -26,9 +25,8 @@ const std::string ERROR_STRING[] = {
 	" no error ",
 	" invalid identifier ",
 	" unknown type name ",
-	" the length of identifier is too long ",
 	" too many decimal points in number ",
-	"  invalid digit in octal constant ",
+	" invalid digit in octal constant ",
 };
 
 /*
@@ -36,6 +34,7 @@ const std::string ERROR_STRING[] = {
  */
 enum WARING_ID {
 	CHAR_TOO_LONG = 0,
+	TOO_LONG_IDENTIFIER,
 };
 
 /*
@@ -43,6 +42,7 @@ enum WARING_ID {
  */
 const std::string WARNING_STRING[] = {
 	" character constant too long for its type ",
+	" the length of identifier is too long ",
 };
 
 /*

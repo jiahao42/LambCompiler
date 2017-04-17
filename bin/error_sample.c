@@ -7,6 +7,5 @@
 
 int main() {
     int 3a;
-    int abcdefghijklmnopqrstuvwxyz1234567;
+    int abcdefghijklmnopqrstuvwxyz12345678910;
 }
->

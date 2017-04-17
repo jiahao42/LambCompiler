@@ -394,9 +394,14 @@ void parse_identifier(size_t& idx) {
 	while (ISIDENTIFIER(cur_line[idx])) {
 		idx++;
 	}
-	if (idx - start > LONGEST_IDENTIFIER_LENGTH)
-		PUSH_ERROR(cur_line_info.linenum, start, TOO_LONG_IDENTIFIER);
-	PUSH_TOKEN_LITERAL(C_NAME, cur_line.substr(start, idx - start));
+	/* If the identifier is too long, push warning, and take the valid part */
+	if (idx - start > LONGEST_IDENTIFIER_LENGTH) {	
+		PUSH_WARNING(cur_line_info.linenum, start, TOO_LONG_IDENTIFIER);
+		PUSH_TOKEN_LITERAL(C_NAME, cur_line.substr(start, LONGEST_IDENTIFIER_LENGTH));
+	} else {
+		PUSH_TOKEN_LITERAL(C_NAME, cur_line.substr(start, idx - start));
+	}
+	
 }
 
 void parse_char(size_t& idx) {					/* The first ' has been skipped */
@@ -404,8 +409,9 @@ void parse_char(size_t& idx) {					/* The first ' has been skipped */
 	while (!ISREAL1QUOTE(cur_line[idx - 1], cur_line[idx])) {			/* How far will it meet ' ? */
 		idx++;
 	}
-	if (idx - start > 1)						/* Only 1 character can exist bewteen '' */
+	if (idx - start > 1) {						/* Only 1 character can exist bewteen '' */
 		PUSH_WARNING(cur_line_info.linenum, start, CHAR_TOO_LONG);
+	}
 	PUSH_TOKEN_LITERAL(C_CHAR, cur_line.substr(start, 1));
 	idx++;										/* Skip the final ' */
 }
