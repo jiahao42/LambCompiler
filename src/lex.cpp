@@ -399,11 +399,15 @@ void parse_identifier(size_t& idx) {
 
 void parse_char(size_t& idx) {					/* The first ' has been skipped */
 	size_t start = idx;
-	while (!ISREAL1QUOTE(cur_line[idx - 1], cur_line[idx])) {			/* How far will it meet ' ? */
+	while (ISNOTEOS(cur_line[idx]) && !ISREAL1QUOTE(cur_line[idx - 1], cur_line[idx])) {			/* How far will it meet ' ? */
 		idx++;
 	}
 	if (idx - start > 1) {						/* Only 1 character can exist bewteen '' */
 		PUSH_WARNING(cur_line_info.linenum, start, CHAR_TOO_LONG);
+	}
+	
+	if (idx == cur_line.size()) {
+		PUSH_ERROR(cur_line_info.linenum, start, MISSING_TERMINATING_1_QUOTE);
 	}
 	PUSH_TOKEN_LITERAL(C_CHAR, cur_line.substr(start, 1));
 	idx++;										/* Skip the final ' */

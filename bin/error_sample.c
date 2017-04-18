@@ -9,4 +9,5 @@ int main() {
     int 3a;
     int abcdefghijklmnopqrstuvwxyz12345678910;
     const char* s = "hello
+    char a = '111
 }
