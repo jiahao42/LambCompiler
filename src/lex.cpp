@@ -19,7 +19,8 @@
 #define ISLETTER(ch)			(((ch) >= 'a' && (ch) <= 'z') || ((ch >= 'A') && (ch) <= 'Z'))
 #define ISUNDERSCORE(ch)		((ch) == '_')
 #define ISIDENTIFIER(ch)		(ISDIGIT((ch)) || ISLETTER((ch)) || ISUNDERSCORE((ch)))
-#define ISNOTEOF(ch)				((ch) != EOF)
+#define ISNOTEOF(ch)			((ch) != EOF)
+#define ISNOTEOS(ch)			((ch) != '\0')	/* Is not end of string */
 /* must consider the escape ' and " */
 #define ISREAL1QUOTE(ch1, ch2)	((ch1) != '\\' && (ch2) == '\'')
 #define ISREAL2QUOTE(ch1, ch2)	((ch1) != '\\' && (ch2) == '\"')
@@ -359,6 +360,7 @@ void parse_num_decimal(size_t& idx) {
 	}
 	PUSH_TOKEN_LITERAL(C_NUMBER, cur_line.substr(start, idx - start));
 }
+
 void parse_num_hex(size_t& idx) {
 	size_t start = idx;
 	while (ISHEX(cur_line[idx])) {
@@ -408,8 +410,11 @@ void parse_char(size_t& idx) {					/* The first ' has been skipped */
 }
 void parse_string(size_t& idx) {				/* The first " has been skipped */
 	size_t start = idx;
-	while (!ISREAL2QUOTE(cur_line[idx - 1], cur_line[idx])) {
+	while (ISNOTEOS(cur_line[idx]) && !ISREAL2QUOTE(cur_line[idx - 1], cur_line[idx])) {
 		idx++;
+	}
+	if (idx == cur_line.size()) {
+		PUSH_ERROR(cur_line_info.linenum, start, MISSING_TERMINATING_2_QUOTE);
 	}
 	PUSH_TOKEN_LITERAL(C_STRING, cur_line.substr(start, idx - start));
 	idx++;										/* Skip the final " */

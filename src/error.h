@@ -15,6 +15,7 @@ enum ERROR_ID {
 	UNKNOWN_TYPE,
 	TOO_MANY_DECIMAL_POINTS,
 	INVALID_OCTAL_NUMBER,
+	MISSING_TERMINATING_2_QUOTE,
 };
 
 /*
@@ -25,6 +26,7 @@ const std::string ERROR_STRING[] = {
 	" unknown type name ",
 	" too many decimal points in number ",
 	" invalid digit in octal constant ",
+	" missing terminating \" character "
 };
 
 /*

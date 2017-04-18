@@ -42,7 +42,4 @@
 const std::string version = "0.0.1";
 
 
-
-
-
 #endif /* end of LAMBLEXER_LEX_CONFIG_H_ */
