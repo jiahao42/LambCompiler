@@ -4,6 +4,21 @@
 #ifndef LAMBLEXER_LEX_H_
 #define LAMBLEXER_LEX_H_
 
+/*
+ * Interface of lexer
+ */
+int lex_main(int argc, char** argv);
+
+/*
+ * Read file and start to lex
+ */
+void read_file();
+
+/*
+ * Initialize the symbol table
+ */
+void init_symbol_table(const char* filedir, const char* filename);
+
 /* 
  * main function of lex 
  */
