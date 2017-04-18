@@ -5,7 +5,7 @@
 #define LAMBLEXER_LEX_H_
 
 /*
- * Interface of lexer
+ * Interface of the lexer
  */
 int lex_main(int argc, char** argv);
 
@@ -18,6 +18,11 @@ void read_file();
  * Initialize the symbol table
  */
 void init_symbol_table(const char* filedir, const char* filename);
+
+/*
+ * Set the line number of token
+ */
+void init_token();
 
 /* 
  * main function of lex 

@@ -138,7 +138,7 @@ void init_symbol_table(const char* filedir, const char* filename) {
 
 
 /*
- * Simple wrap for push token, used for token which length = 1
+ * Simple wrap for push token, used for operator token
  */
 #define PUSH_TOKEN(type, name) \
 	do {\
@@ -147,7 +147,7 @@ void init_symbol_table(const char* filedir, const char* filename) {
 	}while(0)
 		
 /*
- * Simple wrap for push token, used for token which length > 1
+ * Simple wrap for push token, used for other token
  */
 #define PUSH_TOKEN_LITERAL(type, name) \
 	do {\
@@ -172,13 +172,6 @@ void init_symbol_table(const char* filedir, const char* filename) {
 		_warning w(WARNING_ID, linenum, col);\
 		warning_queue.push(w);\
 	}while(0)
-
-
-extern std::string cur_line;
-extern line cur_line_info;
-extern source source_file;
-extern std::queue<_error> error_queue;
-extern std::queue<_warning> warning_queue;
 
 /*
  * Represent the current token
