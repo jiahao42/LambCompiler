@@ -21,20 +21,21 @@
 	
 #define EXPECT_EQ_INT(expect, actual) EXPECT_EQ_BASE((expect) == (actual), expect, actual, "%d")
 #define EXPECT_EQ_DOUBLE(expect, actual) EXPECT_EQ_BASE((expect) == (actual), expect, actual, "%.17g")
-#define EXPECT_EQ_STRING(expect, actual, alength) \
-    EXPECT_EQ_BASE(sizeof(expect) - 1 == alength && memcmp(expect, actual, alength + 1) == 0, expect, actual, "%s")
+#define EXPECT_EQ_STRING(expect, actual) \
+    EXPECT_EQ_BASE(actual.compare(expect) == 0, expect, actual.c_str(), "%s")
 #define EXPECT_TRUE(actual) EXPECT_EQ_BASE((actual) != 0, "true", "false", "%s")
 #define EXPECT_FALSE(actual) EXPECT_EQ_BASE((actual) == 0, "false", "true", "%s")
 
-#define GET_TOKEN(idx) source_file.get_token(idx)
+#define GET_TOKEN_TYPE(idx) source_file.get_token_type(idx)
+#define GET_TOKEN_NAME(idx) source_file.get_token_name(idx)
 
 extern std::string cur_line;
 extern line cur_line_info;
 extern source source_file;
 
-int test_count = 0;
-int test_pass = 0;
-int main_ret = 0;
+static int test_count = 0;
+static int test_pass = 0;
+static int main_ret = 0;
 
 void test_lexer() {
 	std::vector<std::string> test_operator = {	
@@ -79,14 +80,29 @@ void test_lexer() {
 		"			cc = 'hello world';						", /* character constant too long for its type */
 	};
 	
+	/* Test operator */
 	for (std::string s : test_operator) {
 		cur_line = s;
 		cur_line_info++;
 		lex();
 	}
-	for (int i = 0; i < 46; i++) {
-		EXPECT_EQ_INT(i, GET_TOKEN(i));
+	int i = 0;
+	for ( ; i < 46; i++) {
+		EXPECT_EQ_INT(i, GET_TOKEN_TYPE(i));
 	}
+	
+	/* Test number */
+	for (std::string s : test_number) {
+		cur_line = s;
+		cur_line_info++;
+		lex();
+	}
+	i += 3;
+	EXPECT_EQ_INT(C_NUMBER, GET_TOKEN_TYPE(i));
+	EXPECT_EQ_STRING("123", GET_TOKEN_NAME(i));
+	i += 5;
+	EXPECT_EQ_INT(C_NUMBER, GET_TOKEN_TYPE(i));
+	EXPECT_EQ_STRING("123.456", GET_TOKEN_NAME(i));
 	
 	printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);
 }

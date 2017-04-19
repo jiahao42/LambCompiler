@@ -4,7 +4,7 @@
 #ifndef LAMBLEXER_TEST_H_
 #define LAMBLEXER_TEST_H_
 
-
+/* Test function for lexer */
 void test_lexer();
 
 
