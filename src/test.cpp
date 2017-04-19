@@ -30,6 +30,7 @@
 #define EXPECT_TRUE(actual) EXPECT_EQ_BASE((actual) != 0, "true", "false", "%s")
 #define EXPECT_FALSE(actual) EXPECT_EQ_BASE((actual) == 0, "false", "true", "%s")
 
+#define GET_TOKEN(idx) source_file.get_token(idx)
 
 extern std::string cur_line;
 extern line cur_line_info;
@@ -87,7 +88,10 @@ void test_lexer() {
 		cur_line_info++;
 		lex();
 	}
-	EXPECT_EQ_INT(C_EQ, source_file.get_token(0));
+	for (int i = 0; i < 46; i++) {
+		EXPECT_EQ_INT(i, GET_TOKEN(i));
+	}
+	
 	printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);
 }
 
