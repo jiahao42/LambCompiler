@@ -103,6 +103,12 @@ void test_lexer() {
 	i += 5;
 	EXPECT_EQ_INT(C_NUMBER, GET_TOKEN_TYPE(i));
 	EXPECT_EQ_STRING("123.456", GET_TOKEN_NAME(i));
+	i += 5;
+	EXPECT_EQ_INT(C_NUMBER, GET_TOKEN_TYPE(i));
+	EXPECT_EQ_STRING("0xff00", GET_TOKEN_NAME(i));
+	i += 5;
+	EXPECT_EQ_INT(C_NUMBER, GET_TOKEN_TYPE(i));
+	EXPECT_EQ_STRING("0123", GET_TOKEN_NAME(i));
 	
 	printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);
 }
