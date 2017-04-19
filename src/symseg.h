@@ -365,6 +365,9 @@ struct source
 	void push(c_token c) {
 		c_token_vector.push_back(c);
 	}
+	c_ttype& get_token(size_t idx) {
+		return c_token_vector[idx].type;
+	}
 };
 
 #endif /* end of LAMBLEXER_SYMSEG_H_ */

@@ -4,7 +4,6 @@
 #ifndef LAMBLEXER_LEX_CONFIG_H_
 #define LAMBLEXER_LEX_CONFIG_H_
 
-#define TEST_ON
 
 #include <iostream>
 #include <cstring>
@@ -16,9 +15,15 @@
 #include <unordered_map>
 
 /*
+ * The test switch, see test.cpp
+ */
+#define TEST_ON
+
+/*
  * Output token stream to console or not, see util.h
  */
 #define DUMP_TOKEN_STREAM
+#undef DUMP_TOKEN_STREAM
 
 /*
  * Print the log

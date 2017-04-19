@@ -93,7 +93,6 @@ int lex_main(int argc, char** argv) {
 	POP_WARNING();
 	POP_ERROR();
 #endif /* end of DUMP_TOKEN_STREAM */
-	/* printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count); */
 	return 0;
 }
 
@@ -102,7 +101,6 @@ int lex_main(int argc, char** argv) {
  */
 void read_file() {
 	file.open(source_file.filename);
-	EXPECT_TRUE(file.is_open());
 	if (file.is_open()) {
 		while (std::getline(file, cur_line)) {
 			cur_line_info++;
