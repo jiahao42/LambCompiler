@@ -4,7 +4,7 @@
 #include "symseg.h"
 #include "lex.h"
 
-#ifdef TEST_ON
+
 /*
  * Simple Test Framework
  */
@@ -18,10 +18,6 @@
 			fprintf(stderr,"%s:%d: expect: " format " actual: " format "\n",__FILE__,__LINE__,expect,actual);\
 		}	\
 	}while (0)
-
-#else
-#define EXPECT_EQ_BASE(equality, expect, actual, format) do{} while(0)
-#endif /* end of TEST_ON */
 	
 #define EXPECT_EQ_INT(expect, actual) EXPECT_EQ_BASE((expect) == (actual), expect, actual, "%d")
 #define EXPECT_EQ_DOUBLE(expect, actual) EXPECT_EQ_BASE((expect) == (actual), expect, actual, "%.17g")
