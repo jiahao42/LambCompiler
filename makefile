@@ -21,11 +21,12 @@ UTIL_CPP = $(SRC)/util.cpp
 TOKEN_CPP = $(SRC)/token.cpp
 MAIN_CPP = $(SRC)/main.cpp
 ERROR_CPP = $(SRC)/error.cpp
+TEST_CPP = $(SRC)/test.cpp
 
-OBJS = lex.o token.o error.o util.o main.o 
+OBJS = lex.o test.o token.o error.o util.o main.o 
 
-all: $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(EXE) $(OBJ)/lex.o $(OBJ)/token.o $(OBJ)/util.o  $(OBJ)/error.o $(OBJ)/main.o
+lexer: $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $(EXE) $(OBJ)/lex.o $(OBJ)/test.o $(OBJ)/token.o $(OBJ)/util.o  $(OBJ)/error.o $(OBJ)/main.o
 main.o:
 	$(CXX) $(CXXFLAGS) -o $(OBJ)/main.o -c $(MAIN_CPP)
 lex.o: 
@@ -36,6 +37,8 @@ token.o:
 	$(CXX) $(CXXFLAGS) -o $(OBJ)/token.o -c $(TOKEN_CPP)
 error.o:
 	$(CXX) $(CXXFLAGS) -o $(OBJ)/error.o -c $(ERROR_CPP)
+test.o:
+	$(CXX) $(CXXFLAGS) -o $(OBJ)/test.o -c $(TEST_CPP)
 
 clean:
 	rm $(OBJ)/*.o

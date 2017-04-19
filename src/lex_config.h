@@ -4,7 +4,7 @@
 #ifndef LAMBLEXER_LEX_CONFIG_H_
 #define LAMBLEXER_LEX_CONFIG_H_
 
-#define DEBUG
+#define TEST_ON
 
 #include <iostream>
 #include <cstring>
@@ -21,10 +21,19 @@
 #define DUMP_TOKEN_STREAM
 
 /*
- * Print the log, see test.h
+ * Print the log
  */
 #define PRINT_LOG
 #undef PRINT_LOG
+
+/* 
+ * This macro is for DEBUG message
+ */
+#ifdef PRINT_LOG
+#define PRINT(msg) std::cout << "msg: " << msg << std::endl;
+#else
+#define PRINT(msg) do{}while(0)
+#endif
 
 /*
  * If show keyword judgement when dumping token stream to console

@@ -63,6 +63,10 @@ extern std::queue<_warning> warning_queue;
  * Interface of lexer
  */
 int lex_main(int argc, char** argv) {
+#ifdef TEST_ON
+	init_symbol_table("test_dummy", "test_dummy");
+	test_lexer();
+#else
 	if (argc == 1) {
 		std::cout << "Invalid parameter!" << std::endl;
 		return 0;
@@ -82,11 +86,13 @@ int lex_main(int argc, char** argv) {
 		init_symbol_table(argv[0], argv[1]);
 		read_file();
 	}
+#endif /* end of TEST_ON */
+
 #ifdef DUMP_TOKEN_STREAM
 	dump_token_stream();
 	POP_WARNING();
 	POP_ERROR();
-#endif
+#endif /* end of DUMP_TOKEN_STREAM */
 	/* printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count); */
 	return 0;
 }
@@ -95,7 +101,6 @@ int lex_main(int argc, char** argv) {
  * Read file and start to lex
  */
 void read_file() {
-	source_file.filename = symbol_table.filename;
 	file.open(source_file.filename);
 	EXPECT_TRUE(file.is_open());
 	if (file.is_open()) {
@@ -117,6 +122,7 @@ void init_symbol_table(const char* filedir, const char* filename) {
 	symbol_table.version = version;
 	symbol_table.language = language_c;
 	symbol_table.source_vector.push_back(source_file);
+	source_file.filename = symbol_table.filename;
 }
 
 

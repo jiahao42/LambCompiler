@@ -4,7 +4,7 @@
 #ifndef LAMBLEXER_TEST_H_
 #define LAMBLEXER_TEST_H_
 
-#ifndef NDEBUG
+#ifdef TEST_ON
 
 /*
  * Simple Test Framework
@@ -18,7 +18,7 @@
 
 #else
 #define EXPECT_EQ_BASE(equality, expect, actual, format) do{} while(0)
-#endif /* end of NDEBUG */
+#endif /* end of TEST_ON */
 	
 #define EXPECT_EQ_INT(expect, actual) EXPECT_EQ_BASE((expect) == (actual), expect, actual, "%d")
 #define EXPECT_EQ_DOUBLE(expect, actual) EXPECT_EQ_BASE((expect) == (actual), expect, actual, "%.17g")
@@ -27,13 +27,7 @@
 #define EXPECT_TRUE(actual) EXPECT_EQ_BASE((actual) != 0, "true", "false", "%s")
 #define EXPECT_FALSE(actual) EXPECT_EQ_BASE((actual) == 0, "false", "true", "%s")
 
-/* 
- * This macro is for DEBUG message, see lex_config.h
- */
-#ifdef PRINT_LOG
-#define PRINT(msg) std::cout << "msg: " << msg << std::endl;
-#else
-#define PRINT(msg) do{}while(0)
-#endif
+void test_lexer();
+
 
 #endif /* end of LAMBLEXER_TEST_H_ */
