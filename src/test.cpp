@@ -142,7 +142,12 @@ void test_lexer() {
 		cur_line_info++;
 		lex();
 	}
-	
+	i += 3; // index of "hello "world "
+	EXPECT_EQ_INT(C_STRING, GET_TOKEN_TYPE(i));
+	EXPECT_EQ_STRING("hello, \\\"world", GET_TOKEN_NAME(i));
+	i += 5; // index of "b"
+	EXPECT_EQ_INT(C_CHAR, GET_TOKEN_TYPE(i));
+	EXPECT_EQ_STRING("b", GET_TOKEN_NAME(i));
 	
 	
 	printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);
