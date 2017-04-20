@@ -18,6 +18,7 @@
  * The test switch, see test.cpp
  */
 #define TEST_ON
+//#undef TEST_ON
 
 /*
  * Output token stream to console or not, see util.h

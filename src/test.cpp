@@ -6,6 +6,7 @@
 #include "token.h"
 #include "symseg.h"
 #include "lex.h"
+#include "error.h"
 
 
 /*
@@ -36,22 +37,16 @@
 extern std::string cur_line;
 extern line cur_line_info;
 extern source source_file;
+extern std::queue<_error> error_queue;
+extern std::queue<_warning> warning_queue;
+extern const std::string ERROR_STRING[];
+extern const std::string WARNING_STRING[];
 
 static int test_count = 0;
 static int test_pass = 0;
 static int main_ret = 0;
 
 void test_lexer() {
-	
-	const std::vector<std::string> test_warning_and_error = {
-		"			int 3a;									", /* invalid identifier */
-		"			ÖÐÎÄ									", /* unknown type name */
-		"			int b = 123.456.789;					", /* too many decimal points in number */
-		"			int c = 09;								", /* too many decimal points in number */
-		"			string s = \"hello;						", /* missing terminating \" character */
-		"			char cc = 'h;							", /* missing terminating \' character */
-		"			cc = 'hello world';						", /* character constant too long for its type */
-	};
 	
 	/* Test operator */
 	const std::vector<std::string> test_operator = {	
@@ -148,6 +143,28 @@ void test_lexer() {
 	i += 5; // index of "b"
 	EXPECT_EQ_INT(C_CHAR, GET_TOKEN_TYPE(i));
 	EXPECT_EQ_STRING("b", GET_TOKEN_NAME(i));
+	
+	/* Test error */
+	const std::vector<std::string> test_error = {
+		"			int b = 123.456.789;					", /* too many decimal points in number */
+		"			int c = 09;								", /* invalid digit in octal constant */
+		"			string s = \"hello;						", /* missing terminating \" character */
+		"			char cc = 'h;							", /* missing terminating \' character */
+		"			¸ò										", /* unknown type name */
+	};
+	for (size_t idx = 0; idx < test_error.size(); idx++) {
+		cur_line = test_error[idx];
+		cur_line_info++;
+		lex();
+		EXPECT_EQ_INT(static_cast<int>(idx), error_queue.back().get_error_id());
+	}
+	PRINT(error_queue.size());
+	
+	/* Test warning */
+	const std::vector<std::string> test_warning = {
+		"			cc = 'hello world';						", /* character constant too long for its type */
+	};
+	
 	
 	
 	printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);

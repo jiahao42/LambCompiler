@@ -186,6 +186,7 @@ c_token token;
  */
 bool is_comment = false;
 
+
 /*
  * Set the line number of token
  */
@@ -202,11 +203,9 @@ void lex() {
 		if (is_comment) {									/* If still comment, keep parsing it */
 			parse_multi_line_comment(idx);
 		} else if (ISWHITESPACE(cur_line[idx])) {					/* Trim space */
-			PRINT("parse whitespace");
 			trim_space(idx);
 		} else if (ISDIGIT0(cur_line[idx])) {				/* Start with 0 */
 			if (cur_line[idx + 1] == 'x' || cur_line[idx + 1] == 'X') { 				/* Hexadecimal */
-				PRINT("parse hex number");
 				idx += 2;									/* TODO */
 				parse_num_hex(idx);
 			} else if (ISDOT(cur_line[idx + 1])) {			/* decimal point */
@@ -218,13 +217,10 @@ void lex() {
 				parse_num_oct(idx);
 			}
 		} else if (ISDIGIT1TO9(cur_line[idx])) { 			/* Decimal */
-			PRINT("parse decimal number");
 			parse_num_decimal(idx);
 		} else if (ISLETTER(cur_line[idx]) || ISUNDERSCORE(cur_line[idx])) {				/* Identifier or keyword */
-			PRINT("parse letter");
 			parse_identifier(idx);
 		} else { 											/* Operator or semicolon */
-			PRINT("parse operator");
 			switch(cur_line[idx]) {
 				case '=':
 					if (cur_line[idx + 1] == '=') { 			/* == */
@@ -326,11 +322,9 @@ void lex() {
 						PUSH_TOKEN(C_DIV_EQ, "/=");
 						idx += 2;
 					} else if (cur_line[idx + 1] == '/') {		/* //comment */
-						PRINT("parse single line comment");
 						idx += 2;
 						parse_single_line_comment(idx);
 					} else if (cur_line[idx + 1] == '*') {		/* multi-line comment */
-						PRINT("parse multi-line comment");
 						idx += 2;
 						parse_multi_line_comment(idx);
 					} else {									/* / */
