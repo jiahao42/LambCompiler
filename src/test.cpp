@@ -158,12 +158,17 @@ void test_lexer() {
 		lex();
 		EXPECT_EQ_INT(static_cast<int>(idx), error_queue.back().get_error_id());
 	}
-	PRINT(error_queue.size());
 	
 	/* Test warning */
 	const std::vector<std::string> test_warning = {
 		"			cc = 'hello world';						", /* character constant too long for its type */
 	};
+	for (size_t idx = 0; idx < test_warning.size(); idx++) {
+		cur_line = test_warning[idx];
+		cur_line_info++;
+		lex();
+		EXPECT_EQ_INT(static_cast<int>(idx), warning_queue.back().get_warning_id());
+	}
 	
 	
 	
