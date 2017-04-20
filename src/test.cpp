@@ -38,26 +38,7 @@ static int test_pass = 0;
 static int main_ret = 0;
 
 void test_lexer() {
-	std::vector<std::string> test_operator = {	
-		" 			=!><+-*/%&|^>><<~&&||?:,				",
-		"			()==!=>=<=+=-=*=/=%=&=|=				",
-		"			^=>>=<<=[]{};++--->.::					",
-	};
-	
-	std::vector<std::string> test_number = {
-		"			int a = 123;							",
-		"			int b = 123.456;						",
-		"			int c = 0xff00;							",
-		"			int d = 0123;							",
-	};
-	
-	std::vector<std::string> test_identifier = {
-		"			int a;									",
-		"			int _b;			 						",
-		"			int _c_d_1;								",
-	};
-	
-	std::vector<std::string> test_comment = {
+	const std::vector<std::string> test_comment = {
 		"			//This is a single line comment			",
 		"			/* This is a							",
 		"			 * multi-line							",
@@ -65,12 +46,12 @@ void test_lexer() {
 		"			 */										",
 	};
 	
-	std::vector<std::string> test_literal = {
+	const std::vector<std::string> test_literal = {
 		"			string s = \"hello, \\\"world\";		",
 		"			char c = 'b';							",
 	};
 	
-	std::vector<std::string> test_warning_and_error = {
+	const std::vector<std::string> test_warning_and_error = {
 		"			int 3a;									", /* invalid identifier */
 		"			ÖÐÎÄ									", /* unknown type name */
 		"			int b = 123.456.789;					", /* too many decimal points in number */
@@ -81,6 +62,11 @@ void test_lexer() {
 	};
 	
 	/* Test operator */
+	const std::vector<std::string> test_operator = {	
+		" 			=!><+-*/%&|^>><<~&&||?:,				",
+		"			()==!=>=<=+=-=*=/=%=&=|=				",
+		"			^=>>=<<=[]{};++--->.::					",
+	};
 	for (std::string s : test_operator) {
 		cur_line = s;
 		cur_line_info++;
@@ -91,7 +77,14 @@ void test_lexer() {
 		EXPECT_EQ_INT(i, GET_TOKEN_TYPE(i));
 	}
 	
+	
 	/* Test number */
+	const std::vector<std::string> test_number = {
+		"			int a = 123;							",
+		"			int b = 123.456;						",
+		"			int c = 0xff00;							",
+		"			int d = 0123;							",
+	};
 	for (std::string s : test_number) {
 		cur_line = s;
 		cur_line_info++;
@@ -109,6 +102,27 @@ void test_lexer() {
 	i += 5;
 	EXPECT_EQ_INT(C_NUMBER, GET_TOKEN_TYPE(i));
 	EXPECT_EQ_STRING("0123", GET_TOKEN_NAME(i));
+	
+	/* Test identifier */
+	const std::vector<std::string> test_identifier = {
+		"			int identifier;							",
+		"			int _identifier; 						",
+		"			int _identifier_1_plus;					",
+	};
+	for (std::string s : test_identifier) {
+		cur_line = s;
+		cur_line_info++;
+		lex();
+	}
+	i += 3;
+	EXPECT_EQ_INT(C_NAME, GET_TOKEN_TYPE(i));
+	EXPECT_EQ_STRING("identifier", GET_TOKEN_NAME(i));
+	i += 3;
+	EXPECT_EQ_INT(C_NAME, GET_TOKEN_TYPE(i));
+	EXPECT_EQ_STRING("_identifier", GET_TOKEN_NAME(i));
+	i += 3;
+	EXPECT_EQ_INT(C_NAME, GET_TOKEN_TYPE(i));
+	EXPECT_EQ_STRING("_identifier_1_plus", GET_TOKEN_NAME(i));
 	
 	printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);
 }
