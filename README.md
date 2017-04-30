@@ -2,10 +2,17 @@
 
 This is a simple lexer for a subset of ANSI C.
 
+
+### Version = 0.0.2
+The lexer has been rewritten to OO style.
+
 ### Usage
 
+* ./lexer [filename]
 
+* ./lexer -h
 
+* ./lexer -v
 
 ### screenshot:
 ![](https://raw.githubusercontent.com/Jameeeees/LambLexer/master/doc/screenshot.png)

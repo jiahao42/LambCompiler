@@ -18,13 +18,13 @@
  * The test switch, see test.cpp
  */
 #define TEST_ON
-//#undef TEST_ON
+#undef TEST_ON
 
 /*
- * Output token stream to console or not, see util.h
+ * Output token stream to console or not, see lex.h
  */
 #define DUMP_TOKEN_STREAM
-#undef DUMP_TOKEN_STREAM
+//#undef DUMP_TOKEN_STREAM
 
 /*
  * Print the log
