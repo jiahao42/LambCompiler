@@ -19,10 +19,7 @@ void help_menu();
  */
 void show_version();
 
-/*
- * Output token stream to console
- */
-void dump_token_stream();
+
 
 
 #endif /* end of LAMBLEXER_UTIL_H_ */

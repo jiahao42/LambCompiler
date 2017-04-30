@@ -92,8 +92,9 @@ enum rid
   TK(C_COMMENT,	SPELL_NUMBER)	/* Only if output comments.  */ \
                                         /* SPELL_NUMBER happens to DTRT.  */ \
   TK(C_PADDING,	SPELL_NONE)	/* Whitespace for cpp0.  */	\
-  TK(C_EOF,		SPELL_NONE)	/* End of line or file.  */
-
+  TK(C_EOF,		SPELL_NONE)	/* End of line or file.  */ 
+  
+ 
 #define OP(e, s) e,
 #define TK(e, s) e,
 enum c_ttype

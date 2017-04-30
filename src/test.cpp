@@ -24,10 +24,12 @@
 	}while (0)
 	
 #define EXPECT_EQ_INT(expect, actual) EXPECT_EQ_BASE((expect) == (actual), expect, actual, "%d")
-#define EXPECT_EQ_DOUBLE(expect, actual) EXPECT_EQ_BASE((expect) == (actual), expect, actual, "%.17g")
 #define EXPECT_EQ_STRING(expect, actual) \
     EXPECT_EQ_BASE(actual.compare(expect) == 0, expect, actual.c_str(), "%s")
 #define EXPECT_EQ_SIZE(expect, actual) EXPECT_EQ_BASE((expect) == (actual), expect, actual, "%zu")
+
+
+#define EXPECT_EQ_DOUBLE(expect, actual) EXPECT_EQ_BASE((expect) == (actual), expect, actual, "%.17g")
 #define EXPECT_TRUE(actual) EXPECT_EQ_BASE((actual) != 0, "true", "false", "%s")
 #define EXPECT_FALSE(actual) EXPECT_EQ_BASE((actual) == 0, "false", "true", "%s")
 
@@ -39,14 +41,12 @@ extern line cur_line_info;
 extern source source_file;
 extern std::queue<_error> error_queue;
 extern std::queue<_warning> warning_queue;
-extern const std::string ERROR_STRING[];
-extern const std::string WARNING_STRING[];
 
 static int test_count = 0;
 static int test_pass = 0;
 static int main_ret = 0;
 
-void test_lexer() {
+void lexer::test_lexer() {
 	
 	/* Test operator */
 	const std::vector<std::string> test_operator = {	
@@ -54,6 +54,7 @@ void test_lexer() {
 		"			()==!=>=<=+=-=*=/=%=&=|=				",
 		"			^=>>=<<=[]{};++--->.::					",
 	};
+	
 	for (std::string s : test_operator) {
 		cur_line = s;
 		cur_line_info++;
@@ -72,6 +73,7 @@ void test_lexer() {
 		"			int c = 0xff00;							",
 		"			int d = 0123;							",
 	};
+	
 	for (std::string s : test_number) {
 		cur_line = s;
 		cur_line_info++;
@@ -96,6 +98,7 @@ void test_lexer() {
 		"			int _identifier; 						",
 		"			int _identifier_1_plus;					",
 	};
+	
 	for (std::string s : test_identifier) {
 		cur_line = s;
 		cur_line_info++;
@@ -119,6 +122,7 @@ void test_lexer() {
 		"			 * ×¢ÊÍ									",
 		"			 */										",
 	};
+	
 	for (std::string s : test_comment) {
 		cur_line = s;
 		cur_line_info++;
@@ -132,6 +136,7 @@ void test_lexer() {
 		"			string s = \"hello, \\\"world\";		",
 		"			char c = 'b';							",
 	};
+	
 	for (std::string s : test_literal) {
 		cur_line = s;
 		cur_line_info++;
@@ -152,6 +157,7 @@ void test_lexer() {
 		"			char cc = 'h;							", /* missing terminating \' character */
 		"			¸ò										", /* unknown type name */
 	};
+	
 	for (size_t idx = 0; idx < test_error.size(); idx++) {
 		cur_line = test_error[idx];
 		cur_line_info++;
@@ -163,14 +169,13 @@ void test_lexer() {
 	const std::vector<std::string> test_warning = {
 		"			cc = 'hello world';						", /* character constant too long for its type */
 	};
+	
 	for (size_t idx = 0; idx < test_warning.size(); idx++) {
 		cur_line = test_warning[idx];
 		cur_line_info++;
 		lex();
 		EXPECT_EQ_INT(static_cast<int>(idx), warning_queue.back().get_warning_id());
 	}
-	
-	
 	
 	printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);
 }

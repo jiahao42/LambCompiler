@@ -1,14 +1,7 @@
 //LambLexer
 //by James 2017/04/06
 
-#include "lex_config.h"
-#include "token.h"
-#include "symseg.h"
-#include "test.h"
 #include "lex.h"
-#include "error.h"
-#include "util.h"
-
 
 /*
  * Pop the error from error queue and output the error to the console
@@ -32,6 +25,7 @@
 		}\
 	}while(0)
 
+#if 0
 /*
  * Symbol table, see symseg.h
  */
@@ -54,15 +48,16 @@ line cur_line_info;
  * See symseg.h
  */
 source source_file;
+#endif
 
 extern std::queue<_error> error_queue;
 extern std::queue<_warning> warning_queue;
-
+extern std::unordered_map<std::string, enum rid> keyword;
 
 /*
  * Interface of lexer
  */
-int lex_main(int argc, char** argv) {
+int lexer::lex_main(int argc, char** argv) {
 #ifdef TEST_ON
 	init_symbol_table("test_dummy", "test_dummy");
 	test_lexer();
@@ -99,7 +94,7 @@ int lex_main(int argc, char** argv) {
 /*
  * Read file and start to lex
  */
-void read_file() {
+void lexer::read_file() {
 	file.open(source_file.filename);
 	if (file.is_open()) {
 		while (std::getline(file, cur_line)) {
@@ -114,7 +109,7 @@ void read_file() {
 /*
  * Initialize the symbol table
  */
-void init_symbol_table(const char* filedir, const char* filename) {
+void lexer::init_symbol_table(const char* filedir, const char* filename) {
 	symbol_table.filedir = filedir;
 	symbol_table.filename = filename;
 	symbol_table.version = version;
@@ -175,8 +170,9 @@ void init_symbol_table(const char* filedir, const char* filename) {
 	do {\
 		_warning w(WARNING_ID, linenum, col);\
 		warning_queue.push(w);\
-	}while(0)
+	}while(0) 
 
+#if 0
 /*
  * Represent the current token
  */
@@ -185,19 +181,19 @@ c_token token;
  * If current line is one of multi-line comment?
  */
 bool is_comment = false;
-
+#endif
 
 /*
  * Set the line number of token
  */
-void init_token() {
+void lexer::init_token() {
 	token.set_line(cur_line_info.linenum);
 }
 
 /* 
  * main function of lex 
  */
-void lex() {
+void lexer::lex() {
 	init_token();
 	for (size_t idx = 0; idx < cur_line.size();) {
 		if (is_comment) {									/* If still comment, keep parsing it */
@@ -441,12 +437,12 @@ void lex() {
 
 
 
-void trim_space(size_t& idx) {
+void lexer::trim_space(size_t& idx) {
 	while (cur_line[idx] == ' ' && ISNOTEOF(cur_line[idx])) {
 		idx++;
 	}
 }
-void parse_num_decimal(size_t& idx) {
+void lexer::parse_num_decimal(size_t& idx) {
 	size_t start = idx;
 	bool dot_flag = false;
 	while (ISDIGIT(cur_line[idx]) || ISDOT(cur_line[idx])) {		/* While is digit */
@@ -463,7 +459,7 @@ void parse_num_decimal(size_t& idx) {
 	PUSH_TOKEN_LITERAL(C_NUMBER, cur_line.substr(start, idx - start));
 }
 
-void parse_num_hex(size_t& idx) {
+void lexer::parse_num_hex(size_t& idx) {
 	size_t start = idx;
 	while (ISHEX(cur_line[idx])) {
 		idx++;
@@ -471,7 +467,7 @@ void parse_num_hex(size_t& idx) {
 	PUSH_TOKEN_LITERAL(C_NUMBER, "0x" + cur_line.substr(start, idx - start));
 }
 
-void parse_num_oct(size_t& idx) {
+void lexer::parse_num_oct(size_t& idx) {
 	size_t start = idx;
 	bool not_pushed_flag = true; 										/* if it has not been pushed */
 	while (ISDIGIT(cur_line[idx])) {
@@ -484,7 +480,7 @@ void parse_num_oct(size_t& idx) {
 	PUSH_TOKEN_LITERAL(C_NUMBER, cur_line.substr(start, idx - start));
 }
 
-void parse_identifier(size_t& idx) {
+void lexer::parse_identifier(size_t& idx) {
 	size_t start = idx;
 	while (ISIDENTIFIER(cur_line[idx])) {
 		idx++;
@@ -499,7 +495,7 @@ void parse_identifier(size_t& idx) {
 	
 }
 
-void parse_char(size_t& idx) {					/* The first ' has been skipped */
+void lexer::parse_char(size_t& idx) {					/* The first ' has been skipped */
 	size_t start = idx;
 	while (ISNOTEOS(cur_line[idx]) && !ISREAL1QUOTE(cur_line[idx - 1], cur_line[idx])) {			/* How far will it meet ' ? */
 		idx++;
@@ -514,7 +510,7 @@ void parse_char(size_t& idx) {					/* The first ' has been skipped */
 	PUSH_TOKEN_LITERAL(C_CHAR, cur_line.substr(start, 1));
 	idx++;										/* Skip the final ' */
 }
-void parse_string(size_t& idx) {				/* The first " has been skipped */
+void lexer::parse_string(size_t& idx) {				/* The first " has been skipped */
 	size_t start = idx;
 	while (ISNOTEOS(cur_line[idx]) && !ISREAL2QUOTE(cur_line[idx - 1], cur_line[idx])) {
 		idx++;
@@ -525,11 +521,11 @@ void parse_string(size_t& idx) {				/* The first " has been skipped */
 	PUSH_TOKEN_LITERAL(C_STRING, cur_line.substr(start, idx - start));
 	idx++;										/* Skip the final " */
 }
-void parse_single_line_comment(size_t& idx) {	/* the first // has been skipped */
+void lexer::parse_single_line_comment(size_t& idx) {	/* the first // has been skipped */
 	while (idx < cur_line.size())				/* just skip to the end of the line */
 		idx++;
 }
-void parse_multi_line_comment(size_t& idx) {
+void lexer::parse_multi_line_comment(size_t& idx) {
 	if (is_comment) {							/* the status is in multi-line comment */
 		while (1) {
 			if ((idx + 1 < cur_line.size()) && cur_line[idx] == '*' && cur_line[idx + 1] == '/') {
@@ -547,7 +543,24 @@ void parse_multi_line_comment(size_t& idx) {
 }
 
 
-
+/*
+ * Output token stream to console
+ */
+void lexer::dump_token_stream() {
+#ifndef SHOW_KEYWORD_FILTER
+	for (c_token c : source_file.c_token_vector) {
+		std::cout << source_file.filename << c << std::endl;
+	}
+#else
+	for (c_token c : source_file.c_token_vector) {
+		auto it = keyword.find(c.name);
+		if (keyword.end() == it)
+			std::cout << source_file.filename << c << std::endl;
+		else
+			std::cout << source_file.filename << c << " [keyword]" << std::endl;
+	}
+#endif
+}
 
 
 
