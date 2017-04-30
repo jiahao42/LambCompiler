@@ -20,6 +20,11 @@ private:
 	source source_file; 			/* Stand for source file, including filename and lines' info, See symseg.h */
 	c_token token; 					/* Represent the current token */
 	bool is_comment; 				/* If current line is one of multi-line comment? */
+	int argc;
+	std::string filedir;
+	std::string filename;
+	std::queue<_error> error_queue;
+	std::queue<_warning> warning_queue;
 public:
 	lexer() { is_comment = false; }
 	int lex_main(int argc, char** argv); 		/* Interface of the lexer */

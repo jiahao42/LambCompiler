@@ -5,7 +5,7 @@
 #include "lex.h"
 
 int main(int argc, char** argv) {
-	lexer l(argc, argv);
+	lexer l;
 	return l.lex_main(argc, argv);
 }
 

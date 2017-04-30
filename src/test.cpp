@@ -36,12 +36,6 @@
 #define GET_TOKEN_TYPE(idx) source_file.get_token_type(idx)
 #define GET_TOKEN_NAME(idx) source_file.get_token_name(idx)
 
-extern std::string cur_line;
-extern line cur_line_info;
-extern source source_file;
-extern std::queue<_error> error_queue;
-extern std::queue<_warning> warning_queue;
-
 static int test_count = 0;
 static int test_pass = 0;
 static int main_ret = 0;

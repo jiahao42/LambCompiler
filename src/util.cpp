@@ -7,11 +7,6 @@
 #include "symseg.h"
 #include "test.h"
 
-extern symbol_root symbol_table;
-extern const std::string version;
-extern source source_file;
-
-
 /*
  * ELFHash, used for access varible in Symbol Table faster
  */

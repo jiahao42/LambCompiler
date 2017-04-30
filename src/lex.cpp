@@ -25,33 +25,6 @@
 		}\
 	}while(0)
 
-#if 0
-/*
- * Symbol table, see symseg.h
- */
-symbol_root symbol_table;
-/*
- * Current file
- */
-std::ifstream file;
-/*
- * Literally current line
- */
-std::string cur_line;
-/*
- * Information of current line, including line number and line address
- * See symseg.h
- */
-line cur_line_info;
-/*
- * Stand for source file, including filename and lines' info
- * See symseg.h
- */
-source source_file;
-#endif
-
-extern std::queue<_error> error_queue;
-extern std::queue<_warning> warning_queue;
 extern std::unordered_map<std::string, enum rid> keyword;
 
 /*
