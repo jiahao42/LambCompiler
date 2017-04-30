@@ -54,7 +54,7 @@
 /*
  * Version info
  */
-const std::string version = "0.0.1";
+const std::string version = "0.0.2";
 
 
 #endif /* end of LAMBLEXER_LEX_CONFIG_H_ */

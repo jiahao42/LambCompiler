@@ -145,17 +145,6 @@ void lexer::init_symbol_table(const char* filedir, const char* filename) {
 		warning_queue.push(w);\
 	}while(0) 
 
-#if 0
-/*
- * Represent the current token
- */
-c_token token;
-/*
- * If current line is one of multi-line comment?
- */
-bool is_comment = false;
-#endif
-
 /*
  * Set the line number of token
  */
