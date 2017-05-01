@@ -129,6 +129,9 @@ typedef struct c_token
 	void set_line(size_t _line) {
 		line = _line;
 	}
+	c_ttype& get_type() {
+		return type;
+	}
 }c_token;
 
 #endif /* end of LAMBLEXER_TOKEN_H_ */
