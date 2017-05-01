@@ -26,6 +26,10 @@
 	}while(0)
 
 extern std::unordered_map<std::string, enum rid> keyword;
+symbol_root symbol_table; 			/* Symbol table, see symseg.h */
+source source_file; 				/* Stand for source file, including filename and lines' info, See symseg.h */
+std::queue<_error> error_queue;		/* A queue used for storing error */
+std::queue<_warning> warning_queue; /* A queue used for storing warning */
 
 /*
  * Interface of lexer

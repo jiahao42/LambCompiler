@@ -22,10 +22,10 @@ TOKEN_CPP = $(SRC)/token.cpp
 MAIN_CPP = $(SRC)/main.cpp
 TEST_CPP = $(SRC)/test.cpp
 
-OBJS = lex.o test.o token.o util.o main.o 
+OBJS = test.o token.o lex.o util.o main.o 
 
 lexer: $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(EXE) $(OBJ)/test.o $(OBJ)/token.o $(OBJ)/util.o $(OBJ)/lex.o $(OBJ)/main.o 
+	$(CXX) $(CXXFLAGS) -o $(EXE) $(OBJ)/lex.o $(OBJ)/test.o $(OBJ)/token.o $(OBJ)/util.o $(OBJ)/main.o 
 main.o:
 	$(CXX) $(CXXFLAGS) -o $(OBJ)/main.o -c $(MAIN_CPP)
 lex.o: 

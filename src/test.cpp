@@ -8,6 +8,8 @@
 #include "lex.h"
 #include "error.h"
 
+extern std::queue<_error> error_queue;		/* A queue used for storing error */
+extern std::queue<_warning> warning_queue; /* A queue used for storing warning */
 
 /*
  * Simple Test Framework

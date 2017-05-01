@@ -7,5 +7,4 @@
 /* Test function for lexer */
 void test_lexer();
 
-
 #endif /* end of LAMBLEXER_TEST_H_ */

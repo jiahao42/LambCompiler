@@ -13,15 +13,11 @@
 
 class lexer {
 private:
-	symbol_root symbol_table; 			/* Symbol table, see symseg.h */
 	std::ifstream file; 				/* Current file */
 	std::string cur_line; 				/* Literally current line */
 	line cur_line_info; 				/* Information of current line, including line number and line address, See symseg.h */
-	source source_file; 				/* Stand for source file, including filename and lines' info, See symseg.h */
 	c_token token; 						/* Represent the current token */
 	bool is_comment; 					/* If current line is one of multi-line comment? */
-	std::queue<_error> error_queue;		/* A queue used for storing error */
-	std::queue<_warning> warning_queue; /* A queue used for storing warning */
 public:
 	lexer() { is_comment = false; }
 	int lex_main(int argc, char** argv); 		/* Interface of the lexer */
