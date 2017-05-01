@@ -362,16 +362,16 @@ struct source
 	/*
 	 * Simple wrap of push_back
 	 */
-	void push(c_token c) {
+	inline void push(c_token c) {
 		c_token_vector.push_back(c);
 	}
-	c_ttype& get_token_type(size_t idx) {
+	inline c_ttype& get_token_type(size_t idx) {
 		return c_token_vector[idx].type;
 	}
-	std::string& get_token_name(size_t idx) {
+	inline std::string& get_token_name(size_t idx) {
 		return c_token_vector[idx].name;
 	}
-	size_t get_token_size() {
+	inline size_t get_token_size() {
 		return c_token_vector.size();
 	}
 };

@@ -121,15 +121,15 @@ typedef struct c_token
 		std::cout << ":" << c.line << ":" << c.col << " type: " << c.type << " value: " << c.name;
 		return output;
 	}
-	void set(size_t _col, c_ttype _type, std::string _name) {
+	inline void set(size_t _col, c_ttype _type, std::string _name) {
 		col = _col;
 		type = _type;
 		name = _name;
 	}
-	void set_line(size_t _line) {
+	inline void set_line(size_t _line) {
 		line = _line;
 	}
-	c_ttype& get_type() {
+	inline c_ttype& get_type() {
 		return type;
 	}
 }c_token;
