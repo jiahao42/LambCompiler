@@ -24,18 +24,26 @@ TEST_CPP = $(SRC)/test.cpp
 
 OBJS = test.o token.o lex.o util.o main.o 
 
+dir_guard=@mkdir -p $(OBJ)
+
 lexer: $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $(EXE) $(OBJ)/lex.o $(OBJ)/test.o $(OBJ)/token.o $(OBJ)/util.o $(OBJ)/main.o 
 main.o:
+	$(dir_guard)
 	$(CXX) $(CXXFLAGS) -o $(OBJ)/main.o -c $(MAIN_CPP)
 lex.o: 
+	$(dir_guard)
 	$(CXX) $(CXXFLAGS) -o $(OBJ)/lex.o -c $(LEX_CPP)
 util.o: 
+	$(dir_guard)
 	$(CXX) $(CXXFLAGS) -o $(OBJ)/util.o -c $(UTIL_CPP)
 token.o: 
+	$(dir_guard)
 	$(CXX) $(CXXFLAGS) -o $(OBJ)/token.o -c $(TOKEN_CPP)
 test.o:
+	$(dir_guard)
 	$(CXX) $(CXXFLAGS) -o $(OBJ)/test.o -c $(TEST_CPP)
+
 
 clean:
 	rm $(OBJ)/*.o
