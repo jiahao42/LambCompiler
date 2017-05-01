@@ -7,11 +7,6 @@
 #include "symseg.h"
 #include "test.h"
 
-extern symbol_root symbol_table;
-extern const std::string version;
-extern source source_file;
-extern std::unordered_map<std::string, enum rid> keyword;
-
 /*
  * ELFHash, used for access varible in Symbol Table faster
  */
@@ -48,25 +43,6 @@ void show_version() {
 	std::cout << "LambLexer, Version: " << version << std::endl << std::endl;;
 }
 
-
-/*
- * Output token stream to console
- */
-void dump_token_stream() {
-#ifndef SHOW_KEYWORD_FILTER
-	for (c_token c : source_file.c_token_vector) {
-		std::cout << source_file.filename << c << std::endl;
-	}
-#else
-	for (c_token c : source_file.c_token_vector) {
-		auto it = keyword.find(c.name);
-		if (keyword.end() == it)
-			std::cout << source_file.filename << c << std::endl;
-		else
-			std::cout << source_file.filename << c << " [keyword]" << std::endl;
-	}
-#endif
-}
 
 
 

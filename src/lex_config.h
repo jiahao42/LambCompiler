@@ -4,7 +4,6 @@
 #ifndef LAMBLEXER_LEX_CONFIG_H_
 #define LAMBLEXER_LEX_CONFIG_H_
 
-#define DEBUG
 
 #include <iostream>
 #include <cstring>
@@ -16,15 +15,31 @@
 #include <unordered_map>
 
 /*
- * Output token stream to console or not, see util.h
+ * The test switch, see test.cpp
  */
-#define DUMP_TOKEN_STREAM
+#define TEST_ON
+#undef TEST_ON
 
 /*
- * Print the log, see test.h
+ * Output token stream to console or not, see lex.h
+ */
+#define DUMP_TOKEN_STREAM
+//#undef DUMP_TOKEN_STREAM
+
+/*
+ * Print the log
  */
 #define PRINT_LOG
 #undef PRINT_LOG
+
+/* 
+ * This macro is for DEBUG message
+ */
+#ifdef PRINT_LOG
+#define PRINT(msg) std::cout << "msg: " << msg << std::endl;
+#else
+#define PRINT(msg) do{}while(0)
+#endif
 
 /*
  * If show keyword judgement when dumping token stream to console
@@ -39,7 +54,7 @@
 /*
  * Version info
  */
-const std::string version = "0.0.1";
+const std::string version = "0.0.2";
 
 
 #endif /* end of LAMBLEXER_LEX_CONFIG_H_ */

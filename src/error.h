@@ -11,24 +11,24 @@ extern source source_file;
  * Error ID of parsing
  */
 enum ERROR_ID {
-	INVALID_IDENTIFIER = 0,
-	UNKNOWN_TYPE,
-	TOO_MANY_DECIMAL_POINTS,
+	TOO_MANY_DECIMAL_POINTS = 0,
 	INVALID_OCTAL_NUMBER,
 	MISSING_TERMINATING_2_QUOTE,
 	MISSING_TERMINATING_1_QUOTE,
+	UNKNOWN_TYPE,
+	INVALID_IDENTIFIER,
 };
 
 /*
  * Error string
  */
 const std::string ERROR_STRING[] = {
-	" invalid identifier ",
-	" unknown type name ",
 	" too many decimal points in number ",
 	" invalid digit in octal constant ",
 	" missing terminating \" character ",
 	" missing terminating \' character ",
+	" unknown type name ",
+	" invalid identifier ",
 };
 
 /*
@@ -59,6 +59,9 @@ typedef struct _error {
 		std::cout << source_file.filename << ":" << e.linenum << ":" << e.col << " Error: " << ERROR_STRING[e.id] << std::endl;
 		return output;
 	}
+	ERROR_ID get_error_id() {
+		return id;
+	}
 }_error;
 
 /*
@@ -73,6 +76,9 @@ typedef struct _warning {
 	friend std::ostream& operator <<(std::ostream& output, const _warning w) {
 		std::cout << source_file.filename << ":" << w.linenum << ":" << w.col << " Warning: " << WARNING_STRING[w.id] << std::endl;
 		return output;
+	}
+	WARING_ID get_warning_id() {
+		return id;
 	}
 }_warning;
 

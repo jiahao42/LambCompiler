@@ -2,6 +2,7 @@
 
 This is a simple lexer for a subset of ANSI C.
 
+
 ### Version = 0.0.1
 
 ### Usage
@@ -11,7 +12,6 @@ This is a simple lexer for a subset of ANSI C.
 * ./lexer -h
 
 * ./lexer -v
-
 
 ### screenshot:
 ![](https://raw.githubusercontent.com/Jameeeees/LambLexer/master/doc/screenshot.png)
