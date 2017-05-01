@@ -13,7 +13,6 @@
 
 class lexer {
 private:
-	std::ifstream file; 				/* Current file */
 	std::string cur_line; 				/* Literally current line */
 	line cur_line_info; 				/* Information of current line, including line number and line address, See symseg.h */
 	c_token token; 						/* Represent the current token */
@@ -21,10 +20,11 @@ private:
 public:
 	lexer() { is_comment = false; }
 	int lex_main(int argc, char** argv); 		/* Interface of the lexer */
-	void read_file(); 							/* Read file and start to lex */
-	void init_symbol_table(const char* filedir, const char* filename); /* Initialize the symbol table */
-	void init_token(); 							/* Set the line number of token */
 	void lex(); 								/*  main function of lex  */
+	void test_lexer();							/* test the lexer */
+	void dump_token_stream();					/* Output token stream to console */
+	void read_file(); 							/* Read file and start to lex */
+	void init_token(); 							/* Set the line number of token */
 	void trim_space(size_t&); 					/* Trim the spaces */
 	void parse_num_decimal(size_t&); 			/*  Parse decimal number */
 	void parse_num_hex(size_t&);				/* Parse hexadecimal number */
@@ -34,10 +34,8 @@ public:
 	void parse_string(size_t&);					/* Parse string, start with ", also end with ", be careful with escape " */
 	void parse_single_line_comment(size_t&);	/*  Parse single line commeng, start with // */
 	void parse_multi_line_comment(size_t&);		/* Parse multi-line comment, start with *\/, also end with *\/ */ 
-	void test_lexer();							/* test the lexer */
-	void dump_token_stream();					/* Output token stream to console */
 };
 
-
+void init_symbol_table(const char* filedir, const char* filename); /* Initialize the symbol table */
 
 #endif /* end of LAMBLEXER_LEX_H_ */

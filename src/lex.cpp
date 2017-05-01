@@ -25,7 +25,9 @@
 		}\
 	}while(0)
 
+
 extern std::unordered_map<std::string, enum rid> keyword;
+std::ifstream file; 				/* Current file */
 symbol_root symbol_table; 			/* Symbol table, see symseg.h */
 source source_file; 				/* Stand for source file, including filename and lines' info, See symseg.h */
 std::queue<_error> error_queue;		/* A queue used for storing error */
@@ -86,7 +88,7 @@ void lexer::read_file() {
 /*
  * Initialize the symbol table
  */
-void lexer::init_symbol_table(const char* filedir, const char* filename) {
+void init_symbol_table(const char* filedir, const char* filename) {
 	symbol_table.filedir = filedir;
 	symbol_table.filename = filename;
 	symbol_table.version = version;
