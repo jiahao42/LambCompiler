@@ -3,7 +3,8 @@
 This is a simple lexer for a subset of ANSI C.
 
 
-### Version = 0.0.1
+### Version = 0.0.2
+This lexer has been rewritten to OO style.
 
 ### Usage
 
