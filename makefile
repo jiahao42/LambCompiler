@@ -6,7 +6,8 @@ CXXFLAGS = -g -Wall -O2 -std=c++11
 BIN = bin
 SRC = src
 OBJ = obj
-EXE = $(BIN)/lexer
+COMPILER = $(BIN)/compiler
+LEXER = $(BIN)/lexer
 
 LEX_CONFIG_H = $(SRC)/lex_config.h
 LEX_H = $(SRC)/lex.h
@@ -27,16 +28,29 @@ MAIN_CPP = $(SRC)/main.cpp
 TEST_CPP = $(SRC)/test.cpp
 PARSER_CPP = $(SRC)/parser.cpp
 COMPILER_CPP = $(SRC)/compiler.cpp
+LEX_MAIN_CPP = $(SRC)/lex_main.cpp
 
-OBJS = parser.o compiler.o test.o token.o lex.o util.o main.o 
+COMPILER_OBJS = parser.o compiler.o test.o token.o lex.o util.o main.o 
+LEXER_OBJS = test.o token.o lex.o util.o lex_main.o 
 
 dir_guard=@mkdir -p $(OBJ)
 
-lexer: $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(EXE) $(OBJ)/lex.o $(OBJ)/compiler.o $(OBJ)/parser.o $(OBJ)/test.o $(OBJ)/token.o $(OBJ)/util.o $(OBJ)/main.o 
+# for compiler
+compiler: $(COMPILER_OBJS)
+	$(CXX) $(CXXFLAGS) -o $(COMPILER) $(OBJ)/lex.o $(OBJ)/compiler.o $(OBJ)/parser.o $(OBJ)/test.o $(OBJ)/token.o $(OBJ)/util.o $(OBJ)/main.o 
+
+# for lexer
+lexer: $(LEXER_OBJS)
+	$(CXX) $(CXXFLAGS) -o $(LEXER) $(OBJ)/lex.o $(OBJ)/test.o $(OBJ)/token.o $(OBJ)/util.o $(OBJ)/main.o 
+
+# main.o is only for compiler
 main.o:
 	$(dir_guard)
 	$(CXX) $(CXXFLAGS) -o $(OBJ)/main.o -c $(MAIN_CPP)
+# lex_main.o is only for lexer
+lex_main.o:
+	$(dir_guard)
+	$(CXX) $(CXXFLAGS) -o $(OBJ)/main.o -c $(LEX_MAIN_CPP)
 lex.o: 
 	$(dir_guard)
 	$(CXX) $(CXXFLAGS) -o $(OBJ)/lex.o -c $(LEX_CPP)
@@ -56,5 +70,7 @@ parser.o:
 	$(dir_guard)
 	$(CXX) $(CXXFLAGS) -o $(OBJ)/parser.o -c $(PARSER_CPP)
 
+
+	
 clean:
 	rm $(OBJ)/*.o

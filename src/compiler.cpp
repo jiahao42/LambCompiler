@@ -1,9 +1,9 @@
 #include "lex_config.h"
 #include "compiler.h"
 
-std::ifstream file; 				/* Current file */
-symbol_root symbol_table; 			/* Symbol table, see symseg.h */
-source source_file; 				/* Stand for source file, including filename and lines' info, See symseg.h */
+extern std::ifstream file; 				/* Current file */
+extern symbol_root symbol_table; 			/* Symbol table, see symseg.h */
+extern source source_file; 				/* Stand for source file, including filename and lines' info, See symseg.h */
 
 int compiler::compile(int argc, char** argv) {
 	#ifdef TEST_ON

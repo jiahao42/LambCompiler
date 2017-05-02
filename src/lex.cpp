@@ -4,9 +4,9 @@
 #include "lex.h"
 
 extern std::unordered_map<std::string, enum rid> keyword;
-extern std::ifstream file; 				/* Current file */
-extern symbol_root symbol_table; 			/* Symbol table, see symseg.h */
-extern source source_file; 				/* Stand for source file, including filename and lines' info, See symseg.h */
+std::ifstream file; 				/* Current file */
+symbol_root symbol_table; 			/* Symbol table, see symseg.h */
+source source_file; 				/* Stand for source file, including filename and lines' info, See symseg.h */
 
 /*
  * Interface of lexer
