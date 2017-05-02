@@ -20,7 +20,28 @@
 		warning_queue.push(w);\
 	}while(0) 
 		
-	
+/*
+ * Pop the error from error queue and output the error to the console
+ */
+#define POP_ERROR() \
+	do {\
+		while(!error_queue.empty()) {\
+			std::cout << error_queue.front();\
+			error_queue.pop();\
+		}\
+	}while(0)
+
+/*
+ * Pop the warning from error queue and output the warning to the console
+ */
+#define POP_WARNING() \
+	do {\
+		while(!warning_queue.empty()) {\
+			std::cout << warning_queue.front();\
+			warning_queue.pop();\
+		}\
+	}while(0)
+
 extern source source_file;
 
 

@@ -3,29 +3,6 @@
 
 #include "lex.h"
 
-/*
- * Pop the error from error queue and output the error to the console
- */
-#define POP_ERROR() \
-	do {\
-		while(!error_queue.empty()) {\
-			std::cout << error_queue.front();\
-			error_queue.pop();\
-		}\
-	}while(0)
-
-/*
- * Pop the warning from error queue and output the warning to the console
- */
-#define POP_WARNING() \
-	do {\
-		while(!warning_queue.empty()) {\
-			std::cout << warning_queue.front();\
-			warning_queue.pop();\
-		}\
-	}while(0)
-
-
 extern std::unordered_map<std::string, enum rid> keyword;
 std::ifstream file; 				/* Current file */
 symbol_root symbol_table; 			/* Symbol table, see symseg.h */
@@ -64,8 +41,6 @@ int lexer::lex_main(int argc, char** argv) {
 
 #ifdef DUMP_TOKEN_STREAM
 	dump_token_stream();
-	POP_WARNING();
-	POP_ERROR();
 #endif /* end of DUMP_TOKEN_STREAM */
 	return 0;
 }
