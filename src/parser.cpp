@@ -1,6 +1,26 @@
 #include "parser_config.h"
 #include "parse.h"
 
+
+/*
+ * Push error into the queue
+ */
+#define PUSH_ERROR(linenum, col, ERR_ID) \
+	do {\
+		_error e(ERR_ID, linenum, col);\
+		error_queue.push(e);\
+	}while(0)
+
+/*
+ * Push warning into the queue
+ */
+#define PUSH_WARNING(linenum, col, WARNING_ID) \
+	do {\
+		_warning w(WARNING_ID, linenum, col);\
+		warning_queue.push(w);\
+	}while(0) 
+		
+	
 extern source source_file;
 
 

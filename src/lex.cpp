@@ -103,13 +103,11 @@ void init_symbol_table(const char* filedir, const char* filename) {
 #define ISDIGIT0(ch)			((ch) == '0')
 #define ISDOT(ch)				((ch) == '.')
 #define ISHEX(ch)				(ISDIGIT((ch)) || ((ch) >= 'a' && (ch) <= 'f') || ((ch) >= 'A' && (ch) <= 'F'))
-#define ISOCT(ch)				((ch) >= '0' && (ch) <= '7')
 #define ISWHITESPACE(ch)		((ch) == ' ')
 #define ISLETTER(ch)			(((ch) >= 'a' && (ch) <= 'z') || ((ch >= 'A') && (ch) <= 'Z'))
 #define ISUNDERSCORE(ch)		((ch) == '_')
 #define ISIDENTIFIER(ch)		(ISDIGIT((ch)) || ISLETTER((ch)) || ISUNDERSCORE((ch)))
-#define ISNOTEOF(ch)			((ch) != EOF)
-#define ISNOTEOS(ch)			((ch) != '\0')	/* Is not end of string */
+#define ISNOTEOL(ch)			((ch) != '\0')	/* Is not end of line */
 /* must consider the escape ' and " */
 #define ISREAL1QUOTE(ch1, ch2)	((ch1) != '\\' && (ch2) == '\'')
 #define ISREAL2QUOTE(ch1, ch2)	((ch1) != '\\' && (ch2) == '\"')
@@ -133,23 +131,6 @@ void init_symbol_table(const char* filedir, const char* filename) {
 		source_file.push(token);\
 	}while(0)
 		
-/*
- * Push error into the queue
- */
-#define PUSH_ERROR(linenum, col, ERR_ID) \
-	do {\
-		_error e(ERR_ID, linenum, col);\
-		error_queue.push(e);\
-	}while(0)
-
-/*
- * Push warning into the queue
- */
-#define PUSH_WARNING(linenum, col, WARNING_ID) \
-	do {\
-		_warning w(WARNING_ID, linenum, col);\
-		warning_queue.push(w);\
-	}while(0) 
 
 /*
  * Set the line number of token
@@ -406,13 +387,13 @@ void lexer::lex() {
 
 
 void lexer::trim_space(size_t& idx) {
-	while (cur_line[idx] == ' ' && ISNOTEOF(cur_line[idx])) {
+	while (cur_line[idx] == ' ' && ISNOTEOL(cur_line[idx])) {
 		idx++;
 	}
 }
 void lexer::parse_num_decimal(size_t& idx) {
 	size_t start = idx;
-	while (ISDIGIT(cur_line[idx]) || ISDOT(cur_line[idx])) {		/* While is digit */
+	while (ISDIGIT(cur_line[idx])) {		/* While is digit */
 		idx++;
 	}
 	PUSH_TOKEN_LITERAL(C_NUMBER, cur_line.substr(start, idx - start));
@@ -442,7 +423,7 @@ void lexer::parse_identifier(size_t& idx) {
 
 void lexer::parse_char(size_t& idx) {					/* The first ' has been skipped */
 	size_t start = idx;
-	while (ISNOTEOS(cur_line[idx]) && !ISREAL1QUOTE(cur_line[idx - 1], cur_line[idx])) {			/* How far will it meet ' ? */
+	while (ISNOTEOL(cur_line[idx]) && !ISREAL1QUOTE(cur_line[idx - 1], cur_line[idx])) {			/* How far will it meet ' ? */
 		idx++;
 	}
 	
@@ -451,7 +432,7 @@ void lexer::parse_char(size_t& idx) {					/* The first ' has been skipped */
 }
 void lexer::parse_string(size_t& idx) {				/* The first " has been skipped */
 	size_t start = idx;
-	while (ISNOTEOS(cur_line[idx]) && !ISREAL2QUOTE(cur_line[idx - 1], cur_line[idx])) {
+	while (ISNOTEOL(cur_line[idx]) && !ISREAL2QUOTE(cur_line[idx - 1], cur_line[idx])) {
 		idx++;
 	}
 	PUSH_TOKEN_LITERAL(C_STRING, cur_line.substr(start, idx - start));
