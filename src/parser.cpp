@@ -165,7 +165,7 @@ prototype_node* parser::parse_prototype() {
 	return new prototype_node(name, arg_names);
 }
 
-function_node*  parser::parse_definition() {
+function_node* parser::parse_definition() {
 	get_next_token();
 	
 	prototype_node* proto = parse_prototype();
@@ -177,7 +177,7 @@ function_node*  parser::parse_definition() {
 }
 
 
-function_node*  parser::parse_top_level_expr() {
+function_node* parser::parse_top_level_expr() {
 	if (expr_node* e = parse_expr()) {
 		prototype_node* proto = new prototype_node("", std::vector<std::string>());
 		return new function_node(proto, e);
@@ -185,8 +185,32 @@ function_node*  parser::parse_top_level_expr() {
 	return 0;
 }
 
+void handle_definition() {
+	if (parse_definition()) {
+		std::cout << "Parsed a function definition." << std::endl;
+	} else {
+		get_next_token();
+	}
+}
 
 
+void handle_top_level_expr() {
+	if (parse_top_level_expr()) {
+		std::cout << "Parsed a top-level expr." << std::endl;
+	} else {
+		get_next_token();
+	}
+}
+
+void main_loop() {
+	while(1) {
+		switch(CUR_TOKEN_TYPE) {
+			case C_SEMICOLON:	get_next_token(); return;
+			case C_NAME: handle_definition(); break;
+			default: handle_top_level_expr(); break;
+		}
+	}
+}
 
 
 
