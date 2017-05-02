@@ -145,33 +145,17 @@ void lexer::test_lexer() {
 	EXPECT_EQ_INT(C_CHAR, GET_TOKEN_TYPE(i));
 	EXPECT_EQ_STRING("b", GET_TOKEN_NAME(i));
 	
-	/* Test error */
-	const std::vector<std::string> test_error = {
-		"			int b = 123.456.789;					", /* too many decimal points in number */
-		"			int c = 09;								", /* invalid digit in octal constant */
-		"			string s = \"hello;						", /* missing terminating \" character */
-		"			char cc = 'h;							", /* missing terminating \' character */
-		"			¸ò										", /* unknown type name */
+	const std::vector<std::string> test_stray_punctuation = {
+		" 			¸ò										",
 	};
 	
-	for (size_t idx = 0; idx < test_error.size(); idx++) {
-		cur_line = test_error[idx];
+	for (std::string s : test_stray_punctuation) {
+		cur_line = s;
 		cur_line_info++;
 		lex();
-		EXPECT_EQ_INT(static_cast<int>(idx), error_queue.back().get_error_id());
 	}
-	
-	/* Test warning */
-	const std::vector<std::string> test_warning = {
-		"			cc = 'hello world';						", /* character constant too long for its type */
-	};
-	
-	for (size_t idx = 0; idx < test_warning.size(); idx++) {
-		cur_line = test_warning[idx];
-		cur_line_info++;
-		lex();
-		EXPECT_EQ_INT(static_cast<int>(idx), warning_queue.back().get_warning_id());
-	}
+	i += 3;
+	EXPECT_EQ_INT(C_OTHER, GET_TOKEN_TYPE(i));
 	
 	printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);
 }

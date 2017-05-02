@@ -178,7 +178,7 @@ void lexer::lex() {
 				PUSH_TOKEN(C_NUMBER, "0");
 				idx++;
 			} else { 										/* Start with 0, octal number */
-				parse_num_oct(idx);
+				parse_num_decimal(idx);//TODO
 			}
 		} else if (ISDIGIT1TO9(cur_line[idx])) { 			/* Decimal */
 			parse_num_decimal(idx);
@@ -396,7 +396,7 @@ void lexer::lex() {
 					parse_string(idx);
 					break;
 				default:
-					PUSH_ERROR(cur_line_info.linenum, idx, UNKNOWN_TYPE);
+					PUSH_TOKEN(C_OTHER, std::string(1, cur_line[idx]));
 					idx++;
 			}
 		}
@@ -412,16 +412,7 @@ void lexer::trim_space(size_t& idx) {
 }
 void lexer::parse_num_decimal(size_t& idx) {
 	size_t start = idx;
-	bool dot_flag = false;
 	while (ISDIGIT(cur_line[idx]) || ISDOT(cur_line[idx])) {		/* While is digit */
-		if (ISDOT(cur_line[idx])) {									/* If meet a dot */
-			if (dot_flag) {											/* Already has a dot before */
-				PUSH_ERROR(cur_line_info.linenum, start, TOO_MANY_DECIMAL_POINTS);
-				break;
-			} else {
-				dot_flag = true;									/* Meet a dot in the first time */
-			}
-		}
 		idx++;
 	}
 	PUSH_TOKEN_LITERAL(C_NUMBER, cur_line.substr(start, idx - start));
@@ -433,18 +424,6 @@ void lexer::parse_num_hex(size_t& idx) {
 		idx++;
 	}
 	PUSH_TOKEN_LITERAL(C_NUMBER, "0x" + cur_line.substr(start, idx - start));
-}
-
-void lexer::parse_num_oct(size_t& idx) {
-	size_t start = idx;
-	while (ISDIGIT(cur_line[idx])) {
-		if (not_pushed_flag && !ISOCT(cur_line[idx])) {					/* number 8 and 9 is invalid for octal */
-			PUSH_ERROR(cur_line_info.linenum, start, INVALID_OCTAL_NUMBER);
-			not_pushed_flag = false;
-		}
-		idx++;
-	}
-	PUSH_TOKEN_LITERAL(C_NUMBER, cur_line.substr(start, idx - start));
 }
 
 void lexer::parse_identifier(size_t& idx) {
