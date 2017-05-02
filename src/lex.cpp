@@ -437,7 +437,6 @@ void lexer::parse_num_hex(size_t& idx) {
 
 void lexer::parse_num_oct(size_t& idx) {
 	size_t start = idx;
-	bool not_pushed_flag = true; 										/* if it has not been pushed */
 	while (ISDIGIT(cur_line[idx])) {
 		if (not_pushed_flag && !ISOCT(cur_line[idx])) {					/* number 8 and 9 is invalid for octal */
 			PUSH_ERROR(cur_line_info.linenum, start, INVALID_OCTAL_NUMBER);
@@ -455,7 +454,6 @@ void lexer::parse_identifier(size_t& idx) {
 	}
 	/* If the identifier is too long, push warning, and take the valid part */
 	if (idx - start > LONGEST_IDENTIFIER_LENGTH) {	
-		PUSH_WARNING(cur_line_info.linenum, start, TOO_LONG_IDENTIFIER);
 		PUSH_TOKEN_LITERAL(C_NAME, cur_line.substr(start, LONGEST_IDENTIFIER_LENGTH));
 	} else {
 		PUSH_TOKEN_LITERAL(C_NAME, cur_line.substr(start, idx - start));
@@ -468,13 +466,7 @@ void lexer::parse_char(size_t& idx) {					/* The first ' has been skipped */
 	while (ISNOTEOS(cur_line[idx]) && !ISREAL1QUOTE(cur_line[idx - 1], cur_line[idx])) {			/* How far will it meet ' ? */
 		idx++;
 	}
-	if (idx - start > 1) {						/* Only 1 character can exist bewteen '' */
-		PUSH_WARNING(cur_line_info.linenum, start, CHAR_TOO_LONG);
-	}
 	
-	if (idx == cur_line.size()) {
-		PUSH_ERROR(cur_line_info.linenum, start, MISSING_TERMINATING_1_QUOTE);
-	}
 	PUSH_TOKEN_LITERAL(C_CHAR, cur_line.substr(start, 1));
 	idx++;										/* Skip the final ' */
 }
@@ -482,9 +474,6 @@ void lexer::parse_string(size_t& idx) {				/* The first " has been skipped */
 	size_t start = idx;
 	while (ISNOTEOS(cur_line[idx]) && !ISREAL2QUOTE(cur_line[idx - 1], cur_line[idx])) {
 		idx++;
-	}
-	if (idx == cur_line.size()) {
-		PUSH_ERROR(cur_line_info.linenum, start, MISSING_TERMINATING_2_QUOTE);
 	}
 	PUSH_TOKEN_LITERAL(C_STRING, cur_line.substr(start, idx - start));
 	idx++;										/* Skip the final " */

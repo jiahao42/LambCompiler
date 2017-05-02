@@ -132,6 +132,9 @@ typedef struct c_token
 	inline c_ttype& get_type() {
 		return type;
 	}
+	inline std::string& get_name() {
+		return name;
+	}
 }c_token;
 
 #endif /* end of LAMBLEXER_TOKEN_H_ */
