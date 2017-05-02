@@ -42,6 +42,8 @@
 		}\
 	}while(0)
 
+std::queue<_error> error_queue;		/* A queue used for storing error */
+std::queue<_warning> warning_queue; /* A queue used for storing warning */
 extern source source_file;
 
 

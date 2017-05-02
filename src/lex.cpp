@@ -7,8 +7,6 @@ extern std::unordered_map<std::string, enum rid> keyword;
 std::ifstream file; 				/* Current file */
 symbol_root symbol_table; 			/* Symbol table, see symseg.h */
 source source_file; 				/* Stand for source file, including filename and lines' info, See symseg.h */
-std::queue<_error> error_queue;		/* A queue used for storing error */
-std::queue<_warning> warning_queue; /* A queue used for storing warning */
 
 /*
  * Interface of lexer
@@ -352,7 +350,7 @@ void lexer::lex() {
 					parse_string(idx);
 					break;
 				default:
-					PUSH_TOKEN(C_OTHER, std::string(1, cur_line[idx]));
+					PUSH_TOKEN(C_OTHER, std::string(1, cur_line[idx])); /* construct a temp string */
 					idx++;
 			}
 		}

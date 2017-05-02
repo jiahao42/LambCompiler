@@ -1,0 +1,7 @@
+In file included from src/lex.h:11:0,
+                 from src/test.cpp:8:
+src/error.h: In function ‘std::ostream& operator<<(std::ostream&, _error)’:
+src/error.h:60:4: error: expected ‘)’ before ‘std’
+    std::cout << source_file.filename << ":" << e.linenum << ":" << e.col << " Error: " << it -> second << std::endl;
+    ^
+make: *** [test.o] Error 1
