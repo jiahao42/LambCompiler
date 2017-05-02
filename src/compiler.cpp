@@ -1,3 +1,5 @@
+//LambCompiler
+//by James 2017/05/02
 #include "lex_config.h"
 #include "compiler.h"
 
