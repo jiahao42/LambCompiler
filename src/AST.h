@@ -28,10 +28,10 @@ public:
 /* BinaryExprNode - expression for binary expression */
 class binary_expr_node : public expr_node {
 private:
-	char op;
+	std::string op;
 	expr_node *lhs, *rhs;
 public:
-	binary_expr_node(char _op, expr_node* _lhs, expr_node* _rhs) : op(_op), lhs(_lhs), rhs(_rhs) {}
+	binary_expr_node(std::string _op, expr_node* _lhs, expr_node* _rhs) : op(_op), lhs(_lhs), rhs(_rhs) {}
 };
 
 /* CallExprNode - expression for function call */

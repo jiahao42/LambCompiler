@@ -1,5 +1,5 @@
 #include "parser_config.h"
-#include "parse.h"
+#include "parser.h"
 
 
 /*
@@ -54,8 +54,8 @@ c_token& parser::get_next_token() {
 	return cur_token;
 }
 
-expr_node* parse::parse_expr();
-expr_node* parse::parse_identifier_node() {
+
+expr_node* parser::parse_identifier_node() {
 	std::string name = CUR_TOKEN_NAME;
 	get_next_token(); // skip identifier
 	if (CUR_TOKEN_TYPE != C_OPEN_PAREN)
@@ -67,7 +67,7 @@ expr_node* parse::parse_identifier_node() {
 		while (1) {
 			expr_node* arg = parse_expr();
 			if (!arg) return 0;
-			arg.push_back(arg);
+			args.push_back(arg);
 			
 			if (CUR_TOKEN_TYPE == C_OPEN_PAREN)
 				break;
@@ -112,9 +112,9 @@ expr_node* parser::parse_primary() {
 	}
 }
 
-expr_node* parser::parse_bin_op_rhs(c_token& token, expr_node* lhs) {
+expr_node* parser::parse_bin_op_rhs(c_ttype prev_type, expr_node* lhs) {
 	while (1) {
-		c_ttype prev_type = token.get_type();
+		//c_ttype prev_type = token.get_type();
 		c_ttype cur_type = CUR_TOKEN_TYPE;
 		
 		if (cur_type < prev_type)
@@ -128,7 +128,8 @@ expr_node* parser::parse_bin_op_rhs(c_token& token, expr_node* lhs) {
 		
 		c_ttype next_type = CUR_TOKEN_TYPE;
 		if (cur_type < next_type) {
-			rhs = parse_bin_op_rhs(cur_type + 1, rhs);
+			int tmp = static_cast<int>(cur_type);
+			rhs = parse_bin_op_rhs(static_cast<c_ttype>(tmp + 1), rhs);
 			if (rhs == 0)	return 0;
 		}
 		
@@ -140,12 +141,12 @@ expr_node* parser::parse_expr() {
 	expr_node* lhs = parse_primary();
 	if (!lhs) return 0;
 	
-	return parse_bin_op_rhs(0, lhs);
+	return parse_bin_op_rhs(static_cast<c_ttype>(0), lhs);
 }
 
 
 prototype_node* parser::parse_prototype() {
-	if (!CUR_TOKEN_TYPE == C_NAME)
+	if (!(CUR_TOKEN_TYPE == C_NAME))
 		return 0;
 	
 	std::string name = CUR_TOKEN_NAME;
@@ -155,7 +156,7 @@ prototype_node* parser::parse_prototype() {
 		return 0;
 	
 	std::vector<std::string> arg_names;
-	while (get_next_token() == C_NAME)
+	while (CUR_TOKEN_TYPE == C_NAME)
 		arg_names.push_back(CUR_TOKEN_NAME);
 	if (CUR_TOKEN_TYPE != C_CLOSE_PAREN)
 		return 0;
@@ -185,7 +186,7 @@ function_node* parser::parse_top_level_expr() {
 	return 0;
 }
 
-void handle_definition() {
+void parser::handle_definition() {
 	if (parse_definition()) {
 		std::cout << "Parsed a function definition." << std::endl;
 	} else {
@@ -194,7 +195,7 @@ void handle_definition() {
 }
 
 
-void handle_top_level_expr() {
+void parser::handle_top_level_expr() {
 	if (parse_top_level_expr()) {
 		std::cout << "Parsed a top-level expr." << std::endl;
 	} else {
@@ -202,7 +203,7 @@ void handle_top_level_expr() {
 	}
 }
 
-void main_loop() {
+void parser::main_loop() {
 	while(1) {
 		switch(CUR_TOKEN_TYPE) {
 			case C_SEMICOLON:	get_next_token(); return;
