@@ -366,7 +366,14 @@ void lexer::trim_space(size_t& idx) {
 }
 void lexer::parse_num_decimal(size_t& idx) {
 	size_t start = idx;
-	while (ISDIGIT(cur_line[idx])) {		/* While is digit */
+	bool dot_flag = false;
+	while (ISDIGIT(cur_line[idx]) || ISDOT(cur_line[idx])) {		/* While is digit */
+		if (ISDOT(cur_line[idx])) {
+			if (dot_flag)
+				break;
+			else 
+				dot_flag = true;
+		}
 		idx++;
 	}
 	PUSH_TOKEN_LITERAL(C_NUMBER, cur_line.substr(start, idx - start));
