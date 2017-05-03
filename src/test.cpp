@@ -6,6 +6,7 @@
 #include "token.h"
 #include "symseg.h"
 #include "lex.h"
+#include "parser.h"
 #include "error.h"
 
 extern std::queue<_error> error_queue;		/* A queue used for storing error */
@@ -160,7 +161,16 @@ void lexer::test_lexer() {
 	printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);
 }
 
-
+void lexer::test_parser_aux() {
+	const std::vector<std::string> test_expr = {
+		" 		a + b * c + (d + e);	¸ò					",
+	};
+	for (std::string s : test_expr) {
+		cur_line = s;
+		cur_line_info++;
+		lex();
+	}
+}
 
 
 

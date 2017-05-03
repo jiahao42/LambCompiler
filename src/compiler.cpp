@@ -10,8 +10,8 @@ extern source source_file; 				/* Stand for source file, including filename and 
 int compiler::compile(int argc, char** argv) {
 	#ifdef TEST_ON
 		init_symbol_table("test_dummy", "test_dummy");
-		l.test_lexer();
-		p.main_loop();
+		//l.test_lexer();
+		test_parser();
 	#else
 		if (argc == 1) {
 			std::cout << "Invalid parameter!" << std::endl;
@@ -38,4 +38,9 @@ int compiler::compile(int argc, char** argv) {
 		l.dump_token_stream();
 	#endif /* end of DUMP_TOKEN_STREAM */
 	return 0;
+}
+
+void compiler::test_parser() {
+	l.test_parser_aux();
+	p.main_loop();
 }

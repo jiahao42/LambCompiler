@@ -53,7 +53,6 @@ extern source source_file;
 
 c_token& parser::get_next_token() {
 	cur_token = source_file.c_token_vector[token_idx++];
-	std::cout << "idx: " << token_idx << " " << CUR_TOKEN_NAME << std::endl;
 	return cur_token;
 }
 

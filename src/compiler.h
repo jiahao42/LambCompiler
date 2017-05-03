@@ -12,6 +12,7 @@ private:
 	parser p;
 public:
 	int compile(int argc, char** argv);
+	void test_parser();
 };
 
 #endif

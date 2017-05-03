@@ -22,6 +22,7 @@ public:
 	int lex_main(int argc, char** argv); 		/* Interface of the lexer */
 	void lex(); 								/*  main function of lex  */
 	void test_lexer();							/* test the lexer */
+	void test_parser_aux();						/* prepare data for test parser */
 	void dump_token_stream();					/* Output token stream to console */
 	void read_file(); 							/* Read file and start to lex */
 	void init_token(); 							/* Set the line number of token */
