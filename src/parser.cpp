@@ -119,6 +119,7 @@ expr_node* parser::parse_primary() {
 		case C_NUMBER : return parse_number_node();
 		case C_OPEN_PAREN : return parse_paren_node();
 		case C_EOF : return 0;
+		case C_SEMICOLON : return 0;
 	}
 }
 
