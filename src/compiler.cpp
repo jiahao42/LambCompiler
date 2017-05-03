@@ -11,6 +11,7 @@ int compiler::compile(int argc, char** argv) {
 	#ifdef TEST_ON
 		init_symbol_table("test_dummy", "test_dummy");
 		l.test_lexer();
+		p.main_loop();
 	#else
 		if (argc == 1) {
 			std::cout << "Invalid parameter!" << std::endl;
