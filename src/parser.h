@@ -11,15 +11,22 @@ private:
 	int token_idx;
 	c_token cur_token;
 	c_token dummy;
+	std::map<c_ttype, int> bin_op_precedence;
 public:
-	parser() : token_idx(0), dummy(0, 0, C_EQ, "") {}
+	parser() : token_idx(0), dummy(0, 0, C_EQ, "") {
+		bin_op_precedence[C_LESS] = 10;
+	    bin_op_precedence[C_PLUS] = 20;
+		bin_op_precedence[C_MINUS] = 20;
+		bin_op_precedence[C_MULT] = 40;  // highest.
+	}
 	void parse_main();
 	inline c_ttype& get_next_token();
+	int get_op_precedence();
 	expr_node* parse_identifier_node();
 	expr_node* parse_number_node();
 	expr_node* parse_paren_node();
 	expr_node* parse_primary();
-	expr_node* parse_bin_op_rhs(c_ttype prev_type, expr_node* lhs);
+	expr_node* parse_bin_op_rhs(int prev_type, expr_node* lhs);
 	expr_node* parse_expr();
 	prototype_node* parse_prototype();
 	function_node* parse_definition();

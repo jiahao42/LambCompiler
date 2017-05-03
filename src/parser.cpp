@@ -51,6 +51,14 @@ std::queue<_warning> warning_queue; /* A queue used for storing warning */
 extern source source_file;
 
 
+int parser::get_op_precedence() {
+
+  // Make sure it's a declared binop.
+  int token_prec = bin_op_precedence[CUR_TOKEN_TYPE];
+  if (token_prec <= 0) return -1;
+  return token_prec;
+}
+
 inline c_ttype& parser::get_next_token() {
 	PRINT(CUR_TOKEN_NAME);
 	if (static_cast<size_t>(token_idx) < source_file.c_token_vector.size())
@@ -123,12 +131,11 @@ expr_node* parser::parse_primary() {
 	}
 }
 
-expr_node* parser::parse_bin_op_rhs(c_ttype prev_type, expr_node* lhs) {
+expr_node* parser::parse_bin_op_rhs(int prev_type, expr_node* lhs) {
 	while (1) {
-		//c_ttype prev_type = token.get_type();
-		c_ttype cur_type = CUR_TOKEN_TYPE;
+		int cur_precedence = get_op_precedence();
 
-		if (cur_type < prev_type)
+		if (cur_precedence < prev_type)
 			return lhs;
 
 		std::string op = CUR_TOKEN_NAME;
@@ -138,9 +145,8 @@ expr_node* parser::parse_bin_op_rhs(c_ttype prev_type, expr_node* lhs) {
 		if (!rhs)	return 0;
 
 		c_ttype next_type = CUR_TOKEN_TYPE;
-		if (cur_type < next_type) {
-			int tmp = static_cast<int>(cur_type);
-			rhs = parse_bin_op_rhs(static_cast<c_ttype>(tmp + 1), rhs);
+		if (cur_precedence < next_type) {
+			rhs = parse_bin_op_rhs(cur_precedence + 1, rhs);
 			if (rhs == 0)	return 0;
 		}
 
@@ -152,7 +158,7 @@ expr_node* parser::parse_expr() {
 	expr_node* lhs = parse_primary();
 	if (!lhs) return 0;
 
-	return parse_bin_op_rhs(static_cast<c_ttype>(0), lhs);
+	return parse_bin_op_rhs(0, lhs);
 }
 
 
@@ -191,6 +197,7 @@ function_node* parser::parse_definition() {
 
 function_node* parser::parse_top_level_expr() {
 	if (expr_node* e = parse_expr()) {
+		// Make an anonymous proto.
 		prototype_node* proto = new prototype_node("", std::vector<std::string>());
 		return new function_node(proto, e);
 	}

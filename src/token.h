@@ -31,19 +31,19 @@ enum rid
  */
 #define TTYPE_TABLE				\
   OP(C_EQ = 0,	"=")			\
-  OP(C_NOT = 10,		"!")			\
-  OP(C_GREATER = 20,	">")	/* compare */	\
-  OP(C_LESS = 30,		"<")			\
-  OP(C_PLUS = 40,		"+")	/* math */	\
-  OP(C_MINUS = 50,		"-")			\
-  OP(C_MULT = 60,		"*")			\
-  OP(C_DIV = 70,		"/")			\
-  OP(C_MOD = 80,		"%")			\
-  OP(C_AND = 90,		"&")	/* bit ops */	\
-  OP(C_OR = 100,		"|")			\
-  OP(C_XOR = 110,		"^")			\
-  OP(C_RSHIFT = 120,	">>")			\
-  OP(C_LSHIFT = 130,	"<<")			\
+  OP(C_NOT,		"!")			\
+  OP(C_GREATER,	">")	/* compare */	\
+  OP(C_LESS,		"<")			\
+  OP(C_PLUS,		"+")	/* math */	\
+  OP(C_MINUS,		"-")			\
+  OP(C_MULT,		"*")			\
+  OP(C_DIV,		"/")			\
+  OP(C_MOD,		"%")			\
+  OP(C_AND,		"&")	/* bit ops */	\
+  OP(C_OR,		"|")			\
+  OP(C_XOR,		"^")			\
+  OP(C_RSHIFT,	">>")			\
+  OP(C_LSHIFT,	"<<")			\
 \
   OP(C_COMPL,		"~")			\
   OP(C_AND_AND,	"&&")	/* logical */	\
