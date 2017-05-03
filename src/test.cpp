@@ -163,7 +163,7 @@ void lexer::test_lexer() {
 
 void lexer::test_parser_aux() {
 	const std::vector<std::string> test_expr = {
-		" 		a + b * c + (d + e);	¸ò					",
+		" 		a + b * c;						",
 	};
 	for (std::string s : test_expr) {
 		cur_line = s;

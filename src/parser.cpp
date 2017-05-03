@@ -20,8 +20,8 @@
 	do {\
 		_warning w(WARNING_ID, linenum, col);\
 		warning_queue.push(w);\
-	}while(0) 
-		
+	}while(0)
+
 /*
  * Pop the error from error queue and output the error to the console
  */
@@ -51,10 +51,13 @@ std::queue<_warning> warning_queue; /* A queue used for storing warning */
 extern source source_file;
 
 
-c_token& parser::get_next_token() {
-	cur_token = source_file.c_token_vector[token_idx++];
-	std::cout << CUR_TOKEN_NAME << std::endl;
-	return cur_token;
+inline c_ttype& parser::get_next_token() {
+	PRINT(CUR_TOKEN_NAME);
+	if (static_cast<size_t>(token_idx) < source_file.c_token_vector.size())
+		cur_token = source_file.c_token_vector[token_idx++];
+	else
+		cur_token.set_type(C_EOF);
+	return CUR_TOKEN_TYPE;
 }
 
 expr_node *Error(const char *Str) { fprintf(stderr, "Error: %s\n", Str);return 0;}
@@ -66,7 +69,7 @@ expr_node* parser::parse_identifier_node() {
 	get_next_token(); // skip identifier
 	if (CUR_TOKEN_TYPE != C_OPEN_PAREN)
 		return new var_expr_node(name);
-	
+
 	get_next_token(); // skip '('
 	std::vector<expr_node*> args;
 	if (CUR_TOKEN_TYPE != C_CLOSE_PAREN) {
@@ -74,24 +77,24 @@ expr_node* parser::parse_identifier_node() {
 			expr_node* arg = parse_expr();
 			if (!arg) return 0;
 			args.push_back(arg);
-			
-			if (CUR_TOKEN_TYPE == C_OPEN_PAREN)
+
+			if (CUR_TOKEN_TYPE == C_CLOSE_PAREN)
 				break;
-			
+
 			if (CUR_TOKEN_TYPE != C_COMMA)
 				return Error("Expected ')' or ',' in argument list");
 			get_next_token();
 		}
 	}
-	
+
 	// skip ')'
 	get_next_token();
-	
+
 	return new call_expr_node(name, args);
 }
 
 expr_node* parser::parse_number_node() {
-	double val = stoi(CUR_TOKEN_NAME);
+	double val = stod(CUR_TOKEN_NAME);
 	expr_node* res = new number_expr_node(val);
 	get_next_token();
 	return res;
@@ -101,7 +104,7 @@ expr_node* parser::parse_paren_node() {
 	get_next_token(); //skip '('
 	expr_node* node = parse_expr();
 	if (!node) return 0;
-	
+
 	if (CUR_TOKEN_TYPE != C_CLOSE_PAREN)
 		return Error("expected ')'");
 	get_next_token();
@@ -115,6 +118,7 @@ expr_node* parser::parse_primary() {
 		case C_NAME: return parse_identifier_node();
 		case C_NUMBER : return parse_number_node();
 		case C_OPEN_PAREN : return parse_paren_node();
+		case C_EOF : return 0;
 	}
 }
 
@@ -122,23 +126,23 @@ expr_node* parser::parse_bin_op_rhs(c_ttype prev_type, expr_node* lhs) {
 	while (1) {
 		//c_ttype prev_type = token.get_type();
 		c_ttype cur_type = CUR_TOKEN_TYPE;
-		
+
 		if (cur_type < prev_type)
 			return lhs;
-		
+
 		std::string op = CUR_TOKEN_NAME;
-		get_next_token();
-		
+		get_next_token(); // skip binop
+
 		expr_node* rhs = parse_primary();
 		if (!rhs)	return 0;
-		
+
 		c_ttype next_type = CUR_TOKEN_TYPE;
 		if (cur_type < next_type) {
 			int tmp = static_cast<int>(cur_type);
 			rhs = parse_bin_op_rhs(static_cast<c_ttype>(tmp + 1), rhs);
 			if (rhs == 0)	return 0;
 		}
-		
+
 		lhs = new binary_expr_node(op, lhs, rhs);
 	}
 }
@@ -146,38 +150,38 @@ expr_node* parser::parse_bin_op_rhs(c_ttype prev_type, expr_node* lhs) {
 expr_node* parser::parse_expr() {
 	expr_node* lhs = parse_primary();
 	if (!lhs) return 0;
-	
+
 	return parse_bin_op_rhs(static_cast<c_ttype>(0), lhs);
 }
 
 
 prototype_node* parser::parse_prototype() {
-	if (!(CUR_TOKEN_TYPE == C_NAME))
+	if (CUR_TOKEN_TYPE != C_NAME)
 		return ErrorP("Expected function name in prototype");
-	
+
 	std::string name = CUR_TOKEN_NAME;
 	get_next_token();
-	
-	if (CUR_TOKEN_TYPE != C_OPEN_PAREN) 
+
+	if (CUR_TOKEN_TYPE != C_OPEN_PAREN)
 		return ErrorP("Expected '(' in prototype");
-	
+
 	std::vector<std::string> arg_names;
-	while (CUR_TOKEN_TYPE == C_NAME)
+	while (get_next_token() == C_NAME)
 		arg_names.push_back(CUR_TOKEN_NAME);
 	if (CUR_TOKEN_TYPE != C_CLOSE_PAREN)
 		return ErrorP("Expected ')' in prototype");
-	
+
 	get_next_token(); // skip ')'
-	
+
 	return new prototype_node(name, arg_names);
 }
 
 function_node* parser::parse_definition() {
 	get_next_token();
-	
+
 	prototype_node* proto = parse_prototype();
 	if (proto == 0) return 0;
-	
+
 	if (expr_node* e = parse_expr())
 		return new function_node(proto, e);
 	return 0;
@@ -214,26 +218,9 @@ void parser::main_loop() {
 	while(1) {
 		switch(CUR_TOKEN_TYPE) {
 			case C_SEMICOLON:	get_next_token(); break;
-			case C_NAME: handle_definition(); break;
-			case C_OTHER: return;
-			default: handle_top_level_expr(); break;
+			case C_NAME: handle_top_level_expr(); break;
+			case C_EOF: return;
+			default: handle_top_level_expr(); break; // TODO
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -14,7 +14,7 @@ private:
 public:
 	parser() : token_idx(0), dummy(0, 0, C_EQ, "") {}
 	void parse_main();
-	c_token& get_next_token();
+	inline c_ttype& get_next_token();
 	expr_node* parse_identifier_node();
 	expr_node* parse_number_node();
 	expr_node* parse_paren_node();
