@@ -53,6 +53,7 @@ extern source source_file;
 
 c_token& parser::get_next_token() {
 	cur_token = source_file.c_token_vector[token_idx++];
+	std::cout << "idx: " << token_idx << " " << CUR_TOKEN_NAME << std::endl;
 	return cur_token;
 }
 
@@ -208,8 +209,9 @@ void parser::handle_top_level_expr() {
 void parser::main_loop() {
 	while(1) {
 		switch(CUR_TOKEN_TYPE) {
-			case C_SEMICOLON:	get_next_token(); return;
+			case C_SEMICOLON:	get_next_token(); break;
 			case C_NAME: handle_definition(); break;
+			case C_OTHER: return;
 			default: handle_top_level_expr(); break;
 		}
 	}
