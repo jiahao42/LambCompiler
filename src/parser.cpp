@@ -53,9 +53,13 @@ extern source source_file;
 
 c_token& parser::get_next_token() {
 	cur_token = source_file.c_token_vector[token_idx++];
+	std::cout << CUR_TOKEN_NAME << std::endl;
 	return cur_token;
 }
 
+expr_node *Error(const char *Str) { fprintf(stderr, "Error: %s\n", Str);return 0;}
+prototype_node *ErrorP(const char *Str) { Error(Str); return 0; }
+function_node *ErrorF(const char *Str) { Error(Str); return 0; }
 
 expr_node* parser::parse_identifier_node() {
 	std::string name = CUR_TOKEN_NAME;
@@ -75,7 +79,7 @@ expr_node* parser::parse_identifier_node() {
 				break;
 			
 			if (CUR_TOKEN_TYPE != C_COMMA)
-				return 0;
+				return Error("Expected ')' or ',' in argument list");
 			get_next_token();
 		}
 	}
@@ -99,7 +103,7 @@ expr_node* parser::parse_paren_node() {
 	if (!node) return 0;
 	
 	if (CUR_TOKEN_TYPE != C_CLOSE_PAREN)
-		return 0;
+		return Error("expected ')'");
 	get_next_token();
 	return node;
 }
@@ -107,7 +111,7 @@ expr_node* parser::parse_paren_node() {
 expr_node* parser::parse_primary() {
 	c_ttype cur_type = CUR_TOKEN_TYPE;
 	switch (cur_type) {
-		default: return 0;
+		default: return Error("unknown token when expecting an expression");
 		case C_NAME: return parse_identifier_node();
 		case C_NUMBER : return parse_number_node();
 		case C_OPEN_PAREN : return parse_paren_node();
@@ -149,19 +153,19 @@ expr_node* parser::parse_expr() {
 
 prototype_node* parser::parse_prototype() {
 	if (!(CUR_TOKEN_TYPE == C_NAME))
-		return 0;
+		return ErrorP("Expected function name in prototype");
 	
 	std::string name = CUR_TOKEN_NAME;
 	get_next_token();
 	
 	if (CUR_TOKEN_TYPE != C_OPEN_PAREN) 
-		return 0;
+		return ErrorP("Expected '(' in prototype");
 	
 	std::vector<std::string> arg_names;
 	while (CUR_TOKEN_TYPE == C_NAME)
 		arg_names.push_back(CUR_TOKEN_NAME);
 	if (CUR_TOKEN_TYPE != C_CLOSE_PAREN)
-		return 0;
+		return ErrorP("Expected ')' in prototype");
 	
 	get_next_token(); // skip ')'
 	
@@ -206,6 +210,7 @@ void parser::handle_top_level_expr() {
 }
 
 void parser::main_loop() {
+	get_next_token();
 	while(1) {
 		switch(CUR_TOKEN_TYPE) {
 			case C_SEMICOLON:	get_next_token(); break;
