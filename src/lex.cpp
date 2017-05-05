@@ -12,7 +12,7 @@ source source_file; 				/* Stand for source file, including filename and lines' 
  * Interface of lexer
  */
 int lexer::lex_main(int argc, char** argv) {
-#ifdef TEST_ON
+#ifdef TEST_LEXER
 	init_symbol_table("test_dummy", "test_dummy");
 	test_lexer();
 #else
