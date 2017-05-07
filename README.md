@@ -1,23 +1,26 @@
-# LambLexer
+# LambCompiler
 
-This is a simple lexer for a subset of ANSI C.
+This is a simple compiler for a subset of ANSI C.
 
+### Version = 0.0.3
 
-### Version = 0.0.2
-This lexer has been rewritten to OO style.
+### Before Compilation
+See `lex_config.h`, make sure it is the desired configuration. The default configuration is `Test Mode`, which means it use the previously defined test data.
+
+### How to compile
+Make sure you have installed GNU Make
+
+* Run `make lexer` to compile the lexer, the executable file is under `LambCompiler/bin`
+* Run `make compiler` to compile the compiler, the executable file is under `LambCompiler/bin`
 
 ### Usage
 
-* ./lexer [filename]
+##### Normal Mode
+* ./compiler [filename]
+* ./compiler -v
+* ./compiler -h
 
-* ./lexer -h
-
-* ./lexer -v
-
-### screenshot:
-![](https://raw.githubusercontent.com/Jameeeees/LambLexer/master/doc/screenshot.png)
+##### Test Mode (no parameter needed)
+* ./compiler
 
 
-### Reference: [GCC 1.21](https://github.com/Jameeeees/GCC) And [GCC 3.1](https://github.com/Jameeeees/GCC/tree/master/gcc-3.1)
-* [Format of GDB symbol table data(GCC 1.21)](https://github.com/Jameeeees/GCC/blob/master/gcc-1.21/symseg.h)
-![](https://raw.githubusercontent.com/Jameeeees/LambLexer/master/doc/Design%20of%20symbol%20table(Custom).png)

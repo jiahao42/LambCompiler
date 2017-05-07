@@ -52,7 +52,6 @@ extern source source_file;
 
 
 int parser::get_op_precedence() {
-
   // Make sure it's a declared binop.
   int token_prec = bin_op_precedence[CUR_TOKEN_TYPE];
   if (token_prec <= 0) return -1;
@@ -60,24 +59,25 @@ int parser::get_op_precedence() {
 }
 
 inline c_ttype& parser::get_next_token() {
-	PRINT(CUR_TOKEN_NAME);
 	if (static_cast<size_t>(token_idx) < source_file.c_token_vector.size())
 		cur_token = source_file.c_token_vector[token_idx++];
 	else
 		cur_token.set_type(C_EOF);
+	PRINT_TOKEN(CUR_TOKEN_NAME);
 	return CUR_TOKEN_TYPE;
 }
 
-expr_node *Error(const char *Str) { fprintf(stderr, "Error: %s\n", Str);return 0;}
-prototype_node *ErrorP(const char *Str) { Error(Str); return 0; }
-function_node *ErrorF(const char *Str) { Error(Str); return 0; }
+expr_node *Error(const char *str) { fprintf(stderr, "Error: %s\n", str);return 0;}
+prototype_node *ErrorP(const char *str) { Error(str); return 0; }
+function_node *ErrorF(const char *str) { Error(str); return 0; }
 
 expr_node* parser::parse_identifier_node() {
 	std::string name = CUR_TOKEN_NAME;
 	get_next_token(); // skip identifier
 	if (CUR_TOKEN_TYPE != C_OPEN_PAREN)
 		return new var_expr_node(name);
-
+	
+	// Make sure it is a function call
 	get_next_token(); // skip '('
 	std::vector<expr_node*> args;
 	if (CUR_TOKEN_TYPE != C_CLOSE_PAREN) {
@@ -86,17 +86,16 @@ expr_node* parser::parse_identifier_node() {
 			if (!arg) return 0;
 			args.push_back(arg);
 
-			if (CUR_TOKEN_TYPE == C_CLOSE_PAREN)
+			if (CUR_TOKEN_TYPE == C_CLOSE_PAREN) // argument list finish ?
 				break;
 
-			if (CUR_TOKEN_TYPE != C_COMMA)
+			if (CUR_TOKEN_TYPE != C_COMMA) // more arguments ?
 				return Error("Expected ')' or ',' in argument list");
-			get_next_token();
+			get_next_token(); // skip ','
 		}
 	}
 
-	// skip ')'
-	get_next_token();
+	get_next_token(); // skip ')'
 
 	return new call_expr_node(name, args);
 }
@@ -126,8 +125,6 @@ expr_node* parser::parse_primary() {
 		case C_NAME: return parse_identifier_node();
 		case C_NUMBER : return parse_number_node();
 		case C_OPEN_PAREN : return parse_paren_node();
-		case C_EOF : return 0;
-		case C_SEMICOLON : return 0;
 	}
 }
 
@@ -225,10 +222,9 @@ void parser::main_loop() {
 	get_next_token();
 	while(1) {
 		switch(CUR_TOKEN_TYPE) {
-			case C_SEMICOLON:	get_next_token(); break;
-			case C_NAME: handle_top_level_expr(); break;
-			case C_EOF: return;
 			default: handle_top_level_expr(); break; // TODO
+			case C_SEMICOLON:	get_next_token(); break;
+			case C_EOF: return;
 		}
 	}
 }

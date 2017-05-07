@@ -49,8 +49,10 @@
  */
 #ifdef PRINT_LOG
 #define PRINT(msg) std::cout << "msg: " << msg << std::endl;
+#define PRINT_TOKEN(token) std::cout << "token: " << token << std::endl;
 #else
 #define PRINT(msg) do{}while(0)
+#define PRINT_TOKEN(token) do{}while(0)
 #endif
 
 /*
