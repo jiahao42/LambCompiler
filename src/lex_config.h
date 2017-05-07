@@ -21,18 +21,6 @@
 //#undef TEST_ON
 
 /*
- * The lexer test switch, see lex.cpp or compiler.cpp
- */
-#define TEST_LEXER
-#undef TEST_LEXER
-
-/*
- * The parser test switch, see compiler.cpp
- */
-#define TEST_PARSER
-//#undef TEST_PARSER
-
-/*
  * Output token stream to console or not, see lex.h
  */
 #define DUMP_TOKEN_STREAM

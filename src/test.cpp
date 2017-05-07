@@ -158,7 +158,8 @@ void lexer::test_lexer() {
 	i += 3;
 	EXPECT_EQ_INT(C_OTHER, GET_TOKEN_TYPE(i));
 	
-	printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);
+	source_file.c_token_vector.clear(); // delete all the tokens
+	printf("Lexer Test: %d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);
 }
 
 void lexer::test_parser_aux() {

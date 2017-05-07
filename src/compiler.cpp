@@ -10,12 +10,8 @@ extern source source_file; 				/* Stand for source file, including filename and 
 int compiler::compile(int argc, char** argv) {
     init_symbol_table("test_dummy", "test_dummy");
 #ifdef TEST_ON
-#ifdef TEST_LEXER
     l.test_lexer();
-#endif /* end of TEST_LEXER */
-#ifdef TEST_PARSER
     test_parser();
-#endif /* end of TEST_PARSER */
 #else
     if (argc == 1) {
         std::cout << "Invalid parameter!" << std::endl;
