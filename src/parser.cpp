@@ -52,6 +52,12 @@ std::queue<_error> error_queue;		/* A queue used for storing error */
 std::queue<_warning> warning_queue; /* A queue used for storing warning */
 extern source source_file;
 
+expr_node* parser::Error(std::string str) {
+	std::cout << source_file.filename << ":" << CUR_TOKEN_LINE << ":" << CUR_TOKEN_COL << ": Error: " << str << std::endl;
+	return 0;
+}
+prototype_node* parser::ErrorP(std::string str) { Error(str); return 0; }
+function_node* parser::ErrorF(std::string str) { Error(str); return 0; }
 
 int parser::get_op_precedence() {
   // Make sure it's a declared binop.
@@ -68,13 +74,6 @@ inline c_ttype& parser::get_next_token() {
 	PRINT_TOKEN(CUR_TOKEN_NAME);
 	return CUR_TOKEN_TYPE;
 }
-
-expr_node* parser::Error(std::string str) {
-	std::cout << source_file.filename << ":" << CUR_TOKEN_LINE << ":" << CUR_TOKEN_COL << ": Error: " << str << std::endl;
-	return 0;
-}
-prototype_node* parser::ErrorP(std::string str) { Error(str); return 0; }
-function_node* parser::ErrorF(std::string str) { Error(str); return 0; }
 
 expr_node* parser::parse_identifier_node() {
 	std::string name = CUR_TOKEN_NAME;

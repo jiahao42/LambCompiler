@@ -158,14 +158,15 @@ void lexer::test_lexer() {
 	i += 3;
 	EXPECT_EQ_INT(C_OTHER, GET_TOKEN_TYPE(i));
 	
-	source_file.c_token_vector.clear(); // delete all the tokens
+	source_file.reset(); // delete all the tokens
+	cur_line_info.reset();
 	printf("Lexer Test: %d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);
 }
 
 void lexer::test_parser_aux() {
 	const std::vector<std::string> test_expr = {
 		" 		first + second * (third + _fourth);						",
-		"		void func(int a, int b);				",
+		"		a + b * c / (d * 5) - k;								",
 	};
 	for (std::string s : test_expr) {
 		cur_line = s;

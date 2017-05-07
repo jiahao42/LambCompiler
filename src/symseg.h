@@ -350,6 +350,9 @@ typedef struct line
 		linenum++;
 		return *this;
 	}
+	inline void reset() {
+		linenum = 0;
+	}
 }line;
 
 /* All the information on one source file.  */
@@ -373,6 +376,10 @@ struct source
 	}
 	inline size_t get_token_size() {
 		return c_token_vector.size();
+	}
+	inline void reset() {
+		c_token_vector.clear();
+		lines.clear();
 	}
 };
 

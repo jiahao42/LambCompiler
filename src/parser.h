@@ -18,6 +18,7 @@ public:
 	    bin_op_precedence[C_PLUS] = 20;
 		bin_op_precedence[C_MINUS] = 20;
 		bin_op_precedence[C_MULT] = 40;  // highest.
+		bin_op_precedence[C_DIV] = 40;
 	}
 	void parse_main();
 	inline c_ttype& get_next_token();

@@ -13,12 +13,12 @@ Make sure you have installed GNU Make
 
 ### 3. Usage
 
-#### Normal Mode
+#### 3.1 Normal Mode
 * ./compiler [filename]
 * ./compiler -v
 * ./compiler -h
 
-#### Test Mode (no parameter needed)
+#### 3.2 Test Mode (no parameter needed)
 * ./compiler
 
 
