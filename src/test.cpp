@@ -165,7 +165,7 @@ void lexer::test_lexer() {
 void lexer::test_parser_aux() {
 	const std::vector<std::string> test_expr = {
 		" 		first + second * (third + _fourth);						",
-		//"		void func(int a, int b);				",
+		"		void func(int a, int b);				",
 	};
 	for (std::string s : test_expr) {
 		cur_line = s;

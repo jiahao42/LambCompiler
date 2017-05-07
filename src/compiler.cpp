@@ -42,5 +42,5 @@ int compiler::compile(int argc, char** argv) {
 
 void compiler::test_parser() {
     l.test_parser_aux();
-    p.main_loop();
+    p.parse_main();
 }

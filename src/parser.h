@@ -33,7 +33,9 @@ public:
 	function_node* parse_top_level_expr();
 	void handle_definition();
 	void handle_top_level_expr();
-	void main_loop();
+	expr_node* Error(std::string str);
+	prototype_node* ErrorP(std::string str);
+	function_node* ErrorF(std::string str);
 };
 
 

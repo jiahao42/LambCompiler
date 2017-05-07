@@ -46,6 +46,8 @@
 
 #define CUR_TOKEN_TYPE cur_token.get_type()
 #define CUR_TOKEN_NAME cur_token.get_name()
+#define CUR_TOKEN_LINE cur_token.get_line()
+#define CUR_TOKEN_COL  cur_token.get_col()
 std::queue<_error> error_queue;		/* A queue used for storing error */
 std::queue<_warning> warning_queue; /* A queue used for storing warning */
 extern source source_file;
@@ -67,9 +69,12 @@ inline c_ttype& parser::get_next_token() {
 	return CUR_TOKEN_TYPE;
 }
 
-expr_node *Error(const char *str) { fprintf(stderr, "Error: %s\n", str);return 0;}
-prototype_node *ErrorP(const char *str) { Error(str); return 0; }
-function_node *ErrorF(const char *str) { Error(str); return 0; }
+expr_node* parser::Error(std::string str) {
+	std::cout << source_file.filename << ":" << CUR_TOKEN_LINE << ":" << CUR_TOKEN_COL << ": Error: " << str << std::endl;
+	return 0;
+}
+prototype_node* parser::ErrorP(std::string str) { Error(str); return 0; }
+function_node* parser::ErrorF(std::string str) { Error(str); return 0; }
 
 expr_node* parser::parse_identifier_node() {
 	std::string name = CUR_TOKEN_NAME;
@@ -175,7 +180,7 @@ void parser::handle_top_level_expr() {
 	}
 }
 
-void parser::main_loop() {
+void parser::parse_main() {
 	get_next_token();
 	while(1) {
 		switch(CUR_TOKEN_TYPE) {
