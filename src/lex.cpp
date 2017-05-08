@@ -3,7 +3,7 @@
 
 #include "lex.h"
 
-extern std::unordered_map<std::string, enum rid> keyword;
+extern std::unordered_map<std::string, enum c_ttype> keyword;
 std::ifstream file; 				/* Current file */
 symbol_root symbol_table; 			/* Symbol table, see symseg.h */
 source source_file; 				/* Stand for source file, including filename and lines' info, See symseg.h */

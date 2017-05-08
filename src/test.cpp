@@ -171,7 +171,7 @@ void lexer::test_lexer() {
 	EXPECT_EQ_INT(C_OTHER, GET_TOKEN_TYPE(i));
 	
 	source_file.reset(); // delete all the tokens
-	cur_line_info.reset();
+	cur_line_info.reset(); // reset the line information
 	printf("Lexer Test: %d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);
 }
 
@@ -181,6 +181,7 @@ void lexer::test_parser_aux() {
 		"  first + second * (third + _fourth);		",
 		"  a + b * c / (d * 5) - k;					",
 		"  a + (b * c;								",
+		"  b + ;									",
 	};
 	for (std::string s : test_expr) {
 		cur_line = s;

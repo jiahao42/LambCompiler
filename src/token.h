@@ -4,28 +4,6 @@
 #ifndef LAMBLEXER_TOKEN_H_
 #define LAMBLEXER_TOKEN_H_
 
-/* 
- * Reserved identifiers.  This is the union of some keywords for C,
- */
-enum rid
-{
-  /* Modifiers: */
-  /* C, in empirical order of frequency.  */
-  RID_STATIC = 0,
-  RID_UNSIGNED, RID_LONG,    RID_CONST, RID_EXTERN,
-  RID_REGISTER, RID_TYPEDEF, RID_SHORT, RID_INLINE,
-  RID_VOLATILE, RID_SIGNED,  RID_AUTO,  RID_RESTRICT,
-
-  /* C */
-  RID_INT,     RID_CHAR,   RID_FLOAT,    RID_DOUBLE, RID_VOID,
-  RID_ENUM,    RID_STRUCT, RID_UNION,    RID_IF,     RID_ELSE,
-  RID_WHILE,   RID_DO,     RID_FOR,      RID_SWITCH, RID_CASE,
-  RID_DEFAULT, RID_BREAK,  RID_CONTINUE, RID_RETURN, RID_GOTO,
-  RID_SIZEOF,
-
-  RID_FUNCTION_NAME,
-};
-
 /*
  * Token Type Table
  */
@@ -92,7 +70,45 @@ enum rid
   TK(C_COMMENT,	SPELL_NUMBER)	/* Only if output comments.  */ \
                                         /* SPELL_NUMBER happens to DTRT.  */ \
   TK(C_PADDING,	SPELL_NONE)	/* Whitespace for cpp0.  */	\
-  TK(C_EOF,		SPELL_NONE)	/* End of line or file.  */ 
+  TK(C_EOF,		SPELL_NONE)	/* End of line or file.  */ \
+    /* Modifiers: */				\
+  TK(RID_STATIC, 	"static")	  	\
+  TK(RID_UNSIGNED, 	"unsigned")		\
+  TK(RID_LONG,     	"long")			\
+  TK(RID_CONST,		"const")		\
+  TK(RID_EXTERN,	"extern")		\
+  TK(RID_SHORT,		"short")    	\
+  TK(RID_VOLATILE, 	"volatile")		\
+  TK(RID_SIGNED, 	"signed")		\
+  TK(RID_AUTO,		"auto"	)		\
+\
+  /* Built-in type */				\
+  TK(RID_INT,  		"int")			\
+  TK(RID_CHAR,   	"char")			\
+  TK(RID_FLOAT,    	"float")		\
+  TK(RID_DOUBLE, 	"double")		\
+  TK(RID_VOID,		"void")			\
+  TK(RID_ENUM,   	"enum")			\
+  TK(RID_STRUCT,	"struct")		\
+  TK(RID_UNION,    	"union")		\
+\
+  /* Control flow */				\
+  TK(RID_WHILE,  	"while")		\
+  TK(RID_DO,		"do")			\
+  TK(RID_FOR,		"for")      	\
+  TK(RID_GOTO,		"goto")			\
+  TK(RID_SWITCH,	"switch")		\
+  TK(RID_CASE, 		"case")			\
+  TK(RID_DEFAULT,  	"default")		\
+  TK(RID_BREAK,		"break")		\
+  TK(RID_IF, 		"if")			\
+  TK(RID_ELSE, 		"else")			\
+  TK(RID_CONTINUE, 	"continue")		\
+  TK(RID_RETURN, 	"return")		\
+\
+  /* Others */						\
+  TK(RID_SIZEOF,	"sizeof")		\
+  TK(RID_FUNCTION_NAME,	FUNCTION_NAME)
   
  
 #define OP(e, s) e,
