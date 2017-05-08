@@ -30,7 +30,7 @@
  * Print the log
  */
 #define PRINT_LOG
-//#undef PRINT_LOG
+#undef PRINT_LOG
 
 /* 
  * This macro is for DEBUG message

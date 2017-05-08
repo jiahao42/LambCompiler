@@ -2,32 +2,34 @@ expression											-->		expression
 	assignment-expression							-->			assignment-expression expression'
 	expression, assignment-expression				-->		expression'
 													-->			,assignment-expression expression' | ε
-	
+
 assignment-expression
 	unary-expression assignment-operator assignment-expression
 
-assignment-operator
-    =
-
+unary-expression									-->		unary-expression
+	postifx-expression								-->			postifx-expression unary-expression' | unary-operator cast-expression unary-expression'
+	unary-expression cast-expression				-->		unary-expression'
+													-->			cast-expression unary-expression' | ε
+							
+postifx-expression									-->		postifx-expression
+	primary-expression								-->			primary-expression postifx-expression'
+	postifx-expression ()							-->		postifx-expression'
+	postifx-expression ( argument-expression-list )	-->			()postifx-expression' | (argument-expression-list) postifx-expression' | ε
+	
 primary-expression
 	identifier
 	constant
 	(expression)
 
-postifx-expression									-->		postifx-expression
-	primary-expression								-->			primary-expression postifx-expression'
-	postifx-expression ()							-->		postifx-expression'
-	postifx-expression ( argument-expression-list )	-->			()postifx-expression' | (c) postifx-expression' | ε
-
 argument-expression-list							-->		argument-expression-list
 	assignment-expression							-->			assignment-expression argument-expression-list'
 	argument-expression-list, assignment-expression -->		argument-expression-list'
 													-->			,assignment-expression argument-expression-list' | ε
-unary-expression									-->		unary-expression
-	postifx-expression								-->			postifx-expression unary-expression'
-	unary-expression cast-expression				-->		unary-expression'
-													-->			cast-expression unary-expression' | ε
-unary-expression
+												
+assignment-operator
+    =
+									
+unary-operator
 	+
 	-
 	*

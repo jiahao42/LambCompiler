@@ -55,6 +55,8 @@ void lexer::test_lexer() {
 	for (std::string s : test_operator) {
 		cur_line = s;
 		cur_line_info++;
+		cur_line_info.set_content(cur_line);
+		source_file.push_line(cur_line_info);
 		lex();
 	}
 	int i = 0;
@@ -74,6 +76,8 @@ void lexer::test_lexer() {
 	for (std::string s : test_number) {
 		cur_line = s;
 		cur_line_info++;
+		cur_line_info.set_content(cur_line);
+		source_file.push_line(cur_line_info);
 		lex();
 	}
 	i += 3;  // index of "123"
@@ -99,6 +103,8 @@ void lexer::test_lexer() {
 	for (std::string s : test_identifier) {
 		cur_line = s;
 		cur_line_info++;
+		cur_line_info.set_content(cur_line);
+		source_file.push_line(cur_line_info);
 		lex();
 	}
 	i += 3; // index of "identifier"
@@ -123,6 +129,8 @@ void lexer::test_lexer() {
 	for (std::string s : test_comment) {
 		cur_line = s;
 		cur_line_info++;
+		cur_line_info.set_content(cur_line);
+		source_file.push_line(cur_line_info);
 		lex();
 	}
 	i += 2; // The size of token stream
@@ -137,6 +145,8 @@ void lexer::test_lexer() {
 	for (std::string s : test_literal) {
 		cur_line = s;
 		cur_line_info++;
+		cur_line_info.set_content(cur_line);
+		source_file.push_line(cur_line_info);
 		lex();
 	}
 	i += 3; // index of "hello "world "
@@ -153,6 +163,8 @@ void lexer::test_lexer() {
 	for (std::string s : test_stray_punctuation) {
 		cur_line = s;
 		cur_line_info++;
+		cur_line_info.set_content(cur_line);
+		source_file.push_line(cur_line_info);
 		lex();
 	}
 	i += 3;
@@ -165,12 +177,16 @@ void lexer::test_lexer() {
 
 void lexer::test_parser_aux() {
 	const std::vector<std::string> test_expr = {
-		" 		first + second * (third + _fourth);						",
-		"		a + b * c / (d * 5) - k;								",
+		"  a + b * c;									",
+		"  first + second * (third + _fourth);		",
+		"  a + b * c / (d * 5) - k;					",
+		"  a + (b * c;								",
 	};
 	for (std::string s : test_expr) {
 		cur_line = s;
 		cur_line_info++;
+		cur_line_info.set_content(cur_line);
+		source_file.push_line(cur_line_info);
 		lex();
 	}
 }

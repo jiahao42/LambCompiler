@@ -48,12 +48,15 @@
 #define CUR_TOKEN_NAME cur_token.get_name()
 #define CUR_TOKEN_LINE cur_token.get_line()
 #define CUR_TOKEN_COL  cur_token.get_col()
+#define CUR_LINE	   source_file.get_line_content(CUR_TOKEN_LINE)
 std::queue<_error> error_queue;		/* A queue used for storing error */
 std::queue<_warning> warning_queue; /* A queue used for storing warning */
 extern source source_file;
 
 expr_node* parser::Error(std::string str) {
-	std::cout << source_file.filename << ":" << CUR_TOKEN_LINE << ":" << CUR_TOKEN_COL << ": Error: " << str << std::endl;
+	// std::cout << CUR_TOKEN_LINE << " " << source_file.lines.size() << std::endl;
+	std::cout << source_file.filename << ":" << CUR_TOKEN_LINE << ":" << CUR_TOKEN_COL << " : " <<"Error: " << str << std::endl;
+	std::cout << CUR_LINE << std::endl;
 	return 0;
 }
 prototype_node* parser::ErrorP(std::string str) { Error(str); return 0; }
@@ -76,11 +79,12 @@ inline c_ttype& parser::get_next_token() {
 }
 
 expr_node* parser::parse_identifier_node() {
+	PRINT("parse_identifier_node");
 	std::string name = CUR_TOKEN_NAME;
 	get_next_token(); // skip identifier
 	if (CUR_TOKEN_TYPE != C_OPEN_PAREN)
 		return new var_expr_node(name);
-	
+
 	// Make sure it is a function call
 	get_next_token(); // skip '('
 	std::vector<expr_node*> args;
@@ -105,6 +109,7 @@ expr_node* parser::parse_identifier_node() {
 }
 
 expr_node* parser::parse_number_node() {
+	PRINT("parse_number_node");
 	double val = stod(CUR_TOKEN_NAME);
 	expr_node* res = new number_expr_node(val);
 	get_next_token();
@@ -112,6 +117,7 @@ expr_node* parser::parse_number_node() {
 }
 
 expr_node* parser::parse_paren_node() {
+	PRINT("parse_paren_node");
 	get_next_token(); //skip '('
 	expr_node* node = parse_expr();
 	if (!node) return 0;
@@ -123,6 +129,7 @@ expr_node* parser::parse_paren_node() {
 }
 
 expr_node* parser::parse_primary() {
+	PRINT("parse_primary");
 	c_ttype cur_type = CUR_TOKEN_TYPE;
 	switch (cur_type) {
 		default: return Error("unknown token when expecting an expression");
@@ -132,7 +139,8 @@ expr_node* parser::parse_primary() {
 	}
 }
 
-expr_node* parser::parse_bin_op_rhs(int prev_type, expr_node* lhs) {
+expr_node* parser::parse_bin_op_rhs(int prev_type, expr_node* lhs) { // a + b * c
+	PRINT("parse_bin_op_rhs");
 	while (1) {
 		int cur_precedence = get_op_precedence();
 
@@ -156,6 +164,7 @@ expr_node* parser::parse_bin_op_rhs(int prev_type, expr_node* lhs) {
 }
 
 expr_node* parser::parse_expr() {
+	PRINT("parse_expr");
 	expr_node* lhs = parse_primary();
 	if (!lhs) return 0;
 
@@ -163,6 +172,7 @@ expr_node* parser::parse_expr() {
 }
 
 function_node* parser::parse_top_level_expr() {
+	PRINT("parse_top_level_expr");
 	if (expr_node* e = parse_expr()) {
 		// Make an anonymous proto.
 		prototype_node* proto = new prototype_node("", std::vector<std::string>());

@@ -29,10 +29,10 @@ public:
 	expr_node* parse_primary();
 	expr_node* parse_bin_op_rhs(int prev_type, expr_node* lhs);
 	expr_node* parse_expr();
-	prototype_node* parse_prototype();
-	function_node* parse_definition();
+	//prototype_node* parse_prototype();
+	//function_node* parse_definition();
 	function_node* parse_top_level_expr();
-	void handle_definition();
+	//void handle_definition();
 	void handle_top_level_expr();
 	expr_node* Error(std::string str);
 	prototype_node* ErrorP(std::string str);

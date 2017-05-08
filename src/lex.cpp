@@ -51,6 +51,8 @@ void lexer::read_file() {
 	if (file.is_open()) {
 		while (std::getline(file, cur_line)) {
 			cur_line_info++;
+			cur_line_info.set_content(cur_line);
+			source_file.push_line(cur_line_info);
 			lex();
 		}
 	} else {

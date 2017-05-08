@@ -345,6 +345,7 @@ typedef struct line
 	line() : linenum(0), address(0) {}
 	size_t linenum;
 	int address;
+	std::string content;
 	//post increment
 	struct line& operator++(int) {
 		linenum++;
@@ -352,6 +353,9 @@ typedef struct line
 	}
 	inline void reset() {
 		linenum = 0;
+	}
+	inline void set_content(std::string& _content) {
+		content = _content;
 	}
 }line;
 
@@ -363,7 +367,7 @@ struct source
 	std::vector<line> lines; /* Information of each line */
 	std::vector<c_token> c_token_vector;
 	/*
-	 * Simple wrap of push_back
+	 * Simple wrap of push_back token
 	 */
 	inline void push(c_token c) {
 		c_token_vector.push_back(c);
@@ -380,6 +384,13 @@ struct source
 	inline void reset() {
 		c_token_vector.clear();
 		lines.clear();
+	}
+	inline void push_line(line& cur_line) {
+		lines.push_back(cur_line);
+	}
+	inline std::string& get_line_content(size_t& idx) {
+		size_t tmp = idx - 1;
+		return lines[tmp].content;
 	}
 };
 
