@@ -93,7 +93,7 @@ void init_symbol_table(const char* filedir, const char* filename) {
  */
 #define PUSH_TOKEN(type, name) \
 	do {\
-		token.set(idx, type, name);\
+		token.set(idx, (type), (name));\
 		source_file.push(token);\
 	}while(0)
 		
@@ -102,7 +102,7 @@ void init_symbol_table(const char* filedir, const char* filename) {
  */
 #define PUSH_TOKEN_LITERAL(type, name) \
 	do {\
-		token.set(start, type, name);\
+		token.set(start, (type), (name));\
 		source_file.push(token);\
 	}while(0)
 		
@@ -398,9 +398,14 @@ void lexer::parse_identifier(size_t& idx) {
 	if (idx - start > LONGEST_IDENTIFIER_LENGTH) {	
 		PUSH_TOKEN_LITERAL(C_NAME, cur_line.substr(start, LONGEST_IDENTIFIER_LENGTH));
 	} else {
-		PUSH_TOKEN_LITERAL(C_NAME, cur_line.substr(start, idx - start));
+		std::string tmp_tk = cur_line.substr(start, idx - start);
+		auto it = keyword.find(tmp_tk);
+		if (it != keyword.end()) { // Is a keyword
+			PUSH_TOKEN_LITERAL(it -> second, tmp_tk);
+		} else {
+			PUSH_TOKEN_LITERAL(C_NAME, tmp_tk); // Not a keyword
+		}
 	}
-	
 }
 
 void lexer::parse_char(size_t& idx) {					/* The first ' has been skipped */

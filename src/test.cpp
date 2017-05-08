@@ -170,6 +170,10 @@ void lexer::test_lexer() {
 	i += 3;
 	EXPECT_EQ_INT(C_OTHER, GET_TOKEN_TYPE(i));
 	
+#ifdef DUMP_TOKEN_STREAM
+    dump_token_stream();
+#endif /* end of DUMP_TOKEN_STREAM */
+
 	source_file.reset(); // delete all the tokens
 	cur_line_info.reset(); // reset the line information
 	printf("Lexer Test: %d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);
