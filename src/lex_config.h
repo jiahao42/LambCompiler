@@ -44,10 +44,6 @@
 #define PRINT_TOKEN(token) do{}while(0)
 #endif
 
-/*
- * If show keyword judgement when dumping token stream to console
- */
-#define SHOW_KEYWORD_FILTER
 
 /*
  * The length limit of identifier

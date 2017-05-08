@@ -446,11 +446,6 @@ void lexer::parse_multi_line_comment(size_t& idx) {
  * Output token stream to console
  */
 void lexer::dump_token_stream() {
-#ifndef SHOW_KEYWORD_FILTER
-	for (c_token c : source_file.c_token_vector) {
-		std::cout << source_file.filename << c << std::endl;
-	}
-#else
 	for (c_token c : source_file.c_token_vector) {
 		auto it = keyword.find(c.name);
 		if (keyword.end() == it)
@@ -458,7 +453,6 @@ void lexer::dump_token_stream() {
 		else
 			std::cout << source_file.filename << c << " [keyword]" << std::endl;
 	}
-#endif
 }
 
 
