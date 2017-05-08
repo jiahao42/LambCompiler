@@ -10,59 +10,67 @@
 #define TTYPE_TABLE				\
   OP(C_EQ = 0,	"=")			\
   OP(C_NOT,		"!")			\
-  OP(C_GREATER,	">")	/* compare */	\
-  OP(C_LESS,		"<")			\
-  OP(C_PLUS,		"+")	/* math */	\
-  OP(C_MINUS,		"-")			\
-  OP(C_MULT,		"*")			\
+  /* compare */					\
+  OP(C_GREATER,	">")			\
+  OP(C_LESS,		"<")		\
+  /* math */					\
+  OP(C_PLUS,		"+")		\
+  OP(C_MINUS,		"-")		\
+  OP(C_MULT,		"*")		\
   OP(C_DIV,		"/")			\
   OP(C_MOD,		"%")			\
-  OP(C_AND,		"&")	/* bit ops */	\
+  /* bit ops */					\
+  OP(C_AND,		"&")			\
   OP(C_OR,		"|")			\
   OP(C_XOR,		"^")			\
   OP(C_RSHIFT,	">>")			\
   OP(C_LSHIFT,	"<<")			\
 \
-  OP(C_COMPL,		"~")			\
-  OP(C_AND_AND,	"&&")	/* logical */	\
-  OP(C_OR_OR,		"||")			\
-  OP(C_QUERY,		"?")			\
-  OP(C_COLON,		":")			\
-  OP(C_COMMA,		",")	/* grouping */	\
-  OP(C_OPEN_PAREN,	"(")			\
-  OP(C_CLOSE_PAREN,	")")			\
-  OP(C_EQ_EQ,		"==")	/* compare */	\
+  OP(C_COMPL,		"~")		\
+  /* logical */					\
+  OP(C_AND_AND,	"&&")			\
+  OP(C_OR_OR,		"||")		\
+  OP(C_QUERY,		"?")		\
+  OP(C_COLON,		":")		\
+  /* grouping */				\
+  OP(C_COMMA,		",")		\
+  OP(C_OPEN_PAREN,	"(")		\
+  OP(C_CLOSE_PAREN,	")")		\
+  /* compare */					\
+  OP(C_EQ_EQ,		"==")		\
   OP(C_NOT_EQ,	"!=")			\
-  OP(C_GREATER_EQ,	">=")			\
+  OP(C_GREATER_EQ,	">=")		\
   OP(C_LESS_EQ,	"<=")			\
 \
-  OP(C_PLUS_EQ,	"+=")	/* math */	\
-  OP(C_MINUS_EQ,	"-=")			\
+  /* math */					\
+  OP(C_PLUS_EQ,	"+=")			\
+  OP(C_MINUS_EQ,	"-=")		\
   OP(C_MULT_EQ,	"*=")			\
   OP(C_DIV_EQ,	"/=")			\
   OP(C_MOD_EQ,	"%=")			\
-  OP(C_AND_EQ,	"&=")	/* bit ops */	\
-  OP(C_OR_EQ,		"|=")			\
+  /* bit ops */					\
+  OP(C_AND_EQ,	"&=")			\
+  OP(C_OR_EQ,		"|=")		\
   OP(C_XOR_EQ,	"^=")			\
-  OP(C_RSHIFT_EQ,	">>=")			\
-  OP(C_LSHIFT_EQ,	"<<=")			\
-  OP(C_OPEN_SQUARE,	"[")			\
-  OP(C_CLOSE_SQUARE,	"]")			\
-  OP(C_OPEN_BRACE,	"{")			\
-  OP(C_CLOSE_BRACE,	"}")			\
+  OP(C_RSHIFT_EQ,	">>=")		\
+  OP(C_LSHIFT_EQ,	"<<=")		\
+  OP(C_OPEN_SQUARE,	"[")		\
+  OP(C_CLOSE_SQUARE,	"]")	\
+  OP(C_OPEN_BRACE,	"{")		\
+  OP(C_CLOSE_BRACE,	"}")		\
   /* The remainder of the punctuation.  Order is not significant.  */	\
   OP(C_SEMICOLON,	";")	/* structure */	\
   OP(C_PLUS_PLUS,	"++")	/* increment */	\
-  OP(C_MINUS_MINUS,	"--")			\
+  OP(C_MINUS_MINUS,	"--")					\
   OP(C_DEREF,		"->")	/* accessors */	\
-  OP(C_DOT,		".")			\
-  OP(C_SCOPE,		"::")			\
+  OP(C_DOT,		".")						\
+  OP(C_SCOPE,		"::")					\
 \
   TK(C_NAME,		SPELL_IDENT)	/* word */			\
   TK(C_NUMBER,	SPELL_NUMBER)	/* 34_be+ta  */			\
 \
-  TK(C_CHAR,		SPELL_STRING)	/* 'char' */			\
-  TK(C_OTHER,		SPELL_CHAR)	/* stray punctuation */		\
+  TK(C_CHAR,		SPELL_STRING)	/* 'char' */		\
+  TK(C_OTHER,		SPELL_CHAR)	/* stray punctuation */	\
 \
   TK(C_STRING,	SPELL_STRING)	/* "string" */			\
   TK(C_HEADER_NAME,	SPELL_STRING)	/* <stdio.h> in #include */	\
