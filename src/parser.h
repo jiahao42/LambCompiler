@@ -14,6 +14,7 @@ private:
 	std::map<c_ttype, int> bin_op_precedence;
 public:
 	parser() : token_idx(0), dummy(0, 0, C_EQ, "") {
+		bin_op_precedence[C_EQ] = 5;
 		bin_op_precedence[C_LESS] = 10;
 	    bin_op_precedence[C_PLUS] = 20;
 		bin_op_precedence[C_MINUS] = 20;
@@ -23,6 +24,7 @@ public:
 	void parse_main();
 	inline c_ttype& get_next_token();
 	int get_op_precedence();
+	void handle_top_level_expr();
 	expr_node* parse_identifier_node();
 	expr_node* parse_number_node();
 	expr_node* parse_paren_node();
@@ -33,7 +35,10 @@ public:
 	//function_node* parse_definition();
 	function_node* parse_top_level_expr();
 	//void handle_definition();
-	void handle_top_level_expr();
+	
+	void handle_for_loop_expr();
+	expr_node* parse_for_loop_expr();
+	
 	expr_node* Error(std::string str);
 	prototype_node* ErrorP(std::string str);
 	function_node* ErrorF(std::string str);

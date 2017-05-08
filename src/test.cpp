@@ -186,6 +186,7 @@ void lexer::test_parser_aux() {
 		"  a + b * c / (d * 5) - k;					",
 		"  a + (b * c;								",
 		"  b + ;									",
+		"  for (i = 0; i < 5; i = i + 1);			",
 	};
 	for (std::string s : test_expr) {
 		cur_line = s;

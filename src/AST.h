@@ -63,6 +63,13 @@ public:
 	function_node(prototype_node* _proto, expr_node* _body) : proto(_proto), body(_body) {}
 };
 
+/* ForLoopNode - expression for for-loop node */
+class for_loop_node : public expr_node {
+private:
+	expr_node *init, *compare, *update;
+public:
+	for_loop_node(expr_node* _init, expr_node* _compare, expr_node* _update) : init(_init), compare(_compare), update(_update) {}
+};
 
 
 
