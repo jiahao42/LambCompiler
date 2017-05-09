@@ -6,14 +6,14 @@
 
 #include "config.h"
 #include "token.h"
-#include "symseg.h"
+#include "symbol_table.h"
 #include "error.h"
 #include "util.h"
 
 class lexer {
 private:
 	std::string cur_line; 				/* Literally current line */
-	line cur_line_info; 				/* Information of current line, including line number and line address, See symseg.h */
+	line cur_line_info; 				/* Information of current line, including line number and line address, See symbol_table.h */
 	c_token token; 						/* Represent the current token */
 	bool is_comment; 					/* If current line is one of multi-line comment? */
 public:

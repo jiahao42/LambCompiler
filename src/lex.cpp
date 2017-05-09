@@ -5,8 +5,8 @@
 
 extern std::unordered_map<std::string, enum c_ttype> keyword;
 std::ifstream file; 				/* Current file */
-symbol_root symbol_table; 			/* Symbol table, see symseg.h */
-source source_file; 				/* Stand for source file, including filename and lines' info, See symseg.h */
+symbol_root symbol_table; 			/* Symbol table, see symbol_table.h */
+source source_file; 				/* Stand for source file, including filename and lines' info, See symbol_table.h */
 
 /*
  * Interface of lexer

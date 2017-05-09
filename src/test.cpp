@@ -3,7 +3,7 @@
 
 #include "config.h"
 #include "token.h"
-#include "symseg.h"
+#include "symbol_table.h"
 #include "lex.h"
 #include "parser.h"
 #include "error.h"

@@ -4,8 +4,8 @@
 #include "compiler.h"
 
 extern std::ifstream file; 				/* Current file */
-extern symbol_root symbol_table; 			/* Symbol table, see symseg.h */
-extern source source_file; 				/* Stand for source file, including filename and lines' info, See symseg.h */
+extern symbol_root symbol_table; 			/* Symbol table, see symbol_table.h */
+extern source source_file; 				/* Stand for source file, including filename and lines' info, See symbol_table.h */
 
 int compiler::compile(int argc, char** argv) {
     init_symbol_table("test_dummy", "test_dummy");
