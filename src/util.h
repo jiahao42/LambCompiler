@@ -1,8 +1,8 @@
 //LambLexer
 //by James 2017/04/06
 
-#ifndef LAMBLEXER_UTIL_H_
-#define LAMBLEXER_UTIL_H_
+#ifndef LAMB_COMPILER_UTIL_H_
+#define LAMB_COMPILER_UTIL_H_
 
 /*
  * ELFHash, used for access varible in Symbol Table faster
@@ -22,4 +22,4 @@ void show_version();
 
 
 
-#endif /* end of LAMBLEXER_UTIL_H_ */
+#endif /* end of LAMB_COMPILER_UTIL_H_ */

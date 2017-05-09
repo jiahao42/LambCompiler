@@ -1,8 +1,8 @@
 //LambLexer
 //by James 2017/04/06
 
-#ifndef LAMBLEXER_LEX_H_
-#define LAMBLEXER_LEX_H_
+#ifndef LAMB_COMPILER_LEX_H_
+#define LAMB_COMPILER_LEX_H_
 
 #include "config.h"
 #include "token.h"
@@ -38,4 +38,4 @@ public:
 
 void init_symbol_table(const char* filedir, const char* filename); /* Initialize the symbol table */
 
-#endif /* end of LAMBLEXER_LEX_H_ */
+#endif /* end of LAMB_COMPILER_LEX_H_ */

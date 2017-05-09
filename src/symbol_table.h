@@ -1,8 +1,8 @@
 //LambLexer
 //by James 2017/04/06
 
-#ifndef LAMBLEXER_SYMSEG_H_
-#define LAMBLEXER_SYMSEG_H_
+#ifndef LAMB_COMPILER_SYMBOL_TABLE_H_ 
+#define LAMB_COMPILER_SYMBOL_TABLE_H_
 
 /*
  * This is actually the format of GDB symbol table data.
@@ -394,6 +394,6 @@ struct source
 	}
 };
 
-#endif /* end of LAMBLEXER_SYMSEG_H_ */
+#endif /* end of LAMB_COMPILER_SYMBOL_TABLE_H_ */
 
 

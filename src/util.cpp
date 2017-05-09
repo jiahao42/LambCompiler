@@ -32,14 +32,14 @@ unsigned int ELFHash(std::string str) {
  */
 void help_menu() {
 	std::cout << "This is the help menu" << std::endl;
-	std::cout << "LambLexer, Version: " << version << std::endl << std::endl;;
+	std::cout << "LambCompiler, Version: " << version << std::endl << std::endl;;
 }
 
 /*
  * Show version
  */
 void show_version() {
-	std::cout << "LambLexer, Version: " << version << std::endl << std::endl;;
+	std::cout << "LambCompiler, Version: " << version << std::endl << std::endl;;
 }
 
 

@@ -1,8 +1,8 @@
 //LambLexer
 //by James 2017/04/06
 
-#ifndef LAMBLEXER_TOKEN_H_
-#define LAMBLEXER_TOKEN_H_
+#ifndef LAMB_COMPILER_TOKEN_H_
+#define LAMB_COMPILER_TOKEN_H_
 
 /*
  * Token Type Table
@@ -170,7 +170,7 @@ typedef struct c_token
 	}
 }c_token;
 
-#endif /* end of LAMBLEXER_TOKEN_H_ */
+#endif /* end of LAMB_COMPILER_TOKEN_H_ */
 
 
 
