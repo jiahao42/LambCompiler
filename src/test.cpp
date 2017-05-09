@@ -156,8 +156,10 @@ void lexer::test_lexer() {
 	EXPECT_EQ_INT(C_CHAR, GET_TOKEN_TYPE(i));
 	EXPECT_EQ_STRING("b", GET_TOKEN_NAME(i));
 	
+	
+	/* Test Unknow type */
 	const std::vector<std::string> test_stray_punctuation = {
-		" 			¸ò										",
+		" 			@ $										",
 	};
 	
 	for (std::string s : test_stray_punctuation) {
@@ -168,6 +170,8 @@ void lexer::test_lexer() {
 		lex();
 	}
 	i += 3;
+	EXPECT_EQ_INT(C_OTHER, GET_TOKEN_TYPE(i));
+	i += 1;
 	EXPECT_EQ_INT(C_OTHER, GET_TOKEN_TYPE(i));
 	
 #ifdef DUMP_TOKEN_STREAM
@@ -184,9 +188,13 @@ void lexer::test_parser_aux() {
 		"  a + b * c;									",
 		"  first + second * (third + _fourth);		",
 		"  a + b * c / (d * 5) - k;					",
-		"  a + (b * c;								",
+		"  first + (second * third;								",
 		"  b + ;									",
-		"  for (i = 0; i < 5; i = i + 1);			",
+		"  for(;;);								",
+		"  for(i = 0;;);						",
+		"  for(i = 0; i < 5;);					",
+		"  for(i = 0; i < 5; i = i + 1);		",
+		"  for(i = 0; i < 5;					",
 	};
 	for (std::string s : test_expr) {
 		cur_line = s;

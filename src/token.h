@@ -79,7 +79,7 @@
                                         /* SPELL_NUMBER happens to DTRT.  */ \
   TK(C_PADDING,	SPELL_NONE)	/* Whitespace for cpp0.  */	\
   TK(C_EOF,		SPELL_NONE)	/* End of line or file.  */ \
-    /* Modifiers: */				\
+  /* Modifiers: */					\
   TK(RID_STATIC, 	"static")	  	\
   TK(RID_UNSIGNED, 	"unsigned")		\
   TK(RID_LONG,     	"long")			\

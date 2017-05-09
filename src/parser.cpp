@@ -56,7 +56,10 @@ extern source source_file;
 expr_node* parser::Error(std::string str) {
 	std::cout << source_file.filename << ":" << CUR_TOKEN_LINE << ":" << CUR_TOKEN_COL << " : " <<"Error: " << str << std::endl;
 	std::cout << CUR_LINE << std::endl;
-	std::cout << std::setw(CUR_TOKEN_COL) << "^" << std::endl;
+	std::cout << std::setw(CUR_TOKEN_COL + 1);
+	for (size_t i = 0; i < CUR_TOKEN_NAME.size(); i++)
+		std::cout << "^";
+	std::cout << std::endl;
 	return 0;
 }
 prototype_node* parser::ErrorP(std::string str) { Error(str); return 0; }
