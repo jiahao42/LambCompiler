@@ -1,8 +1,8 @@
 //LambLexer
 //by James 2017/04/06
 
-#ifndef LAMBLEXER_LEX_CONFIG_H_
-#define LAMBLEXER_LEX_CONFIG_H_
+#ifndef LAMB_COMPILER_CONFIG_H_
+#define LAMB_COMPILER_CONFIG_H_
 
 
 #include <iostream>
@@ -56,4 +56,4 @@
 const std::string version = "0.0.3";
 
 
-#endif /* end of LAMBLEXER_LEX_CONFIG_H_ */
+#endif /* end of LAMB_COMPILER_CONFIG_H_ */

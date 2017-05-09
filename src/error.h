@@ -3,7 +3,7 @@
 
 #ifndef LAMBLEXER_ERROR_H_
 #define LAMBLEXER_ERROR_H_
-#include "lex_config.h"
+#include "config.h"
 #include <map>
 
 extern source source_file;

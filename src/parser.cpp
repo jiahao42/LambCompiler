@@ -1,6 +1,6 @@
 //LambCompiler
 //by James 2017/05/02
-#include "parser_config.h"
+#include "config.h"
 #include "parser.h"
 
 

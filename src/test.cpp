@@ -1,7 +1,7 @@
 //LambLexer
 //by James 2017/04/20
 
-#include "lex_config.h"
+#include "config.h"
 #include "test.h"
 #include "token.h"
 #include "symseg.h"

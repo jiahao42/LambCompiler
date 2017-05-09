@@ -4,7 +4,7 @@
 #ifndef LAMBLEXER_LEX_H_
 #define LAMBLEXER_LEX_H_
 
-#include "lex_config.h"
+#include "config.h"
 #include "token.h"
 #include "symseg.h"
 #include "test.h"
