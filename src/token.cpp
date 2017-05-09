@@ -34,7 +34,7 @@ std::unordered_map<std::string, enum c_ttype> keyword (
 		PAIR("do", RID_DO),
 		PAIR("for", RID_FOR),
 		PAIR("switch", RID_SWITCH),
-		PAIR("case", RID_SWITCH),
+		PAIR("case", RID_CASE),
 		PAIR("default", RID_DEFAULT),
 		PAIR("break", RID_BREAK),
 		PAIR("continue", RID_CONTINUE),

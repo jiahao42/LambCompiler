@@ -156,6 +156,30 @@ void lexer::test_lexer() {
 	EXPECT_EQ_INT(C_CHAR, GET_TOKEN_TYPE(i));
 	EXPECT_EQ_STRING("b", GET_TOKEN_NAME(i));
 	
+	/* Test keywords */
+	
+	const std::vector<std::string> test_keywords = {
+		"			static unsigned long const				",
+		"			extern short volatile signed			",
+		"			auto int char float						",
+		"			double void enum struct					",
+		"			union while do for						",
+		"			goto switch case default				",
+		"			break if else continue return			",
+		"			sizeof									",
+	};
+	
+	for (std::string s : test_keywords) {
+		cur_line = s;
+		cur_line_info++;
+		cur_line_info.set_content(cur_line);
+		source_file.push_line(cur_line_info);
+		lex();
+	}
+	i += 2; // index of "static"
+	for (int rid = 100; rid < 130; rid++, i++) {
+		EXPECT_EQ_INT(rid, GET_TOKEN_TYPE(i));
+	}
 	
 	/* Test Unknow type */
 	const std::vector<std::string> test_stray_punctuation = {
@@ -169,7 +193,6 @@ void lexer::test_lexer() {
 		source_file.push_line(cur_line_info);
 		lex();
 	}
-	i += 3;
 	EXPECT_EQ_INT(C_OTHER, GET_TOKEN_TYPE(i));
 	i += 1;
 	EXPECT_EQ_INT(C_OTHER, GET_TOKEN_TYPE(i));
