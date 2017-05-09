@@ -3,7 +3,7 @@
 This is a simple compiler for a subset of ANSI C.
 
 ### 1. Before Compilation
-See `lex_config.h`, make sure it is the desired configuration. The default configuration is `Test Mode`, which means it use the previously defined test data.
+See `config.h`, make sure it is the desired configuration. The default configuration is `Test Mode`, which means it use the previously defined test data.
 
 ### 2. How to compile
 Make sure you have installed GNU Make

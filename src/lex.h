@@ -7,7 +7,6 @@
 #include "config.h"
 #include "token.h"
 #include "symseg.h"
-#include "test.h"
 #include "error.h"
 #include "util.h"
 

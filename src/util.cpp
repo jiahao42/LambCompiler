@@ -5,7 +5,6 @@
 #include "util.h"
 #include "token.h"
 #include "symseg.h"
-#include "test.h"
 
 /*
  * ELFHash, used for access varible in Symbol Table faster
