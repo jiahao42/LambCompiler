@@ -4,7 +4,6 @@
 #ifndef LAMB_COMPILER_ERROR_H_
 #define LAMB_COMPILER_ERROR_H_
 #include "config.h"
-#include <map>
 
 extern source source_file;
 
