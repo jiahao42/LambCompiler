@@ -46,7 +46,7 @@ static std::map<enum WARING_ID, std::string> warning_table = {
 #undef PAIR
 
 /*
- * For the error queue, see error.cpp
+ * For the error queue
  */
 typedef struct _error {
 	_error(ERROR_ID _ERROR_ID, size_t _linenum, size_t _col) : id(_ERROR_ID), linenum(_linenum), col(_col) {}
@@ -67,7 +67,7 @@ typedef struct _error {
 }_error;
 
 /*
- * For the warning queue, see error.cpp
+ * For the warning queue
  */
 typedef struct _warning {
 	_warning(WARING_ID _WARING_ID, size_t _linenum, size_t _col) : id(_WARING_ID), linenum(_linenum), col(_col) {}
@@ -87,10 +87,6 @@ typedef struct _warning {
 		return id;
 	}
 }_warning;
-
-
-
-
 
 
 #endif /* end of LAMB_COMPILER_ERROR_H_ */

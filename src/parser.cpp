@@ -3,54 +3,11 @@
 #include "config.h"
 #include "parser.h"
 
-
-/*
- * Push error into the queue
- */
-#define PUSH_ERROR(linenum, col, ERR_ID) \
-	do {\
-		_error e(ERR_ID, linenum, col);\
-		error_queue.push(e);\
-	}while(0)
-
-/*
- * Push warning into the queue
- */
-#define PUSH_WARNING(linenum, col, WARNING_ID) \
-	do {\
-		_warning w(WARNING_ID, linenum, col);\
-		warning_queue.push(w);\
-	}while(0)
-
-/*
- * Pop the error from error queue and output the error to the console
- */
-#define POP_ERROR() \
-	do {\
-		while(!error_queue.empty()) {\
-			std::cout << error_queue.front();\
-			error_queue.pop();\
-		}\
-	}while(0)
-
-/*
- * Pop the warning from error queue and output the warning to the console
- */
-#define POP_WARNING() \
-	do {\
-		while(!warning_queue.empty()) {\
-			std::cout << warning_queue.front();\
-			warning_queue.pop();\
-		}\
-	}while(0)
-
 #define CUR_TOKEN_TYPE cur_token.get_type()
 #define CUR_TOKEN_NAME cur_token.get_name()
 #define CUR_TOKEN_LINE cur_token.get_line()
 #define CUR_TOKEN_COL  cur_token.get_col()
 #define CUR_LINE	   source_file.get_line_content(CUR_TOKEN_LINE)
-std::queue<_error> error_queue;		/* A queue used for storing error */
-std::queue<_warning> warning_queue; /* A queue used for storing warning */
 extern source source_file;
 
 expr_node* parser::Error(std::string str) {
