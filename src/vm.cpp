@@ -15,10 +15,28 @@ int *eip,
 	*ebp,
 	*esp;
 
+void init();
+void test();
 void eval();
 void entry();
 
 int main() {
+	init();
+	test();
+	entry();
+}
+
+void test() {
+	size_t i = 0;
+	eip = text;
+	text[i++] = LOADA; // LOADA 10
+	text[i++] = 10;
+	text[i++] = LOADB;
+	text[i++] = 20;
+	text[i++] = ADD;
+	text[i++] = HALT;
+}
+void init() {
 	text = new int[stack_size];
 	old_text = new int[stack_size];
 	stack = new int[stack_size];
@@ -31,20 +49,7 @@ int main() {
 	
 	ebx = stack;
 	esp = stack;
-	
-	size_t i = 0;
-	eip = text;
-	text[i++] = LOADA; // LOADA 10
-	text[i++] = 10;
-	text[i++] = LOADB;
-	text[i++] = 20;
-	text[i++] = ADD;
-	text[i++] = HALT;
-	
-	
-	entry();
 }
-
 void entry() {
 	eval();
 }
