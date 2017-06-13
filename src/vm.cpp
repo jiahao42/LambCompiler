@@ -7,7 +7,7 @@ int *text,            // text segment
 char *data;           // data segment
 const int stack_size = 1024;
 
-int *eip,
+int *eip,			// registers
 	*eax,
 	*ebx,
 	*ecx,

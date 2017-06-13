@@ -176,13 +176,25 @@ function_node* parser::parse_top_level_expr() {
 	return 0;
 }
 
+void interpret_top_level_expr(expr_node* node, std::vector<std::string>& ops) {
+	if (node) {
+		interpret_top_level_expr(node -> lhs);
+		if (node -> )
+		interpret_top_level_expr(node -> rhs);
+	}
+}
+
 void parser::handle_top_level_expr() {
-	if (parse_top_level_expr()) {
+	function_node* node = parse_top_level_expr();
+	if (node) {
 		std::cout << "Parsed a top-level expr." << std::endl;
+		std::vector<std::string> ops;
+		interpret_top_level_expr(node -> body, ops);
 	} else {
 		get_next_token();
 	}
 }
+
 
 void parser::handle_for_loop_expr() {
 	if (parse_for_loop_expr()) {

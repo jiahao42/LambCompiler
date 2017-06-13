@@ -4,7 +4,13 @@
 #include <iostream>
 
 enum {
-	ADD, SUB, MUL, DIV, PUSH, POP, JMP, MOV, LEA, LOADA, LOADB, HALT, 
+	ADD, SUB, MUL, DIV, 
+	PUSH, POP, 
+	JMP, 
+	MOV, LEA, 
+	LOADA, // move the next number to eax
+	LOADB, // move the next number to ebx
+	HALT, 
 };
 
 
