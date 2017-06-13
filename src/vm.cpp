@@ -24,16 +24,23 @@ int main() {
 	stack = new int[stack_size];
 	data = new char[stack_size];
 	
+	eax = new int();
+	ebx = new int();
+	ebx = new int();
+	edx = new int();
+	
 	ebx = stack;
 	esp = stack;
 	
 	size_t i = 0;
+	eip = text;
 	text[i++] = LOADA; // LOADA 10
 	text[i++] = 10;
 	text[i++] = LOADB;
 	text[i++] = 20;
 	text[i++] = ADD;
 	text[i++] = HALT;
+	
 	
 	entry();
 }
@@ -45,7 +52,12 @@ void entry() {
 void eval() {
 	int op, *tmp;
 	while (1) {
-		eip++;
+		op = *eip;
+		//std::cout << "current op: " << op << std::endl;
+		if (op == HALT) {
+			std::cout << "Result: " << *eax << std::endl;
+			break;
+		}
 		switch (op) {
 			case ADD:
 				*eax = *eax + *ebx;
@@ -57,11 +69,14 @@ void eval() {
 				eip++;
 				*eax = *eip;
 				break;
-			case HALT:
-				std::cout << "Result: " << *eax << std::endl;
+			case LOADB:
+				eip++;
+				*ebx = *eip;
+				break;
 			default:
 				std::cout << "Wrong op!" << std::endl;
 		}
+		eip++;
 	}
 }
 
