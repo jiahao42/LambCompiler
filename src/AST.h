@@ -3,10 +3,22 @@
 #ifndef LAMB_COMPILER_AST_H_
 #define LAMB_COMPILER_AST_H_
 
+extern std::vector<std::string> code;
+
+class value {
+private:
+	std::string _op;
+public:
+	value(std::string op) : _op(op) {}
+};
+
 /* Base node of AST */
 class expr_node {
 public:
 	virtual ~expr_node() {}
+	virtual value* code_gen() {
+		return nullptr;
+	}
 };
 
 /* NumberExprNode - expression for numeric literal */
@@ -15,6 +27,9 @@ private:
 	double val;
 public:
 	number_expr_node(double _val) : val(_val) {}
+	virtual value* code_gen() {
+		code.push_back(std::to_string(val));
+	}
 };
 
 /* VarExprNode - expression for variable */
@@ -32,6 +47,25 @@ private:
 	expr_node *lhs, *rhs;
 public:
 	binary_expr_node(std::string _op, expr_node* _lhs, expr_node* _rhs) : op(_op), lhs(_lhs), rhs(_rhs) {}
+	virtual value* code_gen(){
+		char tmp_op = op[0];
+		value* L = lhs->code_gen();
+		value* R = rhs->code_gen();
+		if(L == 0||R == 0) return 0;
+
+		switch(tmp_op){
+			case '+':
+				code.push_back("ADD");
+				break;
+			case '-':
+				code.push_back("SUB");
+				break;
+			case '*':
+				break;
+			default:
+				std::cout << "Error in binary expr code gen" << std::endl;
+		}
+	}
 };
 
 /* CallExprNode - expression for function call */
@@ -75,18 +109,19 @@ public:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

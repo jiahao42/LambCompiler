@@ -204,16 +204,16 @@ void lexer::test_lexer() {
 
 void lexer::test_parser_aux() {
 	const std::vector<std::string> test_expr = {
-		"  a + b * c;									",
-		"  first + second * (third + _fourth);		",
-		"  a + b * c / (d * 5) - k;					",
-		"  first + (second * third;								",
-		"  b + ;									",
-		"  for(;;);								",
-		"  for(i = 0;;);						",
-		"  for(i = 0; i < 5;);					",
-		"  for(i = 0; i < 5; i = i + 1);		",
-		"  for(i = 0; i < 5;					",
+		"  1 + 2 + 1;									",
+		// "  first + second * (third + _fourth);		",
+		// "  a + b * c / (d * 5) - k;					",
+		// "  first + (second * third;								",
+		// "  b + ;									",
+		// "  for(;;);								",
+		// "  for(i = 0;;);						",
+		// "  for(i = 0; i < 5;);					",
+		// "  for(i = 0; i < 5; i = i + 1);		",
+		// "  for(i = 0; i < 5;					",
 	};
 	for (std::string s : test_expr) {
 		cur_line = s;

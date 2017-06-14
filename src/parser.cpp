@@ -9,6 +9,7 @@
 #define CUR_TOKEN_COL  cur_token.get_col()
 #define CUR_LINE	   source_file.get_line_content(CUR_TOKEN_LINE)
 extern source source_file;
+std::vector<std::string> code;
 
 expr_node* parser::Error(std::string str) {
 	std::cout << source_file.filename << ":" << CUR_TOKEN_LINE << ":" << CUR_TOKEN_COL << " : " <<"Error: " << str << std::endl;
@@ -169,6 +170,10 @@ expr_node* parser::parse_for_loop_expr() {
 function_node* parser::parse_top_level_expr() {
 	PRINT("parse_top_level_expr");
 	if (expr_node* e = parse_expr()) {
+		e -> code_gen();
+		for (std::string s : code) {
+			std::cout << s << std::endl;
+		}
 		// Make an anonymous proto.
 		prototype_node* proto = new prototype_node("", std::vector<std::string>());
 		return new function_node(proto, e);
@@ -176,20 +181,10 @@ function_node* parser::parse_top_level_expr() {
 	return 0;
 }
 
-void interpret_top_level_expr(expr_node* node, std::vector<std::string>& ops) {
-	if (node) {
-		interpret_top_level_expr(node -> lhs);
-		if (node -> )
-		interpret_top_level_expr(node -> rhs);
-	}
-}
-
 void parser::handle_top_level_expr() {
 	function_node* node = parse_top_level_expr();
 	if (node) {
 		std::cout << "Parsed a top-level expr." << std::endl;
-		std::vector<std::string> ops;
-		interpret_top_level_expr(node -> body, ops);
 	} else {
 		get_next_token();
 	}
