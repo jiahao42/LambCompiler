@@ -4,8 +4,8 @@
 #include <iostream>
 #include <unordered_map>
 
-// extern std::vector<std::string> code;
-// extern std::vector<std::string> data;
+extern std::vector<std::string> code;
+extern std::vector<std::string> stack_data;
 
 enum assm_op{
 	ADD, SUB, MUL, DIV, 
@@ -94,25 +94,28 @@ public:
 			eip++;
 		}
 	}
-	// void execute_code() {
-		// code.push_back("HALT");
-		// init();
-		// transform_code();
-		// entry();
-	// }
-	// void transform_code() {
-		// size_t i = 0;
-		// for (std::string s : code) {
-			// auto it = op_table.find(s);
-			// if (it == op_table.end()) {
-				// text[i++] = stoi(s);
-				// std::cout << "transforming: " << stoi(s) << std::endl;
-			// } else {
-				// text[i++] = it -> second;
-				// std::cout << "transforming: " << s << std::endl;
-			// }
-		// }
-	// }
+	void execute_code() {
+		code.push_back("HALT");
+		init();
+		transform_code();
+		entry();
+	}
+	void transform_code() {
+		size_t i = 0;
+		for (std::string s : code) {
+			auto it = op_table.find(s);
+			if (it == op_table.end()) {
+				text[i++] = stoi(s);
+				std::cout << "transforming: " << stoi(s) << std::endl;
+			} else {
+				text[i++] = it -> second;
+				std::cout << "transforming: " << s << std::endl;
+			}
+		}
+		for (std::string s : stack_data) {
+			*esp++ = stoi(s);
+		}
+	}
 	void vm_main() {
 		init();
 		test();

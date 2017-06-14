@@ -4,7 +4,7 @@
 #define LAMB_COMPILER_AST_H_
 
 extern std::vector<std::string> code;
-extern std::vector<std::string> data;
+extern std::vector<std::string> stack_data;
 
 class value {
 private:
@@ -60,13 +60,14 @@ public:
 
 		switch(tmp_op){
 			case '+':
-				data.push_back(L -> get_val());
-				data.push_back(R -> get_val());
+				stack_data.push_back(L -> get_val());
+				stack_data.push_back(R -> get_val());
 				code.push_back("LOADA");
 				code.push_back("LOADB");
 				code.push_back("ADD");
 				break;
-			case '-':
+			// TODO
+			case '-': 
 				code.push_back("LOADA");
 				code.push_back("LOADB");
 				code.push_back("SUB");
