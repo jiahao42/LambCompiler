@@ -29,6 +29,7 @@ public:
 	number_expr_node(double _val) : val(_val) {}
 	virtual value* code_gen() {
 		code.push_back(std::to_string(val));
+		return new value(std::to_string(val));
 	}
 };
 
@@ -61,7 +62,7 @@ public:
 				code.push_back("SUB");
 				break;
 			case '*':
-				break;
+				code.push_back("MUL");
 			default:
 				std::cout << "Error in binary expr code gen" << std::endl;
 		}

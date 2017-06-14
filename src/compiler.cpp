@@ -6,12 +6,14 @@
 extern std::ifstream file; 				/* Current file */
 extern symbol_root symbol_table; 			/* Symbol table, see symbol_table.h */
 extern source source_file; 				/* Stand for source file, including filename and lines' info, See symbol_table.h */
+extern std::vector<std::string> code;
 
 int compiler::compile(int argc, char** argv) {
     init_symbol_table("test_dummy", "test_dummy");
 #ifdef TEST_ON
     l.test_lexer();
     test_parser();
+	
 #else
     if (argc == 1) {
         std::cout << "Invalid parameter!" << std::endl;
@@ -37,6 +39,7 @@ int compiler::compile(int argc, char** argv) {
 #ifdef DUMP_TOKEN_STREAM
     l.dump_token_stream();
 #endif /* end of DUMP_TOKEN_STREAM */
+	v.execute_code();
     return 0;
 }
 
