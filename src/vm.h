@@ -18,6 +18,7 @@ enum assm_op{
 
 static std::unordered_map<std::string, enum assm_op> op_table = {
 	{"ADD", ADD},
+	{"HALT", HALT},
 };
 
 class vm {
@@ -39,7 +40,6 @@ private:
 public:
 	void test() {
 		size_t i = 0;
-		eip = text;
 		text[i++] = LOADA; // LOADA 10
 		text[i++] = 10;
 		text[i++] = LOADB;
@@ -60,6 +60,7 @@ public:
 		
 		ebx = stack;
 		esp = stack;
+		eip = text;
 	}
 	void entry() {
 		eval();
@@ -95,6 +96,7 @@ public:
 		}
 	}
 	void execute_code() {
+		code.push_back("HALT");
 		init();
 		transform_code();
 		entry();
