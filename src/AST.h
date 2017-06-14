@@ -4,12 +4,16 @@
 #define LAMB_COMPILER_AST_H_
 
 extern std::vector<std::string> code;
+extern std::vector<std::string> data;
 
 class value {
 private:
-	std::string _op;
+	std::string _val;
 public:
-	value(std::string op) : _op(op) {}
+	value(std::string val) : _val(val) {}
+	std::string get_val() {
+		return _val;
+	}
 };
 
 /* Base node of AST */
@@ -56,12 +60,20 @@ public:
 
 		switch(tmp_op){
 			case '+':
+				data.push_back(L -> get_val());
+				data.push_back(R -> get_val());
+				code.push_back("LOADA");
+				code.push_back("LOADB");
 				code.push_back("ADD");
 				break;
 			case '-':
+				code.push_back("LOADA");
+				code.push_back("LOADB");
 				code.push_back("SUB");
 				break;
 			case '*':
+				code.push_back("LOADA");
+				code.push_back("LOADB");
 				code.push_back("MUL");
 			default:
 				std::cout << "Error in binary expr code gen" << std::endl;

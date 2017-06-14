@@ -10,6 +10,7 @@
 #define CUR_LINE	   source_file.get_line_content(CUR_TOKEN_LINE)
 extern source source_file;
 std::vector<std::string> code;
+std::vector<std::string> data;
 
 expr_node* parser::Error(std::string str) {
 	std::cout << source_file.filename << ":" << CUR_TOKEN_LINE << ":" << CUR_TOKEN_COL << " : " <<"Error: " << str << std::endl;
