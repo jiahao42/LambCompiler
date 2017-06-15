@@ -29,6 +29,7 @@ public:
 	}
 };
 
+// temp variable
 static int temp_index;
 class temp : public expr_node {
 private:
@@ -36,6 +37,20 @@ private:
 public:
 	temp() {
 		name = "t" + std::to_string(temp_index++);
+	}
+	std::string to_string() {
+		return name;
+	}
+};
+
+// label for goto 
+static int label_index;
+class label: public expr_node {
+private:
+	std::string name;
+public:
+	label() {
+		name = "L" + std::to_string(label_index++);
 	}
 	std::string to_string() {
 		return name;
@@ -71,7 +86,7 @@ private:
 	expr_node *lhs, *rhs;
 public:
 	binary_expr_node(std::string _op, expr_node* _lhs, expr_node* _rhs) : op(_op), lhs(_lhs), rhs(_rhs) {}
-	virtual value* code_gen(){
+	virtual value* code_gen() {
 		char tmp_op = op[0];
 		value* L = lhs->code_gen();
 		value* R = rhs->code_gen();
@@ -100,6 +115,23 @@ public:
 	if_stmt_node() : cond(nullptr){}
 	if_stmt_node(expr_node* _cond , std::vector<expr_node*> _if_stmts, std::vector<expr_node*> _else_stmts) : 
 		cond(_cond), if_stmts(_if_stmts), else_stmts(_else_stmts) {}
+	virtual value* code_gen() {
+		label l1;
+		label l2;
+		emit("if ");
+		cond -> code_gen();
+		emit("goto " + l1.to_string());
+		emit("goto " + l2.to_string());
+		emit(l1.to_string() + ": ");
+		for (expr_node* e : if_stmts) {
+			e -> code_gen();
+		}
+		emit(l2.to_string() + ": ");
+		for (expr_node* e : else_stmts) {
+			e -> code_gen();
+		}
+		return nullptr;
+	}
 };
 /* CallExprNode - expression for function call */
 class call_expr_node : public expr_node {

@@ -237,7 +237,8 @@ void parser::handle_for_loop_expr() {
 }
 
 void parser::handle_if_statement() { //TODO
-	if (parse_if_statement()) {
+	if (expr_node* node = parse_if_statement()) {
+		node -> code_gen();
 		std::cout << "Parsed a if statement" << std::endl;
 	} else {
 		get_next_token();
