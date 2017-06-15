@@ -7,7 +7,7 @@ extern std::vector<std::string> code;
 extern std::vector<std::string> stack_data;
 
 inline void emit(std::string s) {
-	std::cout << s << std::endl;
+	std::cout << "\t" << s << std::endl;
 }
 
 class value {
@@ -118,15 +118,15 @@ public:
 	virtual value* code_gen() {
 		label l1;
 		label l2;
-		std::cout << "if ";
+		std::cout << "\tif ";
 		cond -> code_gen();
-		emit("goto " + l1.to_string());
+		emit("\tgoto " + l1.to_string());
 		emit("goto " + l2.to_string());
-		std::cout << l1.to_string() << ": ";
+		std::cout << "\t" << l1.to_string() << ": ";
 		for (expr_node* e : if_stmts) {
 			e -> code_gen();
 		}
-		std::cout << l2.to_string() << ": ";
+		std::cout << "\t" << l2.to_string() << ": ";
 		for (expr_node* e : else_stmts) {
 			e -> code_gen();
 		}
