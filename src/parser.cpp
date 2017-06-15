@@ -222,7 +222,7 @@ function_node* parser::parse_top_level_expr() {
 void parser::handle_top_level_expr() {
 	function_node* node = parse_top_level_expr();
 	if (node) {
-		std::cout << "Parsed a top-level expr." << std::endl;
+		// std::cout << "Parsed a top-level expr." << std::endl;
 	} else {
 		get_next_token();
 	}
@@ -230,7 +230,7 @@ void parser::handle_top_level_expr() {
 
 void parser::handle_for_loop_expr() {
 	if (parse_for_loop_expr()) {
-		std::cout << "Parsed a for-loop expr." << std::endl;
+		// std::cout << "Parsed a for-loop expr." << std::endl;
 	} else {
 		get_next_token();
 	}
@@ -239,7 +239,7 @@ void parser::handle_for_loop_expr() {
 void parser::handle_if_statement() { //TODO
 	if (expr_node* node = parse_if_statement()) {
 		node -> code_gen();
-		std::cout << "Parsed a if statement" << std::endl;
+		// std::cout << "Parsed a if statement" << std::endl;
 	} else {
 		get_next_token();
 	}

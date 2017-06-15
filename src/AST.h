@@ -118,15 +118,15 @@ public:
 	virtual value* code_gen() {
 		label l1;
 		label l2;
-		emit("if ");
+		std::cout << "if ";
 		cond -> code_gen();
 		emit("goto " + l1.to_string());
 		emit("goto " + l2.to_string());
-		emit(l1.to_string() + ": ");
+		std::cout << l1.to_string() << ": ";
 		for (expr_node* e : if_stmts) {
 			e -> code_gen();
 		}
-		emit(l2.to_string() + ": ");
+		std::cout << l2.to_string() << ": ";
 		for (expr_node* e : else_stmts) {
 			e -> code_gen();
 		}
