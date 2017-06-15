@@ -15,9 +15,10 @@ private:
 public:
 	parser() : token_idx(0), dummy(0, 0, C_EQ, "") {
 		bin_op_precedence[C_EQ] = 5;
-		bin_op_precedence[C_LESS] = 10;
-	    bin_op_precedence[C_PLUS] = 20;
-		bin_op_precedence[C_MINUS] = 20;
+		bin_op_precedence[C_EQ_EQ] = 15;
+		bin_op_precedence[C_LESS] = 20;
+	    bin_op_precedence[C_PLUS] = 35;
+		bin_op_precedence[C_MINUS] = 35;
 		bin_op_precedence[C_MULT] = 40;  // highest.
 		bin_op_precedence[C_DIV] = 40;
 	}

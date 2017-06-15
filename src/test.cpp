@@ -205,7 +205,7 @@ void lexer::test_lexer() {
 void lexer::test_parser_aux() {
 	const std::vector<std::string> test_expr = {
 		"        a + 2 * c - d;					",
-		"        if (a = b) {					",
+		"        if (a == b) {					",
 		"            a = a + b;					",
 		"        } else {						",
 		"            b = b + a;					",
