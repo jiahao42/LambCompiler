@@ -114,8 +114,7 @@ expr_node* parser::parse_bin_op_rhs(int prev_type, expr_node* lhs) { // a + b * 
 
 		expr_node* rhs = parse_primary();
 		if (!rhs)	return 0;
-
-		//c_ttype next_type = CUR_TOKEN_TYPE;
+		
 		int next_precedence = get_op_precedence();
 		if (cur_precedence < next_precedence) {
 			rhs = parse_bin_op_rhs(cur_precedence + 1, rhs);
@@ -186,13 +185,27 @@ expr_node* parser::parse_if_statement() {
 	}
 	get_next_token(); // skip '{'
 	
-	std::vector<expr_node*> stmts;
+	std::vector<expr_node*> if_stmts;
 	while (CUR_TOKEN_TYPE != C_CLOSE_BRACE) {
 		expr_node* stmt = parse_expr();
-		stmts.push_back(stmt);
+		if_stmts.push_back(stmt);
+		get_next_token();
 	}
-	return new if_stmt_node(cond, stmts);
 	
+	get_next_token(); // skip '}'
+	
+	std::vector<expr_node*> else_stmts;
+	if (CUR_TOKEN_TYPE == RID_ELSE) {
+		get_next_token(); // skip else
+		get_next_token(); // skip '}'
+		while (CUR_TOKEN_TYPE != C_CLOSE_BRACE) {
+			expr_node* stmt = parse_expr();
+			else_stmts.push_back(stmt);
+			get_next_token();
+		}
+	}
+	get_next_token(); // skip '}'
+	return new if_stmt_node(cond, if_stmts, else_stmts);
 }
 
 function_node* parser::parse_top_level_expr() {
@@ -238,7 +251,7 @@ void parser::parse_main() {
 			default: 			handle_top_level_expr(); break; // TODO
 			case RID_FOR:		handle_for_loop_expr(); break;
 			case C_SEMICOLON:	get_next_token(); break;
-			case C_IF: 			handle_if_statement(); break;
+			case RID_IF: 			handle_if_statement(); break;
 			case C_EOF: 		return;
 		}
 	}
