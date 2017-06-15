@@ -208,7 +208,7 @@ void lexer::test_parser_aux() {
 		"        if (a == b) {					",
 		"            a = a + b;					",
 		"        } else {						",
-		"            b = b + a;					",
+		"            b = b + a * (d - c);		",
 		"        }								",
 		// "  a + b * c / (d * 5) - k;					",
 		// "  first + (second * third;								",

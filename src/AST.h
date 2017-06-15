@@ -96,6 +96,10 @@ public:
 			default:
 				std::cout << "Error in binary expr code gen" << std::endl;
 			case '=':
+				if (op.size() == 2) {
+					emit(L->get_val() + " == " + R->get_val());
+					return new value(L->get_val());
+				}
 				emit(L->get_val() + " = " + R->get_val());
 				return new value(L->get_val());
 			case '+':
@@ -135,6 +139,10 @@ public:
 		}
 		return nullptr;
 	}
+};
+
+class boolean_expr_node : public expr_node {
+	//TODO
 };
 /* CallExprNode - expression for function call */
 class call_expr_node : public expr_node {
