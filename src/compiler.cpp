@@ -13,7 +13,6 @@ int compiler::compile(int argc, char** argv) {
 #ifdef TEST_ON
     l.test_lexer();
     test_parser();
-
 #else
     if (argc == 1) {
         std::cout << "Invalid parameter!" << std::endl;
