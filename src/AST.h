@@ -6,13 +6,17 @@
 extern std::vector<std::string> code;
 extern std::vector<std::string> stack_data;
 
+inline void emit(std::string s) {
+	std::cout << s << std::endl;
+}
+
 class value {
 private:
-	std::string _val;
+	std::string name;
 public:
-	value(std::string val) : _val(val) {}
+	value(std::string _name) : name(_name) {}
 	std::string get_val() {
-		return _val;
+		return name;
 	}
 };
 
@@ -25,14 +29,26 @@ public:
 	}
 };
 
+static int temp_index;
+class temp : public expr_node {
+private:
+	std::string name;
+public:
+	temp() {
+		name = "t" + std::to_string(temp_index++);
+	}
+	std::string to_string() {
+		return name;
+	}
+};
+
 /* NumberExprNode - expression for numeric literal */
 class number_expr_node : public expr_node {
 private:
-	double val;
+	int val;
 public:
-	number_expr_node(double _val) : val(_val) {}
+	number_expr_node(int _val) : val(_val) {}
 	virtual value* code_gen() {
-		code.push_back(std::to_string(val));
 		return new value(std::to_string(val));
 	}
 };
@@ -43,6 +59,9 @@ private:
 	std::string name;
 public:
 	var_expr_node(const std::string& _name) : name(_name) {}
+	virtual value* code_gen() {
+		return new value(name);
+	}
 };
 
 /* BinaryExprNode - expression for binary expression */
@@ -59,25 +78,12 @@ public:
 		if(L == 0||R == 0) return 0;
 
 		switch(tmp_op){
-			case '+':
-				stack_data.push_back(L -> get_val());
-				stack_data.push_back(R -> get_val());
-				code.push_back("LOADA");
-				code.push_back("LOADB");
-				code.push_back("ADD");
-				break;
-			// TODO
-			case '-': 
-				code.push_back("LOADA");
-				code.push_back("LOADB");
-				code.push_back("SUB");
-				break;
-			case '*':
-				code.push_back("LOADA");
-				code.push_back("LOADB");
-				code.push_back("MUL");
 			default:
 				std::cout << "Error in binary expr code gen" << std::endl;
+			case '+':
+				temp tmp;
+				emit(tmp.to_string() + " = " + L->get_val() + " + " + R->get_val());
+				return new value(tmp.to_string());
 		}
 	}
 };
