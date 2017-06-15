@@ -95,6 +95,9 @@ public:
 		switch(tmp_op){
 			default:
 				std::cout << "Error in binary expr code gen" << std::endl;
+			case '=':
+				emit(L->get_val() + " = " + R->get_val());
+				return new value(L->get_val());
 			case '+':
 			case '-':
 			case '*':
@@ -122,11 +125,11 @@ public:
 		cond -> code_gen();
 		emit("\tgoto " + l1.to_string());
 		emit("goto " + l2.to_string());
-		std::cout << "\t" << l1.to_string() << ": ";
+		std::cout << l1.to_string() << ": ";
 		for (expr_node* e : if_stmts) {
 			e -> code_gen();
 		}
-		std::cout << "\t" << l2.to_string() << ": ";
+		std::cout << l2.to_string() << ": ";
 		for (expr_node* e : else_stmts) {
 			e -> code_gen();
 		}

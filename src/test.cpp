@@ -205,10 +205,10 @@ void lexer::test_lexer() {
 void lexer::test_parser_aux() {
 	const std::vector<std::string> test_expr = {
 		"        a + 2 * c - d;					",
-		"        if (a + b) {					",
-		"            a + b;						",
+		"        if (a = b) {					",
+		"            a = a + b;					",
 		"        } else {						",
-		"            b + a;						",
+		"            b = b + a;					",
 		"        }								",
 		// "  a + b * c / (d * 5) - k;					",
 		// "  first + (second * third;								",
@@ -229,6 +229,7 @@ void lexer::test_parser_aux() {
 		lex();
 	}
 	std::cout << std::endl;
+	std::cout << "    pseudo-code: " << std::endl;
 }
 
 

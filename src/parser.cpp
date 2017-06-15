@@ -252,7 +252,7 @@ void parser::parse_main() {
 			default: 			handle_top_level_expr(); break; // TODO
 			case RID_FOR:		handle_for_loop_expr(); break;
 			case C_SEMICOLON:	get_next_token(); break;
-			case RID_IF: 			handle_if_statement(); break;
+			case RID_IF: 		handle_if_statement(); break;
 			case C_EOF: 		return;
 		}
 	}
