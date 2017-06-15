@@ -81,8 +81,11 @@ public:
 			default:
 				std::cout << "Error in binary expr code gen" << std::endl;
 			case '+':
+			case '-':
+			case '*':
+			case '/':
 				temp tmp;
-				emit(tmp.to_string() + " = " + L->get_val() + " + " + R->get_val());
+				emit(tmp.to_string() + " = " + L->get_val() + " " + std::string(1, tmp_op) + " " + R->get_val());
 				return new value(tmp.to_string());
 		}
 	}

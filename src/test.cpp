@@ -204,7 +204,7 @@ void lexer::test_lexer() {
 
 void lexer::test_parser_aux() {
 	const std::vector<std::string> test_expr = {
-		"  a + 2 + c;									",
+		"  a + 2 * c - d;									",
 		// "  first + second * (third + _fourth);		",
 		// "  a + b * c / (d * 5) - k;					",
 		// "  first + (second * third;								",

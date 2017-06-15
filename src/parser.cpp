@@ -172,9 +172,6 @@ function_node* parser::parse_top_level_expr() {
 	PRINT("parse_top_level_expr");
 	if (expr_node* e = parse_expr()) {
 		e -> code_gen();
-		for (std::string s : code) {
-			std::cout << s << std::endl;
-		}
 		// Make an anonymous proto.
 		prototype_node* proto = new prototype_node("", std::vector<std::string>());
 		return new function_node(proto, e);
