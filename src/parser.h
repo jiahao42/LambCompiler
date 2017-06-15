@@ -32,7 +32,7 @@ public:
 	expr_node* parse_primary();
 	expr_node* parse_bin_op_rhs(int prev_type, expr_node* lhs);
 	expr_node* parse_expr();
-	
+	expr_node* parse_if_statement()
 	//prototype_node* parse_prototype();
 	//function_node* parse_definition();
 	function_node* parse_top_level_expr();

@@ -91,6 +91,14 @@ public:
 	}
 };
 
+class if_stmt_node : public expr_node {
+private:
+	std::vector<expr_node*> stmts;
+	expr_node* cond;
+public:
+	if_stmt_node(expr_node* _cond, std::vector<expr_node*> _stmts) : 
+		cond(_cond), stmts(_stmts) {}
+};
 /* CallExprNode - expression for function call */
 class call_expr_node : public expr_node {
 private:
