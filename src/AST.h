@@ -127,20 +127,23 @@ public:
 	if_stmt_node(expr_node* _cond , std::vector<expr_node*> _if_stmts, std::vector<expr_node*> _else_stmts) : 
 		cond(_cond), if_stmts(_if_stmts), else_stmts(_else_stmts) {}
 	virtual value* code_gen() {
+		label l0;
 		label l1;
 		label l2;
 		std::cout << "\tif ";
 		cond -> code_gen();
-		emit("\tgoto " + l1.to_string());
-		emit("goto " + l2.to_string());
-		std::cout << l1.to_string() << ": ";
+		emit("\tgoto " + l0.to_string());
+		emit("goto " + l1.to_string());
+		std::cout << l0.to_string() << ": ";
 		for (expr_node* e : if_stmts) {
 			e -> code_gen();
 		}
-		std::cout << l2.to_string() << ": ";
+		emit("goto " + l2.to_string());
+		std::cout << l1.to_string() << ": ";
 		for (expr_node* e : else_stmts) {
 			e -> code_gen();
 		}
+		std::cout << l2.to_string() << ": ";
 		return nullptr;
 	}
 };

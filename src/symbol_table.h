@@ -22,20 +22,22 @@ struct symbol_root
 {
 	int format;							/* Data format version */
 	int length;							/* # bytes in this symbol segment */
+	std::string filename;				/* Name of main source file compiled */
+	std::string filedir;				/* Name of directory it was reached from */
+	std::vector<type> type_vector; 		/* Vector of all data types */
+	enum language language;				/* Code identifying the language used */
+	std::string version;				/* Version info.  Not fully specified */
+	std::vector<source> source_vector; 	/* Vector of line-number info */
+	
 	//int ldsymoff;						/* Offset in ld symtab of this file's syms */
 	//int textrel;						/* Relocation for text addresses */
 	//int datarel;						/* Relocation for data addresses */
 	//int bssrel;						/* Relocation for bss addresses */
-	std::string filename;				/* Name of main source file compiled */
-	std::string filedir;				/* Name of directory it was reached from */
 	//std::vector<block> blockvector; 	/* Vector of all symbol-naming blocks */
-	std::vector<type> type_vector; 		/* Vector of all data types */
-	enum language language;				/* Code identifying the language used */
-	std::string version;				/* Version info.  Not fully specified */
 	//std::string compilation;			/* Compilation info.  Not fully specified */
 	//int databeg;						/* Address within the file of data start */
 	//int bssbeg;						/* Address within the file of bss start */
-	std::vector<source> source_vector; 	/* Vector of line-number info */
+
 };
 
 /* All data types of symbols in the compiled program
@@ -56,8 +58,8 @@ enum type_code
 	TYPE_CODE_INT,				/* Integer type */
 	TYPE_CODE_FLT,				/* Floating type */
 	TYPE_CODE_VOID,				/* Void type (values zero length) */
-	//TYPE_CODE_SET,			/* Pascal sets */
 	TYPE_CODE_RANGE,			/* Range (integers within spec'd bounds) */
+	//TYPE_CODE_SET,			/* Pascal sets */
 	//TYPE_CODE_PASCAL_ARRAY,	/* Array with explicit type of index */
 };
 
@@ -232,91 +234,12 @@ struct block
  * currently it is not used and labels are not recorded at all.  
  */
 
-/* 
- * For a non-global symbol allocated statically,
- * the correct core address cannot be determined by the compiler.
- * The compiler puts an index number into the symbol's value field.
- * This index number can be matched with the "desc" field of
- * an entry in the loader symbol table.  
- */
-
-enum sym_namespace
-{
-	UNDEF_NAMESPACE, VAR_NAMESPACE, STRUCT_NAMESPACE, LABEL_NAMESPACE,
-};
-
-/* An address-class says where to find the value of the symbol in core.  */
-
-enum address_type
-{
-   /*
-    * Not used; catches errors 
-	*/
-	LOC_UNDEF,	  
-   /* 
-    * Value is constant int 
-    */
-	LOC_CONST,	   	   
-   /* 
-	* Value is at fixed address 
-    */
-	LOC_STATIC,	   	  
-   /* 
-    * Value is in register 
-	*/
-	LOC_REGISTER,  
-   /* 
-    * Value is at spec'd position in arglist 
-	*/
-	LOC_ARG,	   	 
-   /* 
-	* Value is at spec'd pos in stack frame 
-	*/
-	LOC_LOCAL,	   
-   /* 
-    * Value not used; definition in SYMBOL_TYPE
-	* Symbols in the namespace STRUCT_NAMESPACE
-	* all have this class.  
-	*/	
-	LOC_TYPEDEF,   	  
-   /* 
-	* Value is address in the code 
-	*/	
-	LOC_LABEL,	   
-   /* 
-    * Value is address of a `struct block'.
-	* Function names have this class.  
-	*/	
-	LOC_BLOCK,
-   /* 
-    * Not used yet
-	* Value is at address not in this compilation.
-	* This is used for .comm symbols
-	* and for extern symbols within functions.
-	* Inside GDB, this is changed to LOC_STATIC once the
-	* real address is obtained from a loader symbol.  
-	*/	
-	//LOC_EXTERNAL,  	   
-   /* 
-    * Value is a constant byte-sequence. 
-	*/
-	LOC_CONST_BYTES,   
-};
-
 struct symbol
 {
    /* 
     * Symbol name 
 	*/
 	std::string name;
-   /* 
-    * Name space code.  
-	*/
-	enum sym_namespace _sym_namespace;
-   /*
-	* Address type 
-	*/
-	enum address_type _address_type;
    /* 
     * Data type of value 
 	*/

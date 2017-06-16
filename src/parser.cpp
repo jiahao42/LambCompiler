@@ -264,6 +264,8 @@ void parser::handle_if_statement() { //TODO
 }
 
 void parser::parse_main() {
+	label l;
+	std::cout << l.to_string() << ": ";
 	get_next_token();
 	while(1) {
 		switch(CUR_TOKEN_TYPE) {
