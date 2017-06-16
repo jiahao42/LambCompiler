@@ -204,19 +204,21 @@ void lexer::test_lexer() {
 
 void lexer::test_parser_aux() {
 	const std::vector<std::string> test_expr = {
-		"        a + 2 * c - d;					",
-		"        if (a == b) {					",
-		"            a = a + b;					",
-		"        } else {						",
-		"            b = b + a * (d - c);		",
-		"        }								",
+		"        c = a + 2 * c - d;					",
+		"        if (c == 10) {						",
+		"            a = a + b;						",
+		"        } else {							",
+		"            b = b + a * (d - c);			",
+		"        }									",
+		"        for(i = 0; i == 5; i = i + 1) {	",
+		"            a = a + i;						",
+		"        }									",
 		// "  a + b * c / (d * 5) - k;					",
 		// "  first + (second * third;								",
 		// "  b + ;									",
 		// "  for(;;);								",
 		// "  for(i = 0;;);						",
 		// "  for(i = 0; i < 5;);					",
-		// "  for(i = 0; i < 5; i = i + 1);		",
 		// "  for(i = 0; i < 5;					",
 	};
 	std::cout << "    source code: " << std::endl;

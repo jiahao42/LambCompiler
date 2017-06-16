@@ -135,7 +135,7 @@ expr_node* parser::parse_expr() {
 
 expr_node* parser::parse_for_loop_expr() {
 	get_next_token(); // skip 'for'
-	expr_node *init = nullptr, *compare = nullptr, *update = nullptr;
+	expr_node *init = nullptr, *compare = nullptr, *update = nullptr, *body = nullptr;
 	
 	if (CUR_TOKEN_TYPE != C_OPEN_PAREN) {
 		return Error("expected '(' in for-loop ");
@@ -146,6 +146,7 @@ expr_node* parser::parse_for_loop_expr() {
 	if (CUR_TOKEN_TYPE != C_SEMICOLON) { // init is not empty
 		init = parse_expr();
 	}
+	
 	get_next_token(); // skip the first ';'
 	
 	if (CUR_TOKEN_TYPE != C_SEMICOLON) { // compare is not empty
@@ -164,8 +165,24 @@ expr_node* parser::parse_for_loop_expr() {
 	
 	get_next_token(); // skip the ')'
 	
-	return new for_loop_node(init, compare, update);
+	if (CUR_TOKEN_TYPE == C_SEMICOLON) { // if the for-loop ends
+		return new for_loop_node(init, compare, update, nullptr);
+	}
 	
+	if (CUR_TOKEN_TYPE == C_OPEN_BRACE) { // skip '{'
+		get_next_token();
+	}
+	
+	body = parse_expr();
+	
+	get_next_token(); // skip ;
+	
+	if (CUR_TOKEN_TYPE == C_CLOSE_BRACE) {
+		get_next_token(); // skip '}'
+		return new for_loop_node(init, compare, update, body);
+	} else {
+		return Error("expected '}' after for-loop statement");
+	}
 }
 
 expr_node* parser::parse_if_statement() {
@@ -229,7 +246,8 @@ void parser::handle_top_level_expr() {
 }
 
 void parser::handle_for_loop_expr() {
-	if (parse_for_loop_expr()) {
+	if (expr_node* e = parse_for_loop_expr()) {
+		e -> code_gen();
 		// std::cout << "Parsed a for-loop expr." << std::endl;
 	} else {
 		get_next_token();

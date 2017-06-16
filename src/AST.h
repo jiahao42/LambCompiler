@@ -96,19 +96,23 @@ public:
 			default:
 				std::cout << "Error in binary expr code gen" << std::endl;
 			case '=':
+			{
 				if (op.size() == 2) {
 					emit(L->get_val() + " == " + R->get_val());
 					return new value(L->get_val());
 				}
 				emit(L->get_val() + " = " + R->get_val());
 				return new value(L->get_val());
+			}
 			case '+':
 			case '-':
 			case '*':
 			case '/':
+			{
 				temp tmp;
 				emit(tmp.to_string() + " = " + L->get_val() + " " + std::string(1, tmp_op) + " " + R->get_val());
 				return new value(tmp.to_string());
+			}
 		}
 	}
 };
@@ -137,6 +141,34 @@ public:
 		for (expr_node* e : else_stmts) {
 			e -> code_gen();
 		}
+		return nullptr;
+	}
+};
+
+/* ForLoopNode - expression for for-loop node */
+class for_loop_node : public expr_node {
+private:
+	expr_node *init, *compare, *update, *body;
+public:
+	for_loop_node(expr_node* _init, 
+				  expr_node* _compare, 
+				  expr_node* _update, 
+				  expr_node* _body) : 
+				  init(_init), 
+				  compare(_compare), 
+				  update(_update),
+				  body(_body) {}
+	virtual value* code_gen() {
+		init -> code_gen();
+		label l0;
+		std::cout << l0.to_string() << ": ";
+		std::cout << "\tif ";
+		compare -> code_gen();
+		label l1;
+		emit("\tgoto " + l1.to_string());
+		update -> code_gen();
+		emit("goto " + l0.to_string());
+		emit(l1.to_string() + ": ");
 		return nullptr;
 	}
 };
@@ -173,13 +205,7 @@ public:
 	function_node(prototype_node* _proto, expr_node* _body) : proto(_proto), body(_body) {}
 };
 
-/* ForLoopNode - expression for for-loop node */
-class for_loop_node : public expr_node {
-private:
-	expr_node *init, *compare, *update;
-public:
-	for_loop_node(expr_node* _init, expr_node* _compare, expr_node* _update) : init(_init), compare(_compare), update(_update) {}
-};
+
 
 
 
