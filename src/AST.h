@@ -161,14 +161,20 @@ public:
 	virtual value* code_gen() {
 		init -> code_gen();
 		label l0;
+		label l1;
+		label l2;
 		std::cout << l0.to_string() << ": ";
 		std::cout << "\tif ";
+		
 		compare -> code_gen();
-		label l1;
 		emit("\tgoto " + l1.to_string());
+		emit("goto " + l2.to_string());
+		std::cout << l1.to_string() << ": ";
+		
+		body -> code_gen();
 		update -> code_gen();
 		emit("goto " + l0.to_string());
-		emit(l1.to_string() + ": ");
+		std::cout << l2.to_string() << ": ";
 		return nullptr;
 	}
 };

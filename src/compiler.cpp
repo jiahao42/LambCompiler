@@ -39,6 +39,7 @@ int compiler::compile(int argc, char** argv) {
     l.dump_token_stream();
 #endif /* end of DUMP_TOKEN_STREAM */
 	//v.execute_code();
+	std::cout << std::endl;
     return 0;
 }
 
