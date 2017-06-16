@@ -204,7 +204,7 @@ void lexer::test_lexer() {
 
 void lexer::test_parser_aux() {
 	const std::vector<std::string> test_expr = {
-		"        c = a + 2 * c - d;					",
+		"        x = a + b * c / (d * 5) - k;		",
 		"        if (c == 10) {						",
 		"            a = a + b;						",
 		"        } else {							",
@@ -213,7 +213,7 @@ void lexer::test_parser_aux() {
 		"        for(i = 0; i == 5; i = i + 1) {	",
 		"            a = a + i;						",
 		"        }									",
-		// "  a + b * c / (d * 5) - k;					",
+		"        first = 5;							",
 		// "  first + (second * third;								",
 		// "  b + ;									",
 		// "  for(;;);								",
