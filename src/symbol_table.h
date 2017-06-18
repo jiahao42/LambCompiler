@@ -25,9 +25,10 @@ struct symbol_root
 	std::string filename;				/* Name of main source file compiled */
 	std::string filedir;				/* Name of directory it was reached from */
 	std::vector<type> type_vector; 		/* Vector of all data types */
+	// std::unordered_map<
 	enum language language;				/* Code identifying the language used */
 	std::string version;				/* Version info.  Not fully specified */
-	std::vector<source> source_vector; 	/* Vector of line-number info */
+	std::vector<source> source_vector; 	/* Vector of source files */
 	
 	//int ldsymoff;						/* Offset in ld symtab of this file's syms */
 	//int textrel;						/* Relocation for text addresses */
@@ -234,16 +235,16 @@ struct block
  * currently it is not used and labels are not recorded at all.  
  */
 
-struct symbol
+struct variable
 {
    /* 
-    * Symbol name 
+    * Variable name 
 	*/
 	std::string name;
    /* 
     * Data type of value 
 	*/
-	struct type *type;
+	type* var_type;
    /* 
     * constant value, or address if static, or register number,
     * or offset in arguments, or offset in stack frame.  
