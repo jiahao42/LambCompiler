@@ -25,18 +25,24 @@ public:
 	void parse_main();
 	inline c_ttype& get_next_token();
 	int get_op_precedence();
+	
 	void handle_top_level_expr();
-	void handle_if_statement();
-	void handle_for_loop_expr();
+	function_node* parse_top_level_expr();
 	expr_node* parse_identifier_node();
 	expr_node* parse_number_node();
 	expr_node* parse_paren_node();
 	expr_node* parse_primary();
 	expr_node* parse_bin_op_rhs(int prev_type, expr_node* lhs);
 	expr_node* parse_expr();
+	
+	void handle_if_statement();
 	expr_node* parse_if_statement();
-	function_node* parse_top_level_expr();
+	
+	void handle_for_loop_expr();
 	expr_node* parse_for_loop_expr();
+	
+	void handle_while_expr();
+	expr_node* parse_while_expr();
 	
 	//prototype_node* parse_prototype();
 	//function_node* parse_definition();	

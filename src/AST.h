@@ -199,7 +199,7 @@ public:
 		std::vector<expr_node*> _while_stmts) : 
 		cond(_cond), while_stmts(_while_stmts) {}
 	//TODO
-}
+};
 
 
 /* CallExprNode - expression for function call */

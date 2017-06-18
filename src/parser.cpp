@@ -225,6 +225,36 @@ expr_node* parser::parse_if_statement() {
 	return new if_stmt_node(cond, if_stmts, else_stmts);
 }
 
+expr_node* parser::parse_while_expr() {
+	get_next_token(); // skip while
+	
+	if (CUR_TOKEN_TYPE != C_OPEN_PAREN) {
+		return Error("expected '(' after while");
+	}
+	get_next_token(); // skip '('
+	
+	expr_node* cond = parse_expr();
+	
+	if (CUR_TOKEN_TYPE != C_CLOSE_PAREN) {
+		return Error("expected ')' after while condition");
+	}
+	get_next_token(); // skip ')'
+	
+	if (CUR_TOKEN_TYPE != C_OPEN_BRACE) {
+		return Error("expected '{' before while statement");
+	}
+	get_next_token(); // skip '{'
+	
+	std::vector<expr_node*> while_stmts;
+	while (CUR_TOKEN_TYPE != C_CLOSE_BRACE) {
+		expr_node* e = parse_expr();
+		while_stmts.push_back(e);
+	}
+	get_next_token(); // skip '}'
+	
+	return new while_expr_node(cond, while_stmts);
+}
+
 function_node* parser::parse_top_level_expr() {
 	PRINT("parse_top_level_expr");
 	if (expr_node* e = parse_expr()) {
@@ -263,16 +293,24 @@ void parser::handle_if_statement() { //TODO
 	}
 }
 
+void parser::handle_while_expr() {
+	if (expr_node* e = parse_while_expr()) {
+		e -> code_gen();
+	} else {
+		get_next_token();
+	}
+}
 void parser::parse_main() {
 	label l;
 	std::cout << l.to_string() << ": ";
 	get_next_token();
 	while(1) {
 		switch(CUR_TOKEN_TYPE) {
-			default: 			handle_top_level_expr(); break; // TODO
-			case RID_FOR:		handle_for_loop_expr(); break;
-			case RID_IF: 		handle_if_statement(); break;
-			case C_SEMICOLON:	get_next_token(); break;
+			default: 			handle_top_level_expr(); 	break; // TODO
+			case RID_FOR:		handle_for_loop_expr(); 	break;
+			case RID_IF: 		handle_if_statement(); 		break;
+			case RID_WHILE:		handle_while_expr();		break;
+			case C_SEMICOLON:	get_next_token(); 			break;
 			case C_EOF: 		return;
 		}
 	}
