@@ -218,7 +218,7 @@ expr_node* parser::parse_if_statement() {
 		while (CUR_TOKEN_TYPE != C_CLOSE_BRACE) {
 			expr_node* stmt = parse_expr();
 			else_stmts.push_back(stmt);
-			get_next_token();
+			get_next_token(); // skip ';'
 		}
 	}
 	get_next_token(); // skip '}'
@@ -249,6 +249,7 @@ expr_node* parser::parse_while_expr() {
 	while (CUR_TOKEN_TYPE != C_CLOSE_BRACE) {
 		expr_node* e = parse_expr();
 		while_stmts.push_back(e);
+		get_next_token(); // skip ';'
 	}
 	get_next_token(); // skip '}'
 	
