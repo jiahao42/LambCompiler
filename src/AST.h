@@ -24,14 +24,12 @@ public:
 class expr_node {
 public:
 	virtual ~expr_node() {}
-	virtual value* code_gen() {
-		return nullptr;
-	}
+	virtual value* code_gen() = 0;
 };
 
 // temp variable
 static int temp_index;
-class temp : public expr_node {
+class temp {
 private:
 	std::string name;
 public:
@@ -45,7 +43,7 @@ public:
 
 // label for goto 
 static int label_index;
-class label: public expr_node {
+class label {
 private:
 	std::string name;
 public:
@@ -198,7 +196,9 @@ public:
 		expr_node* _cond, 
 		std::vector<expr_node*> _while_stmts) : 
 		cond(_cond), while_stmts(_while_stmts) {}
-	//TODO
+	virtual value* code_gen() {
+		return nullptr;
+	}
 };
 
 
@@ -209,6 +209,9 @@ private:
 	std::vector<expr_node*> args;
 public:
 	call_expr_node(const std::string& _callee, std::vector<expr_node*>& _args) : callee(_callee), args(_args) {}
+	virtual value* code_gen() {
+		return nullptr;
+	}
 };
 
 /* PrototypeNode - expression for prototype of a function
@@ -220,6 +223,9 @@ private:
 	std::vector<std::string> args;
 public:
 	prototype_node(const std::string& _name, const std::vector<std::string>& _args) : name(_name), args(_args) {}
+	virtual value* code_gen() {
+		return nullptr;
+	}
 };
 
 /* FunctionNode - expression for function definition itself */
@@ -229,6 +235,9 @@ private:
 	expr_node* body;
 public:
 	function_node(prototype_node* _proto, expr_node* _body) : proto(_proto), body(_body) {}
+	virtual value* code_gen() {
+		return nullptr;
+	}
 };
 
 
