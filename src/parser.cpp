@@ -19,10 +19,10 @@ expr_node* parser::Error(std::string str) {
 	for (size_t i = 0; i < CUR_TOKEN_NAME.size(); i++)
 		std::cout << "^";
 	std::cout << std::endl;
-	return 0;
+	return nullptr;
 }
-prototype_node* parser::ErrorP(std::string str) { Error(str); return 0; }
-function_node* parser::ErrorF(std::string str) { Error(str); return 0; }
+prototype_node* parser::ErrorP(std::string str) { Error(str); return nullptr; }
+function_node* parser::ErrorF(std::string str) { Error(str); return nullptr; }
 
 int parser::get_op_precedence() {
   // Make sure it's a declared binop.
@@ -101,7 +101,7 @@ expr_node* parser::parse_primary() {
 	}
 }
 
-expr_node* parser::parse_bin_op_rhs(int prev_type, expr_node* lhs) { // a + b * c
+expr_node* parser::parse_bin_op_rhs(int prev_type, expr_node* lhs) {
 	PRINT("parse_bin_op_rhs");
 	while (1) {
 		int cur_precedence = get_op_precedence();
@@ -135,7 +135,8 @@ expr_node* parser::parse_expr() {
 
 expr_node* parser::parse_for_loop_expr() {
 	get_next_token(); // skip 'for'
-	expr_node *init = nullptr, *compare = nullptr, *update = nullptr, *body = nullptr;
+	expr_node *init = nullptr, *compare = nullptr, *update = nullptr;
+	std::vector<expr_node*> body;
 	
 	if (CUR_TOKEN_TYPE != C_OPEN_PAREN) {
 		return Error("expected '(' in for-loop ");
@@ -166,23 +167,21 @@ expr_node* parser::parse_for_loop_expr() {
 	get_next_token(); // skip the ')'
 	
 	if (CUR_TOKEN_TYPE == C_SEMICOLON) { // if the for-loop ends
-		return new for_loop_node(init, compare, update, nullptr);
+		return new for_loop_node(init, compare, update, body);
 	}
 	
 	if (CUR_TOKEN_TYPE == C_OPEN_BRACE) { // skip '{'
 		get_next_token();
 	}
 	
-	body = parse_expr();
-	
-	get_next_token(); // skip ;
-	
-	if (CUR_TOKEN_TYPE == C_CLOSE_BRACE) {
-		get_next_token(); // skip '}'
-		return new for_loop_node(init, compare, update, body);
-	} else {
-		return Error("expected '}' after for-loop statement");
+	while (CUR_TOKEN_TYPE != C_CLOSE_BRACE) {
+		expr_node* e = parse_expr();
+		body.push_back(e);
+		get_next_token(); // skip ;
 	}
+
+	get_next_token(); // skip '}'
+	return new for_loop_node(init, compare, update, body);
 }
 
 expr_node* parser::parse_if_statement() {
@@ -190,6 +189,7 @@ expr_node* parser::parse_if_statement() {
 	if (CUR_TOKEN_TYPE != C_OPEN_PAREN) {
 		return Error("expected '(' after if ");
 	}
+	
 	get_next_token(); // skip '('
 	expr_node* cond = parse_expr();
 	if (CUR_TOKEN_TYPE != C_CLOSE_PAREN) {
@@ -255,8 +255,8 @@ void parser::handle_for_loop_expr() {
 }
 
 void parser::handle_if_statement() { //TODO
-	if (expr_node* node = parse_if_statement()) {
-		node -> code_gen();
+	if (expr_node* e = parse_if_statement()) {
+		e -> code_gen();
 		// std::cout << "Parsed a if statement" << std::endl;
 	} else {
 		get_next_token();
@@ -271,8 +271,8 @@ void parser::parse_main() {
 		switch(CUR_TOKEN_TYPE) {
 			default: 			handle_top_level_expr(); break; // TODO
 			case RID_FOR:		handle_for_loop_expr(); break;
-			case C_SEMICOLON:	get_next_token(); break;
 			case RID_IF: 		handle_if_statement(); break;
+			case C_SEMICOLON:	get_next_token(); break;
 			case C_EOF: 		return;
 		}
 	}

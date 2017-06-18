@@ -282,7 +282,7 @@ typedef struct line
 	}
 }line;
 
-/* All the information on one source file.  */
+/* All the information on one single source file.  */
 
 struct source
 {

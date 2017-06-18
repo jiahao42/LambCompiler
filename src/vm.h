@@ -7,15 +7,17 @@
 extern std::vector<std::string> code;
 extern std::vector<std::string> stack_data;
 
-enum assm_op{
-	ADD, SUB, MUL, DIV, // 0-3
-	PUSH, POP, // 4-5
-	JMP, // 6
-	MOV, LEA, // 7-8 
-	LOADA, //9 - move the next number to eax
-	LOADB, // 10 - move the next number to ebx
-	HALT, // 11
-};
+
+	enum assm_op{
+		ADD, SUB, MUL, DIV, // 0-3
+		PUSH, POP, // 4-5
+		JMP, // 6
+		MOV, LEA, // 7-8 
+		LOADA, //9 - move the next number to eax
+		LOADB, // 10 - move the next number to ebx
+		HALT, // 11
+	};
+
 
 static std::unordered_map<std::string, enum assm_op> op_table = {
 	{"ADD", ADD},
@@ -41,15 +43,17 @@ private:
 		*ebp,
 		*esp;
 public:
+
 	void test() {
 		size_t i = 0;
-		text[i++] = LOADA; // LOADA 10
-		text[i++] = LOADB;
-		text[i++] = ADD;
-		text[i++] = HALT;
+		text[i++] = LOADA; // LOAD 20 to eax
+		text[i++] = LOADB; // LOAD 10 to ebx
+		text[i++] = ADD;   // ADD eax and ebx
+		text[i++] = HALT;  // HALT
 		*esp++ = 10;
 		*esp++ = 20;
 	}
+	
 	void init() {
 		text = new int[stack_size];
 		old_text = new int[stack_size];
@@ -94,28 +98,6 @@ public:
 					std::cout << "Wrong op!" << std::endl;
 			}
 			eip++;
-		}
-	}
-	void execute_code() {
-		code.push_back("HALT");
-		init();
-		transform_code();
-		entry();
-	}
-	void transform_code() {
-		size_t i = 0;
-		for (std::string s : code) {
-			auto it = op_table.find(s);
-			if (it == op_table.end()) {
-				text[i++] = stoi(s);
-				std::cout << "transforming: " << stoi(s) << std::endl;
-			} else {
-				text[i++] = it -> second;
-				std::cout << "transforming: " << s << std::endl;
-			}
-		}
-		for (std::string s : stack_data) {
-			*esp++ = stoi(s);
 		}
 	}
 	void vm_main() {

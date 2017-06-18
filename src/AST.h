@@ -94,7 +94,7 @@ public:
 
 		switch(tmp_op){
 			default:
-				std::cout << "Error in binary expr code gen" << std::endl;
+				std::cout << "Invalid binary operator" << std::endl;
 			case '=':
 			{
 				if (op.size() == 2) {
@@ -126,6 +126,7 @@ public:
 	if_stmt_node() : cond(nullptr){}
 	if_stmt_node(expr_node* _cond , std::vector<expr_node*> _if_stmts, std::vector<expr_node*> _else_stmts) : 
 		cond(_cond), if_stmts(_if_stmts), else_stmts(_else_stmts) {}
+
 	virtual value* code_gen() {
 		label l0;
 		label l1;
@@ -146,21 +147,24 @@ public:
 		std::cout << l2.to_string() << ": ";
 		return nullptr;
 	}
+	
 };
 
 /* ForLoopNode - expression for for-loop node */
 class for_loop_node : public expr_node {
 private:
-	expr_node *init, *compare, *update, *body;
+	expr_node *init, *compare, *update;
+	std::vector<expr_node*> body;
 public:
 	for_loop_node(expr_node* _init, 
 				  expr_node* _compare, 
 				  expr_node* _update, 
-				  expr_node* _body) : 
+				  std::vector<expr_node*> _body) : 
 				  init(_init), 
 				  compare(_compare), 
 				  update(_update),
 				  body(_body) {}
+				  
 	virtual value* code_gen() {
 		init -> code_gen();
 		label l0;
@@ -174,7 +178,9 @@ public:
 		emit("goto " + l2.to_string());
 		std::cout << l1.to_string() << ": ";
 		
-		body -> code_gen();
+		for (expr_node* e : body) {
+			e -> code_gen(); 
+		}
 		update -> code_gen();
 		emit("goto " + l0.to_string());
 		std::cout << l2.to_string() << ": ";
