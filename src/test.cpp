@@ -217,7 +217,7 @@ void lexer::test_parser_aux() {
 		"        while (x == c) {					",
 		"            x = x - c;						",
 		"        }									",
-		// "  first + (second * third;								",
+		"        res = first + second * third;		",
 		// "  b + ;									",
 		// "  for(;;);								",
 		// "  for(i = 0;;);						",
