@@ -196,7 +196,7 @@ struct block
     * Since the symbol does point to the block (as its value),
     * it is possible to find the block and set its name properly.  
 	*/
-	struct symbol *function;
+	struct variable *function;
    /* 
     * The `struct block' for the containing block, or 0 if none.  
 	*/
@@ -211,7 +211,7 @@ struct block
    /* 
 	* The local symbols.  
 	*/
-	std::vector<symbol> syms;
+	std::vector<variable> syms;
 };
 
 #endif /* end of block */

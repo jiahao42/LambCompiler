@@ -188,9 +188,20 @@ public:
 	}
 };
 
-class boolean_expr_node : public expr_node {
+/* WhileExprNode - expression for while expression node */
+class while_expr_node : public expr_node {
+private:
+	expr_node* cond;
+	std::vector<expr_node*> while_stmts;
+public:
+	while_expr_node(
+		expr_node* _cond, 
+		std::vector<expr_node*> _while_stmts) : 
+		cond(_cond), while_stmts(_while_stmts) {}
 	//TODO
-};
+}
+
+
 /* CallExprNode - expression for function call */
 class call_expr_node : public expr_node {
 private:
