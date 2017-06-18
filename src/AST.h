@@ -197,6 +197,22 @@ public:
 		std::vector<expr_node*> _while_stmts) : 
 		cond(_cond), while_stmts(_while_stmts) {}
 	virtual value* code_gen() {
+		label l0;
+		label l1;
+		label l2;
+		std::cout << l0.to_string() << ": ";
+		std::cout << "\tif ";
+		
+		cond -> code_gen();
+		emit("\tgoto " + l1.to_string());
+		emit("goto " + l2.to_string());
+		std::cout << l1.to_string() << ": ";
+		
+		for (expr_node* e : while_stmts) {
+			e -> code_gen(); 
+		}
+		emit("goto " + l0.to_string());
+		std::cout << l2.to_string() << ": ";
 		return nullptr;
 	}
 };
