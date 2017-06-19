@@ -10,6 +10,7 @@ extern std::vector<std::string> code;
 
 int compiler::compile(int argc, char** argv) {
     init_symbol_table("test_dummy", "test_dummy");
+	std::cout << "    source code: " << std::endl;
 #ifdef TEST_ON
     l.test_lexer();
     test_parser();
@@ -32,6 +33,8 @@ int compiler::compile(int argc, char** argv) {
     } else {
         init_symbol_table(argv[0], argv[1]);
         l.read_file();
+		l.dump_token_stream();
+		p.parse_main();
     }
 #endif /* end of TEST_ON */
 

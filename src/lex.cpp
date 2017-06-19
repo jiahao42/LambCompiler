@@ -53,6 +53,7 @@ void lexer::read_file() {
 			cur_line_info++;
 			cur_line_info.set_content(cur_line);
 			source_file.push_line(cur_line_info);
+			std::cout << "sizeof line " << cur_line_info.get_linenum() << " size: " << cur_line.size() << std::endl;
 			lex();
 		}
 	} else {

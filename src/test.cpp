@@ -224,7 +224,7 @@ void lexer::test_parser_aux() {
 		// "  for(i = 0; i < 5;);					",
 		// "  for(i = 0; i < 5;					",
 	};
-	std::cout << "    source code: " << std::endl;
+	
 	for (std::string s : test_expr) {
 		std::cout << s << std::endl;
 		cur_line = s;

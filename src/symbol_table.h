@@ -281,6 +281,9 @@ typedef struct line
 	inline void set_content(std::string& _content) {
 		content = _content;
 	}
+	inline size_t& get_linenum() {
+		return linenum;
+	}
 }line;
 
 /* All the information on one single source file.  */
