@@ -1,4 +1,4 @@
-# LambCompiler v0.0.4
+# LambCompiler v0.4
 
 **This is a simple compiler for a subset of ANSI C. By now, it can generate the pseudo-code without type-checking.**
 
