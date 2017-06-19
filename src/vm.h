@@ -8,15 +8,15 @@ extern std::vector<std::string> code;
 extern std::vector<std::string> stack_data;
 
 
-	enum assm_op{
-		ADD, SUB, MUL, DIV, // 0-3
-		PUSH, POP, // 4-5
-		JMP, // 6
-		MOV, LEA, // 7-8 
-		LOADA, //9 - move the next number to eax
-		LOADB, // 10 - move the next number to ebx
-		HALT, // 11
-	};
+enum assm_op{
+	ADD, SUB, MUL, DIV, // 0-3
+	PUSH, POP, // 4-5
+	JMP, // 6
+	MOV, LEA, // 7-8 
+	LOADA, //9 - move the next number to eax
+	LOADB, // 10 - move the next number to ebx
+	HALT, // 11
+};
 
 
 static std::unordered_map<std::string, enum assm_op> op_table = {
