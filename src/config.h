@@ -54,7 +54,7 @@
 /*
  * Version info
  */
-const std::string version = "0.0.3";
+const std::string version = "0.4";
 
 
 #endif /* end of LAMB_COMPILER_CONFIG_H_ */
