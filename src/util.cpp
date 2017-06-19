@@ -31,8 +31,14 @@ unsigned int ELFHash(std::string str) {
  * Help menu
  */
 void help_menu() {
-	std::cout << "This is the help menu" << std::endl;
-	std::cout << "LambCompiler, Version: " << version << std::endl << std::endl;;
+	std::cout << "This compiler has two modes: test mode and normal mode\n"
+				 "In test mode, it just uses the test data inside\n"
+				 "In normal mode, you can compile file outside\n"
+				 "You can modify the macro in config.h to change the mode\n\n"
+				 "Usage:\n"
+				 "\t./compiler [filename]\n"
+				 "\t./compiler -v see the version of this compiler\n"
+				 "\t./compiler -h see the help menu of this compiler\n" << std::endl;
 }
 
 /*

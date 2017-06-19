@@ -15,7 +15,7 @@ int compiler::compile(int argc, char** argv) {
     test_parser();
 #else
     if (argc == 1) {
-        std::cout << "Invalid parameter!" << std::endl;
+        help_menu();
         return 0;
     }
     if (argv[1][0] == '-') {
