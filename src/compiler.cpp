@@ -10,7 +10,6 @@ extern std::vector<std::string> code;
 
 int compiler::compile(int argc, char** argv) {
     init_symbol_table("test_dummy", "test_dummy");
-	std::cout << "    source code: " << std::endl;
 #ifdef TEST_ON
     l.test_lexer();
     test_parser();
@@ -31,9 +30,11 @@ int compiler::compile(int argc, char** argv) {
             std::cout << "Unknown parameter, please check again" << std::endl << std::endl;
         }
     } else {
+		std::cout << "    source code: " << std::endl;
         init_symbol_table(argv[0], argv[1]);
         l.read_file();
-		l.dump_token_stream();
+		std::cout << std::endl;
+		std::cout << "    pseudo-code: " << std::endl;
 		p.parse_main();
     }
 #endif /* end of TEST_ON */
@@ -47,6 +48,9 @@ int compiler::compile(int argc, char** argv) {
 }
 
 void compiler::test_parser() {
+	std::cout << "    source code: " << std::endl;
     l.test_parser_aux();
+	std::cout << std::endl;
+	std::cout << "    pseudo-code: " << std::endl;
     p.parse_main();
 }

@@ -233,8 +233,6 @@ void lexer::test_parser_aux() {
 		source_file.push_line(cur_line_info);
 		lex();
 	}
-	std::cout << std::endl;
-	std::cout << "    pseudo-code: " << std::endl;
 }
 
 

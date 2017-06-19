@@ -50,10 +50,10 @@ void lexer::read_file() {
 	file.open(source_file.filename);
 	if (file.is_open()) {
 		while (std::getline(file, cur_line)) {
+			std::cout << cur_line << std::endl;
 			cur_line_info++;
 			cur_line_info.set_content(cur_line);
 			source_file.push_line(cur_line_info);
-			std::cout << "sizeof line " << cur_line_info.get_linenum() << " size: " << cur_line.size() << std::endl;
 			lex();
 		}
 	} else {
