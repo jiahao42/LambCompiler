@@ -4,14 +4,13 @@
 
 ### 1. Before Compilation
 
-See `config.h`, make sure it is the desired configuration. The default configuration is `Test Mode`, which means it use the previously defined test data.
+See `LambCompiler/src/config.h`, make sure it is the desired configuration. The default configuration is `Test Mode`, which means it use the previously defined test data.
 
 ### 2. How to compile
 
-Make sure you have installed GNU Make
+Make sure you have installed GNU Make.
 
-* Run `make` or `make compiler` to compile the compiler, the executable file is under `LambCompiler/bin`
-* Run `make lexer` to compile the lexer, the executable file is under `LambCompiler/bin`
+* Run `make` under `LambCompiler/` to compile the compiler, the executable file is under `LambCompiler/bin`
 
 ### 3. Usage
 
