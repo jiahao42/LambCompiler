@@ -20,7 +20,7 @@
  * The top test switch
  */
 #define TEST_ON
-#undef TEST_ON
+//#undef TEST_ON
 
 /*
  * Output token stream to console or not, see lex.h
