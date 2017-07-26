@@ -2,7 +2,6 @@
 // by James 2017/04/06
 
 #include "token.h"
-#include "config.h"
 
 
 /*

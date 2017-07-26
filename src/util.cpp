@@ -2,10 +2,6 @@
 // by James 2017/04/06
 
 #include "util.h"
-#include "config.h"
-#include "symbol_table.h"
-#include "token.h"
-
 
 /*
  * ELFHash, used for access varible in Symbol Table faster

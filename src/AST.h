@@ -3,6 +3,9 @@
 #ifndef LAMB_COMPILER_AST_H_
 #define LAMB_COMPILER_AST_H_
 
+#include <vector>
+#include <iostream>
+
 extern std::vector<std::string> code;
 extern std::vector<std::string> stack_data;
 

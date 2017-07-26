@@ -4,6 +4,10 @@
 #ifndef LAMB_COMPILER_UTIL_H_
 #define LAMB_COMPILER_UTIL_H_
 
+#include "config.h"
+#include "symbol_table.h"
+#include "token.h"
+
 /*
  * ELFHash, used for access varible in Symbol Table faster
  */

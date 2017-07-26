@@ -4,6 +4,8 @@
 #ifndef LAMB_COMPILER_TOKEN_H_
 #define LAMB_COMPILER_TOKEN_H_
 
+#include "config.h"
+
 /*
  * Token Type Table
  */

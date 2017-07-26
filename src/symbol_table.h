@@ -4,6 +4,8 @@
 #ifndef LAMB_COMPILER_SYMBOL_TABLE_H_
 #define LAMB_COMPILER_SYMBOL_TABLE_H_
 
+#include "token.h"
+
 /*
  * This is actually the format of GDB symbol table data.
  * According to the limit of this lexer, not every data in this symbol is used.

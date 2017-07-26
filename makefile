@@ -27,7 +27,5 @@ lexer: $(LEXER_OBJS)
 	@test -d $(OBJ) || mkdir $(BIN)
 	$(CXX) $(CXXFLAGS) -o $(LEXER) $(LEXER_OBJS)
 
-
-
 clean:
 	rm $(OBJ)/*.o
