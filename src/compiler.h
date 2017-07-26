@@ -1,5 +1,5 @@
-//LambCompiler
-//by James 2017/05/02
+// LambCompiler
+// by James 2017/05/02
 #ifndef LAMB_COMPILER_H_
 #define LAMB_COMPILER_H_
 
@@ -9,12 +9,13 @@
 
 class compiler {
 private:
-	lexer l;
-	parser p;
-	vm v;
+    lexer l;
+    parser p;
+    vm v;
+
 public:
-	int compile(int argc, char** argv);
-	void test_parser();
+    int compile(int argc, char **argv);
+    void test_parser();
 };
 
 #endif

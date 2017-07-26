@@ -1,7 +1,7 @@
-//LambLexer
-//by James 2017/04/06
+// LambLexer
+// by James 2017/04/06
 
-#ifndef LAMB_COMPILER_SYMBOL_TABLE_H_ 
+#ifndef LAMB_COMPILER_SYMBOL_TABLE_H_
 #define LAMB_COMPILER_SYMBOL_TABLE_H_
 
 /*
@@ -9,105 +9,103 @@
  * According to the limit of this lexer, not every data in this symbol is used.
  * The unused data has been all commentted.
  */
- 
+
 struct type;
 struct source;
 struct field;
 struct c_token;
-//struct block;
+// struct block;
 
-enum language {language_c};
+enum language { language_c };
 
-struct symbol_root
-{
-	int format;							/* Data format version */
-	int length;							/* # bytes in this symbol segment */
-	std::string filename;				/* Name of main source file compiled */
-	std::string filedir;				/* Name of directory it was reached from */
-	std::vector<type> type_vector; 		/* Vector of all data types */
-	// std::unordered_map<
-	enum language language;				/* Code identifying the language used */
-	std::string version;				/* Version info.  Not fully specified */
-	std::vector<source> source_vector; 	/* Vector of source files */
-	
-	//int ldsymoff;						/* Offset in ld symtab of this file's syms */
-	//int textrel;						/* Relocation for text addresses */
-	//int datarel;						/* Relocation for data addresses */
-	//int bssrel;						/* Relocation for bss addresses */
-	//std::vector<block> blockvector; 	/* Vector of all symbol-naming blocks */
-	//std::string compilation;			/* Compilation info.  Not fully specified */
-	//int databeg;						/* Address within the file of data start */
-	//int bssbeg;						/* Address within the file of bss start */
+struct symbol_root {
+    int format;                    /* Data format version */
+    int length;                    /* # bytes in this symbol segment */
+    std::string filename;          /* Name of main source file compiled */
+    std::string filedir;           /* Name of directory it was reached from */
+    std::vector<type> type_vector; /* Vector of all data types */
+    // std::unordered_map<
+    enum language language;            /* Code identifying the language used */
+    std::string version;               /* Version info.  Not fully specified */
+    std::vector<source> source_vector; /* Vector of source files */
 
+    // int ldsymoff;						/* Offset in ld symtab of this file's syms
+    // */  int textrel;						/* Relocation for text addresses */
+    // int datarel;						/* Relocation for data addresses */
+    // int bssrel;						/* Relocation for bss addresses */
+    // std::vector<block> blockvector; 	/* Vector of all symbol-naming blocks */
+    // std::string compilation;			/* Compilation info.  Not fully specified
+    // */
+    // int databeg;						/* Address within the file of data start
+    // */
+    // int bssbeg;						/* Address within the file of bss start
+    // */
 };
 
 /* All data types of symbols in the compiled program
  * are represented by `struct type' objects.
  * All of these objects are pointed to by the typevector.
- * The type vector may have empty slots that contain zero.  
+ * The type vector may have empty slots that contain zero.
  */
 
-enum type_code
-{
-	TYPE_CODE_UNDEF,			/* Not used; catches errors */
-	TYPE_CODE_PTR,				/* Pointer type */
-	TYPE_CODE_ARRAY,			/* Array type, lower bound zero */
-	TYPE_CODE_STRUCT,			/* C struct or Pascal record */
-	TYPE_CODE_UNION,			/* C union or Pascal variant part */
-	TYPE_CODE_ENUM,				/* Enumeration type */
-	TYPE_CODE_FUNC,				/* Function type */
-	TYPE_CODE_INT,				/* Integer type */
-	TYPE_CODE_FLT,				/* Floating type */
-	TYPE_CODE_VOID,				/* Void type (values zero length) */
-	TYPE_CODE_RANGE,			/* Range (integers within spec'd bounds) */
-	//TYPE_CODE_SET,			/* Pascal sets */
-	//TYPE_CODE_PASCAL_ARRAY,	/* Array with explicit type of index */
+enum type_code {
+    TYPE_CODE_UNDEF,  /* Not used; catches errors */
+    TYPE_CODE_PTR,    /* Pointer type */
+    TYPE_CODE_ARRAY,  /* Array type, lower bound zero */
+    TYPE_CODE_STRUCT, /* C struct or Pascal record */
+    TYPE_CODE_UNION,  /* C union or Pascal variant part */
+    TYPE_CODE_ENUM,   /* Enumeration type */
+    TYPE_CODE_FUNC,   /* Function type */
+    TYPE_CODE_INT,    /* Integer type */
+    TYPE_CODE_FLT,    /* Floating type */
+    TYPE_CODE_VOID,   /* Void type (values zero length) */
+    TYPE_CODE_RANGE,  /* Range (integers within spec'd bounds) */
+                      // TYPE_CODE_SET,			/* Pascal sets */
+    // TYPE_CODE_PASCAL_ARRAY,	/* Array with explicit type of index */
 };
 
-
-struct type
-{
-   /* 
-	* Code for kind of type 
-	*/
-	enum type_code code;
-   /* 
-	* Name of this type, or zero if none.
-	* This is used for printing only.
-	*/
-	std::string name;
-   /* 
-	* Length in bytes of storage for a value of this type 
-	*/
-	int length;
-   /* 
-	* For a pointer type, describes the type of object pointed to.
-	* For an array type, describes the type of the elements.
-	* For a function type, describes the type of the value.
-	* Unused otherwise.  
-	*/
-	type *target_type;
-   /* 
-	* Type that is a pointer to this type.
-	* Zero if no such pointer-to type is known yet.
-	*/ 
-	type *pointer_type;
-   /* 
-	* Type that is a function returning this type.
-	* Zero if no such function type is known here.
-	*/
-	type *function_type;
-   /* 
-	* Flags about this type.  
-	*/
-	short flags;
-   /* 
-	* vector of fields described for this type 
-	*/
-	std::vector<field> field_vector;
+struct type {
+    /*
+     * Code for kind of type
+     */
+    enum type_code code;
+    /*
+     * Name of this type, or zero if none.
+     * This is used for printing only.
+     */
+    std::string name;
+    /*
+     * Length in bytes of storage for a value of this type
+     */
+    int length;
+    /*
+     * For a pointer type, describes the type of object pointed to.
+     * For an array type, describes the type of the elements.
+     * For a function type, describes the type of the value.
+     * Unused otherwise.
+     */
+    type *target_type;
+    /*
+     * Type that is a pointer to this type.
+     * Zero if no such pointer-to type is known yet.
+     */
+    type *pointer_type;
+    /*
+     * Type that is a function returning this type.
+     * Zero if no such function type is known here.
+     */
+    type *function_type;
+    /*
+     * Flags about this type.
+     */
+    short flags;
+    /*
+     * vector of fields described for this type
+     */
+    std::vector<field> field_vector;
 };
 
-/* 
+/*
  * For structure and union types, a description of each field.
  * For range types, there are two "fields",
  * the minimum and maximum values (both inclusive).
@@ -118,34 +116,33 @@ struct type
  * Using a pointer to a separate array of fields
  * allows all types to have the same size, which is useful
  * because we can allocate the space for a type before
- * we know what to put in it.  
+ * we know what to put in it.
  */
-struct field
-{
-   /* 
-	* Position of this field, counting in bits from start of
-	* containing structure.  For a function type, this is the
-	* position in the argument list of this argument.
-	* For a range bound or enum value, this is the value itself.  
-	*/
-	int bitpos;
-   /*
-	* Size of this field, in bits, or zero if not packed.
-	* For an unpacked field, the field's type's length
-	* says how many bytes the field occupies.  
-	*/
-	int bitsize;
-   /*
-	* In a struct or enum type, type of this field.
-	* In a function type, type of this argument.
-	* In an array type, the domain-type of the array.  
-	*/
-	struct type *type;
-   /*
-	* Name of field, value or argument.
-	* Zero for range bounds and array domains.  
-	*/
-	std::string name;
+struct field {
+    /*
+     * Position of this field, counting in bits from start of
+     * containing structure.  For a function type, this is the
+     * position in the argument list of this argument.
+     * For a range bound or enum value, this is the value itself.
+     */
+    int bitpos;
+    /*
+     * Size of this field, in bits, or zero if not packed.
+     * For an unpacked field, the field's type's length
+     * says how many bytes the field occupies.
+     */
+    int bitsize;
+    /*
+     * In a struct or enum type, type of this field.
+     * In a function type, type of this argument.
+     * In an array type, the domain-type of the array.
+     */
+    struct type *type;
+    /*
+     * Name of field, value or argument.
+     * Zero for range bounds and array domains.
+     */
+    std::string name;
 };
 
 #if 0 
@@ -216,111 +213,93 @@ struct block
 
 #endif /* end of block */
 
-
 /* Represent one symbol name; a variable, constant, function or typedef.  */
 
-/* 
+/*
  * Different name spaces for symbols.  Looking up a symbol specifies
  * a namespace and ignores symbol definitions in other name spaces.
- * 
+ *
  * VAR_NAMESPACE is the usual namespace.
  * In C, this contains variables, function names, typedef names
  * and enum type values.
- * 
+ *
  * STRUCT_NAMESPACE is used in C to hold struct, union and enum type names.
  * Thus, if `struct foo' is used in a C program,
  * it produces a symbol named `foo' in the STRUCT_NAMESPACE.
- * 
+ *
  * LABEL_NAMESPACE may be used for names of labels (for gotos);
- * currently it is not used and labels are not recorded at all.  
+ * currently it is not used and labels are not recorded at all.
  */
 
-struct variable
-{
-   /* 
-    * Variable name 
-	*/
-	std::string name;
-   /* 
-    * Data type of value 
-	*/
-	type* var_type;
-   /* 
-    * constant value, or address if static, or register number,
-    * or offset in arguments, or offset in stack frame.  
-	*/
-	union {
-		long value;
-		struct block *block;      /* for LOC_BLOCK */
-		char *bytes;		/* for LOC_CONST_BYTES */
+struct variable {
+    /*
+     * Variable name
+     */
+    std::string name;
+    /*
+     * Data type of value
+     */
+    type *var_type;
+    /*
+     * constant value, or address if static, or register number,
+     * or offset in arguments, or offset in stack frame.
+     */
+    union {
+        long value;
+        struct block *block; /* for LOC_BLOCK */
+        char *bytes;         /* for LOC_CONST_BYTES */
     } value;
 };
 
-/* 
+/*
  * Source-file information.
  * This describes the relation between source files and line numbers
- * and addresses in the program text.  
+ * and addresses in the program text.
  */
 
 /* Line number and address of one line.  */
- 
-typedef struct line
-{
-	line() : linenum(0), address(0) {}
-	size_t linenum;
-	int address;
-	std::string content;
-	//post increment
-	struct line& operator++(int) {
-		linenum++;
-		return *this;
-	}
-	inline void reset() {
-		linenum = 0;
-	}
-	inline void set_content(std::string& _content) {
-		content = _content;
-	}
-	inline size_t& get_linenum() {
-		return linenum;
-	}
-}line;
+
+typedef struct line {
+    line() : linenum(0), address(0) {}
+    size_t linenum;
+    int address;
+    std::string content;
+    // post increment
+    struct line &operator++(int) {
+        linenum++;
+        return *this;
+    }
+    inline void reset() { linenum = 0; }
+    inline void set_content(std::string &_content) { content = _content; }
+    inline size_t &get_linenum() { return linenum; }
+} line;
 
 /* All the information on one single source file.  */
 
-struct source
-{
-	std::string filename;			/* Name of file */
-	std::vector<line> lines; /* Information of each line */
-	std::vector<c_token> c_token_vector;
-	/*
-	 * Simple wrap of push_back token
-	 */
-	inline void push(c_token c) {
-		c_token_vector.push_back(c);
-	}
-	inline c_ttype& get_token_type(size_t idx) {
-		return c_token_vector[idx].type;
-	}
-	inline std::string& get_token_name(size_t idx) {
-		return c_token_vector[idx].name;
-	}
-	inline size_t get_token_size() {
-		return c_token_vector.size();
-	}
-	inline void reset() {
-		c_token_vector.clear();
-		lines.clear();
-	}
-	inline void push_line(line& cur_line) {
-		lines.push_back(cur_line);
-	}
-	inline std::string& get_line_content(size_t& idx) {
-		size_t tmp = idx - 1;
-		return lines[tmp].content;
-	}
+struct source {
+    std::string filename;    /* Name of file */
+    std::vector<line> lines; /* Information of each line */
+    std::vector<c_token> c_token_vector;
+    /*
+     * Simple wrap of push_back token
+     */
+    inline void push(c_token c) { c_token_vector.push_back(c); }
+    inline c_ttype &get_token_type(size_t idx) {
+        return c_token_vector[idx].type;
+    }
+    inline std::string &get_token_name(size_t idx) {
+        return c_token_vector[idx].name;
+    }
+    inline size_t get_token_size() { return c_token_vector.size(); }
+    inline void reset() {
+        c_token_vector.clear();
+        lines.clear();
+    }
+    inline void push_line(line &cur_line) { lines.push_back(cur_line); }
+    inline std::string &get_line_content(size_t &idx) {
+        size_t tmp = idx - 1;
+        return lines[tmp].content;
+    }
 };
 
 #endif /* end of LAMB_COMPILER_SYMBOL_TABLE_H_ */
-
-
